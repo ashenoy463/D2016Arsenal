@@ -22,7 +22,7 @@ Script "D4DoUpgrade" (VOID) NET
 			{
 				SetHUDSize(400,300,1);
 				SetFont("SMALLFONT");
-				HudMessage(s:"Not Enought Upgrade Points";HUDMSG_FADEOUT,100,CR_ORANGE,200.0,260.0,0.4,1.0);
+				HudMessage(s:"Not Enough Upgrade Points";HUDMSG_FADEOUT,100,CR_ORANGE,200.0,260.0,0.4,1.0);
 			}
 			else If(CheckInventory("UpgradeBoxToken") >= 1)
 			{
