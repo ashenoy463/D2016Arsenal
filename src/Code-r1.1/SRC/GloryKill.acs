@@ -1,0 +1,95 @@
+#library "GloryKill"
+#include "zcommon.acs"
+
+script "HealMonAfterStagger" (int amount)
+{
+	SetActorProperty(0,APROP_HEALTH,amount);
+}
+
+Script "CheckIfTargetIsGKable" (void)
+{
+	SetActivator(0,AAPTR_PLAYER_GETTARGET);
+	
+	//radius=GetActorProperty(0,APROP_Radius);
+	if(checkinventory("GloryKillable")>=1)
+		SetResultValue(1);
+	else
+		SetResultValue(0);
+}
+
+Script "CheckIfTargetIsGKableCyberDemon" (void)
+{
+	SetActivator(0,AAPTR_PLAYER_GETTARGET);
+	
+	if(checkinventory("GloryKillableCyberDemon")>=1)
+		SetResultValue(1);
+	else
+		SetResultValue(0);
+}
+
+Script "CheckIfTargetIsGKableMastermind" (void)
+{
+	SetActivator(0,AAPTR_PLAYER_GETTARGET);
+	
+	if(checkinventory("GloryKillableMastermind")>=1)
+		SetResultValue(1);
+	else
+		SetResultValue(0);
+}
+
+Script "PlayerGloryKillable" (void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		//If((GameType() == 2)|(GameType() == 4))
+		If(CheckInventory("IsPlayingAsDM") == 1)
+		{
+			int health = GetActorProperty(0, APROP_Health);
+
+			If(health < 10)
+			{
+				GiveInventory("GloryKillable", 1);
+			}
+	
+			Else If(health >= 10)
+			{
+				TakeInventory("GloryKillable", 1);
+			}
+		}
+		Else
+		{
+			Terminate;
+		}
+    Delay(1);
+	}
+}
+
+// Player Health Detection
+Script "PlayerHealthDetection" (Void)
+{
+	if(CheckInventory("IsPlayingAsDM") == 1)
+		terminate;
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		int health = GetActorProperty(0, APROP_Health);
+		If(health < 30)
+		{
+			TakeInventory("GKPlayer_GoodHealth", 1);
+			TakeInventory("GKPlayer_RegularHealth", 1);
+			GiveInventory("GKPlayer_LowHealth", 1);
+		}
+		Else If(health >= 30 && health <= 75)
+		{
+			TakeInventory("GKPlayer_LowHealth", 1);
+			TakeInventory("GKPlayer_GoodHealth", 1);
+			GiveInventory("GKPlayer_RegularHealth", 1);
+		}
+		Else If(health >= 75)
+		{
+			TakeInventory("GKPlayer_LowHealth", 1);
+			TakeInventory("GKPlayer_RegularHealth", 1);
+			GiveInventory("GKPlayer_GoodHealth", 1);
+		}
+	Delay(5);
+	}
+}

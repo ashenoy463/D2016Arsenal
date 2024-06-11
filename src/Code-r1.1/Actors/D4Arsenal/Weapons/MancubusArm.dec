@@ -1,0 +1,418 @@
+ACTOR D4MancubusArm : D4WeaponBase Replaces FlameCannon
+{
+	Height 20
+	Weapon.SelectionOrder 5550
+	Weapon.AmmoUse 0
+	Weapon.AmmoGive 40
+	Weapon.AmmoType "Gas"
+    Inventory.PickupSound "Items/AmmoGas"
+    +WEAPON.NOAUTOAIM
+	Inventory.PickupMessage "You got the Mancubus Arm (Slot 9)"
+	Tag "Mancubus Arm"
+	States
+	{
+	WReady:
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntR")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"ReadyMK2")
+		TNT1 A 0 A_TakeInventory("Reloading", 1)
+		FLMG A 1 A_WeaponReady
+		Loop
+		
+	ReadyMK2:
+		TNT1 A 0 A_JumpIfInventory("Reloading",1,"SwitchMode")
+        TNT1 A 0 A_JumpIfInventory("MancubusArmReadyToken",3,"ReadySpriteD")
+        TNT1 A 0 A_JumpIfInventory("MancubusArmReadyToken",2,"ReadySpriteC")
+        TNT1 A 0 A_JumpIfInventory("MancubusArmReadyToken",1,"ReadySpriteB")
+		TNT1 A 0 A_GiveInventory("MancubusArmReadyToken",1)
+		FL2G A 1 A_WeaponReady
+		Goto WReady
+
+		ReadySpriteB:
+			TNT1 A 0 A_GiveInventory("MancubusArmReadyToken",1)
+			FL2G B 1 A_WeaponReady
+			Goto WReady
+		ReadySpriteC:
+			TNT1 A 0 A_GiveInventory("MancubusArmReadyToken",1)
+			FL2G C 1 A_WeaponReady
+			Goto WReady
+		ReadySpriteD:
+			TNT1 A 0 A_TakeInventory("MancubusArmReadyToken",3)
+			FL2G D 1 A_WeaponReady
+			Goto WReady
+		
+	StartUpgrader:
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_GiveInventory("UpgradeMancubusArm",1)
+		TNT1 A 0 A_SelectWeapon("D4WeaponUpgrader")
+		Goto WReady
+		
+	DryFire:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"DryFireMK2")
+	    FLMG A 10 A_PlaySound("weapons/empty")
+		Goto WReady
+		
+	DryFireMK2:
+	    FL2G A 10 A_PlaySound("weapons/empty")
+		Goto WReady
+	
+	Deselect:
+	    TNT1 A 0 A_StopSound(CHAN_WEAPON)
+		TNT1 A 0 A_Takeinventory("NoParkour",1)
+		TNT1 A 0 A_TakeInventory("TossGrenade", 1)
+		TNT1 A 0 A_Takeinventory("FlameCannonSelected",1)
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon",1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"DeselectMK2")
+		FLMS A 0
+	RealDeselect:
+        "####" ABCDEF 1
+		"####" F 0
+		Goto DeselectSequence
+
+	DeselectMK2:
+        FL2S A 0
+		Goto RealDeselect
+		
+	Select:
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_Giveinventory("FlameCannonSelected",1)
+		TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon",1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"StartSelectMK2")
+		FLMS F 0
+		Goto SelectSequence
+		StartSelectMK2:
+        	FL2S A 0
+			Goto SelectSequence
+
+	Ready:
+		TNT1 A 0 A_GunFlash
+		TNT1 A 0 A_PlaySound("BFGREADY")	
+	SelectAnimation:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"SelectMK2")
+		FLMS F 0
+	RealSelect:
+        "####" FEDCBA 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		SelectMK2:
+        	FL2S A 0
+			Goto RealSelect
+		
+    Spawn:
+        MANA H -1
+        Stop
+		
+	 Fire:
+        TNT1 A 0 A_JumpIfInventory("IsPlayerSwimming", 1, "DryFire")
+        TNT1 A 0 A_JumpIfInventory("Gas", 16, "Fireball")
+		TNT1 A 0 A_StopSound(CHAN_WEAPON)
+		Goto DryFire
+
+	Fireball:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"FireballMK2")
+        FLMF A 1 BRIGHT A_FireCustomMissile("BigFireBallWithGravity", 0, 1, 0, -6)
+		TNT1 A 0 A_SetPitch(-4.0 + pitch)
+		TNT1 A 0 A_TakeInventory("Gas", 16)
+		TNT1 AAAAAAAAAAA 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+        FLMF BC 1 BRIGHT 
+        FLMF CD 1 A_SetPitch(+2.0 + pitch)
+		FLMG A 5
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady 
+		
+	FireballMK2:	
+        FL2F A 1 BRIGHT A_FireCustomMissile("BigFireBallWithGravity", 0, 1, 0, -6)
+		TNT1 A 0 A_SetPitch(-4.0 + pitch)
+		TNT1 A 0 A_TakeInventory("Gas", 16)
+		TNT1 AAAAAAAAAAA 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+        FL2F BC 1 BRIGHT 
+        FL2F CD 1 A_SetPitch(+2.0 + pitch)
+		FL2F EF 2
+		FL2G A 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+	
+	AltFire:
+        TNT1 A 0 A_JumpIfInventory("IsPlayerSwimming", 1, "DryFire")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"MK2AltModeChecker")
+        TNT1 A 0 A_JumpIfInventory("Gas", 28, "FlameBurst")
+		TNT1 A 0 A_StopSound(CHAN_WEAPON)
+		Goto DryFire		
+		
+	FlameBurst:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+        TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissile", 0, 1, 0, -12, 0, 8)
+		TNT1 AAA 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)		
+		TNT1 A 0 A_TakeInventory("Gas", 7)
+		FLMF FG 1 BRIGHT A_SetAngle(random(1, -1) + angle)
+		TNT1 A 0 BRIGHT A_SetPitch(random(1, -1) + pitch)		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileNoLight", 0, 1, 0, -12, 0, 8)
+		TNT1 AAA 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 7)
+		FLMF FG 1 BRIGHT		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileNoLight", 0, 1, 0, -12, 0, 8)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 7)
+		FLMF FG 1 BRIGHT		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileNoLight", 0, 1, 0, -12, 0, 8)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 7)
+		FLMF FG 1 BRIGHT
+		TNT1 A 0 A_PlaySound("FLAMSTOP", CHAN_WEAPON)
+		FLMG A 14
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	MK2AltModeChecker:
+        TNT1 A 0 A_JumpIfInventory("Gas", 7, "FlamethrowerMK2")
+		TNT1 A 0 A_StopSound(CHAN_WEAPON)
+		Goto DryFire		
+
+	FlamethrowerMK2:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("D4MancubusArmAltMode",1,"NapalmFlameMK2")
+		FL2F AB 1 BRIGHT
+		TNT1 A 0 BRIGHT A_SetPitch(random(1, -1) + pitch)		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileNoLight", 0, 1, 0, -12, 0, 8)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 7)
+		TNT1 A 0 A_Refire
+		FL2F CD 1 BRIGHT
+		TNT1 A 0 A_PlaySound("FLAMSTOP", CHAN_WEAPON)
+		FL2F EF 2
+		FL2G A 10
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	NapalmFlameMK2:
+        TNT1 A 0 A_JumpIfInventory("Gas", 40, 2)
+		TNT1 A 0 A_StopSound(CHAN_WEAPON)
+		Goto DryFire		
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+        TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissile", 0, 1, 0, -12, 0, 8)
+		TNT1 AAA 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)		
+		TNT1 A 0 A_TakeInventory("Gas", 5)
+		FL2F AB 1 BRIGHT A_SetAngle(random(1, -1) + angle)
+		TNT1 A 0 BRIGHT A_SetPitch(random(1, -1) + pitch)		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileProper", 0, 1, 0, -12, 0, 8)
+		TNT1 AAA 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 4)
+		FL2F AB 1 BRIGHT		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileProper", 0, 1, 0, -12, 0, 8)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 6)
+		FL2F AB 1 BRIGHT		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileProper", 0, 1, 0, -12, 0, 8)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 5)
+		FL2F AB 1 BRIGHT		
+		TNT1 A 0 A_TakeInventory("Gas", 5)
+		FL2F AB 1 BRIGHT A_SetAngle(random(1, -1) + angle)
+		TNT1 A 0 BRIGHT A_SetPitch(random(1, -1) + pitch)		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileProper", 0, 1, 0, -12, 0, 8)
+		TNT1 AAA 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 6)
+		FL2F AB 1 BRIGHT		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileProper", 0, 1, 0, -12, 0, 8)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 4)
+		FL2F AB 1 BRIGHT		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileProper", 0, 1, 0, -12, 0, 8)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Shotgunparticles2", random(-12,12), 0, 0, -2, 0, random(-9,9))
+		TNT1 A 0 A_PlaySound("FLAMER", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_TakeInventory("Gas", 5)
+		FL2F AB 1 BRIGHT
+		TNT1 A 0 A_Refire
+		FL2F CD 1 BRIGHT
+		FL2F EF 2
+		TNT1 A 0 A_PlaySound("FLAMSTOP", CHAN_WEAPON)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	SwitchMode:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_TakeInventory("Reloading", 1)
+		FL2A ABCDEFGH 2
+		TNT1 A 0 A_JumpIfInventory("D4MancubusArmAltMode",1,"SwitchModeFlameMK2")
+		Goto SwitchModeNapalmMK2
+		
+	SwitchModeNapalmMK2:
+		TNT1 A 0 A_Print("Alt-Mode: Hight-Incendiary Flamethrower")
+		TNT1 A 0 A_PlaySound("BFGREADY", 6)
+		TNT1 AAAAA 0 A_FireCustomMissile("GunFireSmoke", random(-5,5), 0, random(-3,3),random(-12,-5))
+		TNT1 AAAAA 0 A_FireCustomMissile("PlasmaParticle", random(-5,5), 0, random(-3,3),random(-12,-5))
+		FL2A IJJJ 2 
+		TNT1 A 0 A_GiveInventory("D4MancubusArmAltMode", 1)
+		FL2A HGFEDCBA 2
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+
+	SwitchModeFlameMK2:
+		TNT1 A 0 A_Print("Alt-Mode: Controlled Flamethrower")
+		TNT1 A 0 A_PlaySound("BFGREADY", 6)
+		TNT1 AAAAA 0 A_FireCustomMissile("GunFireSmoke", random(-5,5), 0, random(-3,3),random(-12,-5))
+		TNT1 AAAAA 0 A_FireCustomMissile("PlasmaParticle", random(-5,5), 0, random(-3,3),random(-12,-5))
+		FL2A IJJJ 2 
+		TNT1 A 0 A_TakeInventory("D4MancubusArmAltMode", 1)
+		FL2A HGFEDCBA 2
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+
+// ------------------------------------------------------------------------------------
+//
+// Flash States, Here lies new animations under kicks, taunt and throw grenade
+//
+// ------------------------------------------------------------------------------------
+
+	PunchFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"PunchFlashMK2")
+		FLMK A 0
+		Goto RealPunchFlash
+		
+		PunchFlashMK2:
+			FL2K A 0
+			Goto RealPunchFlash
+			RealPunchFlash:
+				"####" ACE 1
+				Goto Flash
+			
+	KickFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"KickFlashMK2")
+		FLMK A 0
+		Goto RealKickFlash
+		
+		KickFlashMK2:
+			FL2K A 0
+			Goto RealKickFlash
+			RealKickFlash:
+				"####" ABCDE 1
+				"####" F 6
+				"####" EDCBA 1
+				Goto Flash
+		
+	AirKickFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"AirKickFlashMK2")
+		FLMK A 0
+		Goto RealAirKickFlash
+		
+		AirKickFlashMK2:
+			FL2K A 0
+			Goto RealAirKickFlash
+			RealAirKickFlash:
+				"####" ABCDE 1
+				"####" F 8
+				"####" EDCBA 1
+				Goto Flash
+
+	SlideKickStartFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"SlideKickStartFlashMK2")
+		FLMK A 0
+		Goto RealSlideKickStartFlash
+
+		SlideKickStartFlashMK2:
+			FL2K A 0
+			Goto RealSlideKickStartFlash
+			RealSlideKickStartFlash:
+				"####" ABCDE 1
+				"####" F 16
+	SlideKickEndFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"SlideKickEndFlashMK2")
+		FLMK A 0
+		Goto RealSlideKickEndFlash
+		SlideKickEndFlashMK2:
+			FL2K A 0
+			Goto RealSlideKickEndFlash
+			RealSlideKickEndFlash:
+				"####" F 4
+				"####" EDCBA 1
+				Goto Flash
+		
+	TauntFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"TauntFlashMK2")
+		FLMK A 0
+		Goto RealTauntFlash
+		
+		TauntFlashMK2:
+			FL2K A 0
+			Goto RealTauntFlash
+			RealTauntFlash:
+				"####" ABCDE 1
+				"####" F 33
+				"####" EDCBA 1
+				Goto Flash
+
+	GrenadeFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2",1,"GrenadeFlashMK2")
+		FLMS A 0
+		Goto RealGrenadeFlash
+
+		GrenadeFlashMK2:
+			FL2S A 0
+			Goto RealGrenadeFlash
+			RealGrenadeFlash:
+				"####" ABCDEF 1
+				Goto Flash
+	}
+}
+Actor MancubusArmReadyToken : Inventory {inventory.maxamount 3} // Handler for Ready Animation
+
+ACTOR Gascan : Gas Replaces Gas
+{
+	Game Doom
+	Inventory.PickupMessage "Picked up some Gasoline."
+	Inventory.PickupSound "Items/AmmoGas"
+	Inventory.Amount 50
+	Scale 1.0
+	States
+	{
+	Spawn:
+		GSLN A -1
+		Stop
+	}
+}
+
+ACTOR BigGas : Gas
+{
+	Game Doom
+	Inventory.PickupMessage "Picked up some Gasoline."
+	Inventory.PickupSound "Items/AmmoGas"
+	Inventory.Amount 200
+	Scale 1.0
+	States
+	{
+	Spawn:
+		GSLN B -1
+		Stop
+	}
+}
+
+Actor D4MancubusArmAltMode : Inventory
+{
+inventory.maxamount 1
+}

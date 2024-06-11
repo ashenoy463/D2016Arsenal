@@ -1,0 +1,9 @@
+server int donotclimb = 0;
+server int donotdoublejump = 0;
+server int donotsidestep = 0;
+server int nopaineffect = 0;
+server int togglehelmetanimation = 0;
+server int glorykilltype = 0;
+server int disabledglorykill = 0;
+server int disablempweapons = 0;
+user int d4_ssgaimfiremode = 0;

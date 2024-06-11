@@ -1,0 +1,2 @@
+// Only loads the replacer for Belphegor Boss
+#include "Actors/D4Arsenal/Monsters/ExterminationDay/BelphegorBoss.dec"

@@ -1,0 +1,386 @@
+ACTOR RevenantMissileBattery : D4WeaponBase replaces HellishMissileLauncher
+{
+	Height 20
+	Weapon.SelectionOrder 1800
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 0
+	Weapon.AmmoType1 "Gas"
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 4
+	Weapon.AmmoType2 "MiniHellRocketAmmo"
+    Inventory.PickupSound "BFGREADY"
+    //+WEAPON.NOAUTOAIM
+	Tag "Revenant Missile Battery"
+	Inventory.PickupMessage "You got the Revenant's Missile Battery (Slot 8)"
+	States
+	{
+	WReady:
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "DemonRuneEnd")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"StartGameAnimation")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		TNT1 A 0 A_JumpIfInventory("JetpackActivated",1,"JetPackReady")
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKickDualWield") // Random Kicks
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"JetPack")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		RIFG A 0 A_JumpIfInventory("Unloading",1,"Laser")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		RVCG A 1 A_WeaponReady
+		Loop	
+		
+	StartUpgrader:
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_GiveInventory("UpgradeMissileBattery",1)
+		TNT1 A 0 A_SelectWeapon("D4WeaponUpgrader")
+		Goto WReady
+		
+	JetPackReady:
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"JetPack")
+		RVCG A 1 A_WeaponReady(WRF_NOBOB|WRF_NOSWITCH)
+		Goto WReady	
+			
+    Taunt:
+		TNT1 A 0 A_GunFlash("TauntFlash")
+		TNT1 A 0 A_FireCustomMissile("Taunter", 0, 0, -1, 0)
+		TNT1 A 0 A_FireCustomMissile("Taunter", -9, 0, -1, 0)
+		TNT1 A 0 A_FireCustomMissile("Taunter", 9, 0, -1, 0)
+		TNT1 A 0 A_JumpIfInventory("GenderFemale", 1, 3)
+		PUN5 A 5 A_PlaySound("FUCK", 2)
+		TNT1 A 0 A_Jump(256,2)
+		PUN5 A 5 A_PlaySound("FTAUNT", 2)
+		FUCK K 1
+        FUCK LMN 1 A_AlertMonsters
+		FUCK O 20 A_Takeinventory("Taunting",1)
+        FUCK NMLK 1
+		TNT1 A 0 A_GunFlash("Flash")
+		Goto WReady	
+		
+	Deselect:
+		TNT1 A 0 ACS_NamedTerminate("RMBScript")
+		TNT1 A 0 A_StopSound(4)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		TNT1 A 0 A_Takeinventory("JetpackActivated",1)
+		TNT1 A 0 A_TakeInventory("PowerJetpack", 1)
+		TNT1 A 0 A_TakeInventory("MBLaserHandler",1)
+		TNT1 A 0 A_Takeinventory("LaserMissileActivated",1)
+        TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon",1)
+		TNT1 A 0 A_GunFlash("UnFlash2")
+        RVCS DCBA 1
+	DeselectReally:
+		TNT1 A 1
+		TNT1 A 1 A_Lower
+		TNT1 AAAAAAAAA 0 A_Lower
+		Loop
+		
+	Select:
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_Giveinventory("RevenantLauncherSelected",1)
+        TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon",1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		Goto SelectSequence
+		
+	Ready:
+		TNT1 A 0 ACS_NamedExecuteAlways("RMBScript")
+		TNT1 A 0 A_PlaySound("BFGREADY")		
+	SelectAnimation:
+		TNT1 A 0 A_GunFlash
+        RVCS ABCD 1
+		GOto WReady
+		
+	Jetpack:
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeMissileBatteryJetThruster", 1, 1) // Checks if you have a upgrade
+		Goto NoUpgrades
+		TNT1 A 0 A_JumpIfInventory("Gas", 1, 1) // Checks if you have avaiable Gasoline
+		Goto NoGas
+		TNT1 A 0 A_JumpIfInventory("JetpackActivated", 1, "DeactivateJetpack")
+		TNT1 A 0 A_GiveInventory("JetpackActivated", 1)
+		TNT1 A 0 A_Print("Jetpack Activated")
+		TNT1 A 0 A_GunFlash("JetpackFlashStart")
+		RVCG A 16
+		Goto WReady
+		
+	NoGas:
+		TNT1 A 0 A_Print("You don't have enough gasoline to use Jet-Pack Upgrade.", 2)
+		Goto WReady	
+		
+	DeactivateJetpack:
+		TNT1 A 0 A_Takeinventory("JetpackActivated",1)
+		TNT1 A 0 A_Print("Jetpack Deactivated")
+		TNT1 A 0 A_GunFlash("JetpackFlashEnd")
+		RVCG A 16
+		Goto WReady
+
+	JetPackFlash:
+		TNT1 A 0 A_JumpIfInventory("Gas", 1, 1)
+		Goto ForcedJetPackEnd
+		TNT1 A 0 A_PlaySound("jetpack/engine", 4, 1, 1)
+		JTPK C 2 
+		TNT1 A 0 A_Takeinventory("Gas",1)
+		TNT1 A 0 A_SpawnItemEx("BurnParticlesNoPain",0,-10,-25,0,0,0,0,288)
+		TNT1 A 0 A_SpawnItemEx("BurnParticlesNoPain",0,10,-25,0,0,0,0,288)
+		TNT1 A 0 A_SpawnItemEx("ExplosionParticleVerySlow",0,-5,-25,0,0,0,0,288)
+		TNT1 A 0 A_JumpIfInventory("Gas", 1, 1)
+		Goto ForcedJetPackEnd
+		JTPK C 2 //ThrustThingZ(0, 13, 0, 0)
+		Loop
+		
+	JetPackFlashStart:
+		JTPK H 2 
+		JTPK G 2 
+		JTPK F 2 
+		JTPK E 2 
+		JTPK D 2
+		JTPK A 2 
+		JTPK B 2  
+		TNT1 A 0 A_StopSound(4)
+		TNT1 A 0 A_playsound("jetpack/deploy", 1)
+		TNT1 A 0 A_GiveInventory("PowerJetpack",1)
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		JTPK C 2 
+		Goto JetPackFlash
+		
+	ForcedJetPackEnd:
+		TNT1 A 0 A_Takeinventory("JetpackActivated",1)
+		TNT1 A 0 A_Print("You don't have enough gasoline to use Jet-Pack Upgrade.", 2)
+	JetPackFlashEnd:
+		JTPK C 2 
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		TNT1 A 0 A_TakeInventory("PowerJetpack", 1)
+		TNT1 A 0 A_playsound("jetpack/deploy", 1)
+		JTPK B 2  
+		JTPK A 2  
+		JTPK D 2 
+		JTPK E 2  
+		JTPK F 2  
+		JTPK G 2  
+		JTPK H 2
+		Goto Flash
+		
+    Spawn:
+        FATB D -1
+        Stop
+		
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("MiniHellRocketAmmo", 1, 1)
+		Goto WReady
+		TNT1 A 0 A_PlaySOund("RLANSHOT", 1)
+		TNT1 A 0 A_ZoomFactor(0.97)
+	    TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter", 0, 0, -1, 0)
+		TNT1 A 0 A_TakeInventory("MiniHellRocketAmmo", 1)
+		TNT1 A 0 A_JumpIfInventory("LaserMissileActivated",1,"LaserFire")
+		TNT1 A 0 A_JumpIfInventory("RevenantRocketFire1823", 1, "OpenFire2")
+		TNT1 A 0 A_FireCustomMissile("revenantseekermissiles2", 0, 0, -15, 12, 0, 0)
+		RVCF ABC 1 Bright
+		TNT1 A 0 A_ZoomFactor(1.0)
+		RVCF DEF 1
+		TNT1 A 0 A_GiveInventory("RevenantRocketFire1823", 1)
+		RVCG A 4
+		Goto WReady
+		
+	OpenFire2:
+		TNT1 A 0 A_FireCustomMissile("revenantseekermissiles2", 0, 0, 15, 12, 0, 0)
+		RVCF GHI 1 Bright
+		TNT1 A 0 A_ZoomFactor(1.0)
+		RVCF JKL 1
+		TNT1 A 0 A_TakeInventory("RevenantRocketFire1823", 1)
+		RVCG A 4
+		Goto WReady
+		
+	Laser:
+		TNT1 A 0 A_Takeinventory("Unloading",1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeMissileBatteryGuidedMissile", 1, "LaserOn") // Checks if you have a upgrade
+		Goto NoUpgrades
+		
+	LaserOn:
+		RVCG A 1
+		TNT1 A 0 A_JumpIfInventory("LaserMissileActivated",1,"LaserOff")
+		TNT1 A 0 A_GiveInventory("LaserMissileActivated",1)
+		TNT1 A 0 A_Print("Laser-Guided Missile - Activated")
+		Goto WReady
+		
+	LaserOff:
+		TNT1 A 0 A_Takeinventory("LaserMissileActivated",1)
+		TNT1 A 0 A_Print("Laser-Guided Missile - Deactivated")
+		Goto WReady
+		
+	LaserFire:
+		TNT1 A 0 A_JumpIfInventory("RevenantRocketFire1823", 1, "LaserFire2")
+		TNT1 A 0 A_FireCustomMissile("GuidedMissile", 0, 0, -15, 12, 0, 0)
+		RVCF ABC 1 Bright
+		TNT1 A 0 A_ZoomFactor(1.0)
+		RVCF DEF 1
+		TNT1 A 0 A_GiveInventory("RevenantRocketFire1823", 1)
+		RVCG A 8
+		Goto WReady
+		
+	LaserFire2:
+		TNT1 A 0 A_FireCustomMissile("GuidedMissile", 0, 0, 15, 12, 0, 0)
+		RVCF GHI 1 Bright
+		TNT1 A 0 A_ZoomFactor(1.0)
+		RVCF JKL 1
+		TNT1 A 0 A_TakeInventory("RevenantRocketFire1823", 1)
+		RVCG A 8
+		Goto WReady
+		
+	NoUpgrades2:
+		TNT1 A 0
+		TNT1 A 0 A_Print("You need a Laser-Guided Missile System upgrade for this weapon", 2)
+		Goto WReady
+		
+	Flash:
+        PUN5 A 1
+		Loop
+		
+	UnFlash:
+		TNT1 A 0 A_JumpIfInventory("PlayGloryKillAnim", 1, "UnFlash2") // Fix for Glory Kill Animations
+        RVCS DCBA 2
+		Stop
+		
+	UnFlash2:
+		TNT1 A 0
+		Stop
+		
+	KickFlash:
+		RVCG A 16
+		Goto Flash
+		
+	AirKickFlash:
+		RVCG A 18
+		Goto Flash
+
+	SlideKickStartFlash:
+		RVCG A 21
+	SlideKickEndFlash:
+		RVCG A 9
+		Goto Flash
+		
+	TauntFlash:
+		RVCG A 1
+		Loop
+		
+	GrenadeFlash:
+        RVCS DCB 2
+		RVCS A 21
+		Goto Flash
+		
+	PunchFlash:
+        RVCS DCBA 2
+	PunchFlashLoop:
+		RVCS A 1
+		Loop
+		}
+}
+
+Actor JetpackActivated : Inventory
+{
+Inventory.MaxAmount 1
+}
+
+ACTOR PowerJetpack : PowerFlight
+{
+Powerup.Duration 0x7FFFFFFF
+}
+
+ACTOR GuidedMissile: revenantseekermissiles2
+{
+	-SCREENSEEKER
+	-SEEKERMISSILE
+	Damagetype "ExplosiveImpact"
+	States
+	{
+	Spawn:
+		FATB A 1
+		TNT1 A 0 ACS_NamedExecuteAlways("RocketFollow",0,0,0,0)
+	Spawn1:
+		FATB AA 1 BRIGHT A_SpawnItem("YellowFlareSmall",0,0)
+		TNT1 A 0 A_SpawnItemEx("OldschoolRocketSmokeTrail2", 0, 0, 0, 0, 0, 0, 0, 128) 
+		TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30))
+		TNT1 A 0 A_SeekerMissile (4,8, SMF_LOOK)
+		Loop
+	Xdeath:	
+	Death:
+		MISL B 0 ACS_NamedExecuteAlways("RocketCleanup",0,0,0,0)
+		BFE1 A 0 Bright A_Explode(7, 120, 1)
+		Goto Explodez
+	}
+}
+
+ACTOR MBLaserHandler : CustomInventory
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_FireCustomMissile("LaserPointer", 0, 0, 0, 0)
+		TNT1 A 0 A_FireBullets(0,0,1,0,"LaserGuided", FBF_NORANDOMPUFFZ)
+		TNT1 A 1
+		Stop
+	}
+}
+
+ACTOR RedDot : RedFlare { +NOTIMEFREEZE Scale .03 }
+ACTOR LaserPointer : FastProjectile
+{
+	Projectile
+	-ACTIVATEIMPACT
+	-ACTIVATEPCROSS
+	+NOTIMEFREEZE
+	+DONTSPLASH
+	Speed 500
+	Radius 1
+	Height 1
+	States
+	{
+	Spawn:
+		TNT1 A 1 //invisible beam
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItem("RedDot",0) //red dot visible slightly lower than muzzle-line
+		Stop
+		}
+}
+
+ACTOR LaserGuided
+{ 
+    Mass 0
+    Radius 1
+    Height 1
+    +NOBLOCKMAP
+    +NOGRAVITY
+    +BLOODLESSIMPACT
+    +ALWAYSPUFF
+    +PUFFONACTORS
+    +DONTSPLASH
+    States
+    {
+    Spawn:
+      TNT1 A 0
+	  TNT1 A 0 ACS_NamedExecute("getLaserCoords",0,x,y,z)
+      TNT1 A 1 BRIGHT
+      Stop
+    }
+}
+
+ACTOR LaserTrail : LaserGuided
+{ 
+	Translation "112:116=199:203", "224:224=112:112"
+    States
+    {
+    Spawn:
+      TNT1 A 250 BRIGHT
+      stop
+    }
+}
+
+Actor LaserMissileActivated : Inventory
+{
+Inventory.MaxAmount 1
+}

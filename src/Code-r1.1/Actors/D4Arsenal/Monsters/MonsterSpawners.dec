@@ -1,0 +1,232 @@
+ACTOR D4ZombieManReplacer Replaces ZombieMan
+{
+	+NOINTERACTION
+	RenderStyle None
+	States
+	{
+	Spawn:	
+		TNT1 A 1
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckStuff")//Check if new monsters are disabled
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCHeckClassicMonsters", 0, 0, 0, 0)//Check if Vanilla Mode is activated		
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("nonewenemies", 1, "ReplaceCommon")
+		TNT1 A 0 A_Jump(2, "ReplaceExterminator")// Very Rare
+		TNT1 A 0 A_Jump(4, "ReplaceLabGuy")
+		TNT1 A 0 A_Jump(168, "ReplacePistol")
+		Goto ReplaceCommon
+		
+	ReplaceCommon:
+		TNT1 A 0 A_SpawnItemEx("D4RifleZombie",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplacePistol:
+		TNT1 A 0 A_SpawnItemEx("D4PistolZombie",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceLabGuy:
+		TNT1 A 0 A_SpawnItemEx ("D4LabGuyReplacer",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop	
+	
+	ReplaceExterminator:
+		TNT1 A 0 A_SpawnItemEx("D4Exterminator",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceVanilla:
+		TNT1 A 0 A_SpawnItemEx("D4VanillaZombieman",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop	
+	}
+}
+
+ACTOR D4LabguyReplacer Replaces Labguy
+{
+	+NOINTERACTION
+	RenderStyle None
+	States
+	{
+	Spawn:	
+		TNT1 A 1
+		TNT1 A 0 A_Jump(64, "ReplaceSawman") // Sub-variant whit a fucking Chainsaw
+		TNT1 A 0 A_SpawnItemEx ("D4Labguy",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop	
+	
+	ReplaceSawman:
+		TNT1 A 0 A_SpawnItemEx("D4ChainsawLabguy",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+	}
+}
+
+ACTOR D4ShotgunGuyReplacer Replaces ShotgunGuy
+{
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckStuff")//Check if new monsters are disabled
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCHeckClassicMonsters", 0, 0, 0, 0)//Check if Vanilla Mode is activated		
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("nonewenemies", 1, "ReplaceCommon")
+		TNT1 A 0 A_Jump(64, "ReplaceSMG")//50%
+		TNT1 A 0 A_Jump(20, "ReplaceShield")
+		TNT1 A 0 A_Jump(6, "ReplaceHAR") // Stranger variant whit a H.A.R Equipment
+		TNT1 A 0 A_Jump(4, "ReplaceSSG") // Very Rare and Powerfull variant
+		Goto ReplaceCommon
+		
+	ReplaceCommon:
+		TNT1 A 0 A_SpawnItemEx("D4Sergeant",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceSSG:
+		TNT1 A 0 A_SpawnItemEx("D4SSGSergeant",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceHAR:
+		TNT1 A 0 A_SpawnItemEx("D4HARSergeant",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceSMG:
+		TNT1 A 0 A_SpawnItemEx("D4SMGGuy",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceShield:
+		TNT1 A 0 A_SpawnItemEx("D4RiotShieldGuy",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceVanilla:
+		TNT1 A 0 A_SpawnItemEx("D4VanillaSergeant",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	}
+}
+
+Actor D4CommandoSpawner Replaces ChaingunGuy
+{
+	+NOINTERACTION
+	RenderStyle None
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckStuff")//Check if new monsters are disabled
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCHeckClassicMonsters", 0, 0, 0, 0)//Check if Vanilla Mode is activated
+		TNT1 A 1		
+		TNT1 A 0 A_JumpIfInventory("nonewenemies", 1, "ReplaceCommon")
+		TNT1 A 0 A_Jump(16, "ReplaceDemolition")
+		TNT1 A 0 A_Jump(24, "ReplaceAssaulter")
+		Goto ReplaceCommon
+
+	ReplaceCommon:
+		TNT1 A 0 A_SpawnItemEx("D4Commando",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop		
+
+	ReplaceAssaulter:
+		TNT1 A 0 A_SpawnItemEx("D4AssaultCommando",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+
+	ReplaceDemolition:
+		TNT1 A 0 A_SpawnItemEx("D4RocketCommando",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceVanilla:
+		TNT1 A 0 A_SpawnItemEx("D4VanillaCommando",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop	
+		}
+}
+
+ACTOR D4CacoDemonReplacer Replaces Cacodemon
+{
+	+NOINTERACTION
+	RenderStyle None
+	States
+	{
+	Spawn:	
+		TNT1 A 1
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckStuff")//Check if new monsters are disabled
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCHeckClassicMonsters", 0, 0, 0, 0)//Check if Vanilla Mode is activated		
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("nonewenemies", 1, "ReplaceCommon")
+		TNT1 A 0 A_Jump(4, "ReplaceAracnorb")
+		Goto ReplaceCommon
+		
+	ReplaceCommon:
+		TNT1 A 0 A_SpawnItemEx("D4Caco",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceAracnorb:
+		TNT1 A 0 A_JumpIf((CeilingZ - Height) < 14, "Cacodemon")
+		TNT1 A 0 A_SpawnItemEx("D4Aracnorb",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceVanilla:
+		TNT1 A 0 A_SpawnItemEx("D4VanillaCacoDemon",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop	
+	}
+}
+
+ACTOR D4BaronReplacer Replaces BaronofHell
+{
+	+NOINTERACTION
+	RenderStyle None
+	States
+	{
+	Spawn:	
+		TNT1 A 1
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckStuff")//Check if new monsters are disabled
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCHeckClassicMonsters", 0, 0, 0, 0)//Check if Vanilla Mode is activated		
+		TNT1 A 1
+		TNT1 A 0 A_JumpIf(x == 304, "ReplaceBoss1")
+		TNT1 A 0 A_JumpIf(x == 528, "ReplaceBoss2")
+		TNT1 A 0 A_JumpIfInventory("nonewenemies", 1, "ReplaceCommon")
+		TNT1 A 0 A_Jump(4, "ReplaceBelphegor")
+		Goto ReplaceCommon
+		
+	ReplaceCommon:
+		TNT1 A 0 A_SpawnItemEx("D4Baron",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+
+	ReplaceBoss1:
+		TNT1 A 0 A_SpawnItemEx("D4BaronBoss1",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,tid)
+		Stop
+
+	ReplaceBoss2:
+		TNT1 A 0 A_SpawnItemEx("D4BaronBoss2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,tid)
+		Stop
+		
+	ReplaceBelphegor:
+		TNT1 A 0 A_JumpIf((CeilingZ - FloorZ) < 92,"ReplaceCommon")
+		TNT1 A 0 A_SpawnItemEx("D4Aracnorb",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceVanilla:
+		TNT1 A 0 A_SpawnItemEx("D4VanillaBaronOfHell",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop	
+	}
+}
+
+ACTOR D4MancubusReplacer Replaces Fatso
+{
+	+NOINTERACTION
+	RenderStyle None
+	States
+	{
+	Spawn:	
+		TNT1 A 1
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckStuff")//Check if new monsters are disabled
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCHeckClassicMonsters", 0, 0, 0, 0)//Check if Vanilla Mode is activated		
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("nonewenemies", 1, "ReplaceCommon")
+		TNT1 A 0 A_Jump(4, "ReplaceVolcabus")
+		Goto ReplaceCommon
+		
+	ReplaceCommon:
+		TNT1 A 0 A_SpawnItemEx("D4Mancubus",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceVolcabus:
+		TNT1 A 0 A_JumpIf((CeilingZ - FloorZ) < 87,"ReplaceCommon")
+		TNT1 A 0 A_SpawnItemEx("D4Volcabus",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS ,0, tid)
+		Stop
+		
+	ReplaceVanilla:
+		TNT1 A 0 A_SpawnItemEx("D4VanillaFatso",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop	
+	}
+}

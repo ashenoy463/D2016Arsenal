@@ -1,0 +1,199 @@
+ListMenu "MainMenu"
+{
+IfGame(Doom, Chex)
+	{
+		StaticPatch 94, 2, "M_DOOM"
+		Position 97, 72
+		IfOption(ReadThis)
+		{
+			Position 97, 64
+		}
+	}
+	IfGame(Strife)
+	{
+		StaticPatch 84, 2, "M_STRIFE"
+		Position 97, 45
+	}
+	IfGame(Heretic)
+	{
+		StaticPatch 88, 0, "M_HTIC"
+		StaticPatch 40, 10, "M_SKL01"
+		StaticPatch 232, 10, "M_SKL00"
+		Position 110, 56
+	}
+	IfGame(Hexen)
+	{
+		StaticPatch 88, 0, "M_HTIC"
+		StaticPatch 37, 80, "FBULB0"
+		StaticPatch 278, 80, "FBULA0"
+		Position 110, 56
+	}
+	
+	IfGame(Doom, Strife, Chex)
+	{
+		TextItem "New Game", "n", "PlayerclassMenu"
+		ifOption(SwapMenu)
+		{
+			TextItem "Load Game", "l", "LoadGameMenu"
+			TextItem "Save Game", "s", "SaveGameMenu"
+			TextItem "Options", "o", "OptionsMenu"/////////////
+			TextItem "Game Options", "b", "D4ModOptions"
+			TextItem "Credits", "c", "BrutalCreditsMenu"
+		}
+		else
+		{
+			TextItem "Options", "o", "OptionsMenu"/////////////////////
+			TextItem "Game Options", "b", "D4ModOptions"
+			TextItem "Load Game", "l", "LoadGameMenu"
+			TextItem "Save Game", "s", "SaveGameMenu"
+			TextItem "Credits", "c", "BrutalCreditsMenu"
+		}
+		ifOption(ReadThis)
+		{
+			TextItem "Read This!","r", "ReadThisMenu"
+		}
+		TextItem "Quit Game", "q", "QuitMenu"
+	}
+
+	IfGame(Heretic, Hexen)
+	{
+		TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
+		TextItem "$MNU_OPTIONS", "o", "OptionsMenu"/////////////////////
+		TextItem "Game Options", "b", "D4ModOptions"
+		TextItem "Credits", "c", "BrutalCreditsMenu"
+		TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
+		TextItem "$MNU_INFO", "i", "ReadThisMenu"
+		TextItem "$MNU_QUITGAME", "q", "QuitMenu"
+	}
+}
+
+OptionMenu "D4ModOptions"
+{   
+	Title "DOOM 2016 Arsenal - Menu"
+	StaticText "Autored and Developed by XV117"
+	StaticText "Actual Version - R-1.1"
+	Submenu "Credits",			"D4ViewCredits"
+	StaticText " "
+	Submenu "Brutal Menu Options",			"BrutalMenu"
+	StaticText " "
+
+	StaticText "Key Bindings - Important for Gameplay"
+	StaticText " "
+	Control	   "Quick Melee (Needed to make Glory Kills)",	"punchem"
+	Control	   "Select Upgrades",	"doupgrade"
+	Control	   "Switch Grenades",	"dogrenadeswitch"
+	Control	   "Dash",	"+User3"
+	StaticText " "
+	StaticText " "
+
+	StaticText "Mod Options"
+	StaticText " "
+	Submenu "Gameplay  Options",			"D4GameplayOptions"
+	Submenu "Glory Kill - Options",			"D4GloryKillOptions"
+	Submenu "Other Stuff - Options",			"D4MiscOptions"
+	StaticText " "
+	StaticText "Note: Some Options are disabled in Multiplayer For"
+	StaticText "Perfomance porpusses to work in Coop, DM, etc.."
+}
+
+OptionMenu "D4MiscOptions"
+{
+	Title "Other Stuff - Options"
+	StaticText " "
+	
+	Option "Disable Bullet Hole Effects",				"nopaineffect", "OnOff"
+	StaticText "Disables the bullet holes effects"
+	StaticText " "
+	StaticText " "
+	
+	Option "Disabled Helmet Animation",	"togglehelmetanimation", "OnOff"
+	StaticText "Remove animation of putting on your helmet at the start"
+	StaticText " "
+	StaticText " "
+	StaticText "Note: This Options are disabled in Multiplayer Gameplay"
+}
+OptionMenu "D4GameplayOptions"
+{   
+	Title "Gameplay - Options"
+	StaticText " "
+	
+    Option "(User) Super Shotgun - Aim Fire", "d4_ssgaimfiremode", "SSGAim"
+	StaticText "Switch the fire-mode on SSG while using"
+	StaticText "the aim mode, such as single or full"
+	StaticText " "
+	StaticText " "
+	
+	Option "Spawn Multiplayer Weapons", "disablempweapons", "MPWeapons"
+  	StaticText "Selects if the multiplayer weapons should be spawned or not."
+  	StaticText "(Repeater, Grenade Launcher, Vortex Rifle, etc.)"
+	StaticText " "
+	
+    Option "Disable Ledge Grab", "donotclimb", "OnOff"
+	StaticText "Toggles Ledge Climbing Feature"
+	StaticText " "
+	StaticText " "
+	
+	Option "Disable Double Jumping", "donotdoublejump", "OnOff"
+	StaticText "Disables the double jumping feature"
+	StaticText " "
+	StaticText " "
+	
+	Option "Disable Side-Dash", "donotsidestep", "OnOff"
+	StaticText "Disables DOOM Eternal-Style quick Side-Dash"
+	StaticText    "by double tapping directional keys"
+	StaticText " "
+	StaticText " "
+}
+
+OptionMenu "D4GloryKillOptions"
+{   
+	Title "Glory Kill - Options"
+	StaticText " "
+	
+	Option "Disable Glory Kill Executions", "disabledglorykill", "OnOff"
+	StaticText "Disables Glory Kill Executions"
+	StaticText "Note: This option not affects players and Boss Glory Kills"
+	StaticText " "
+	StaticText " "
+	
+	Option "Execution Style",				"glorykilltype", "GloryKillType"
+	StaticText " "
+	StaticText "Note: Not all monsters supports the"
+	StaticText "'Black Edition' Glory Kill based Executions"
+	StaticText " "
+	StaticText "'DOOM 2016 Arsenal' Option is Recommended"
+	StaticText " "
+}
+
+OptionMenu "D4ViewCredits"
+{
+	Title "DOOM 2016 Arsenal - Credits"
+	StaticText " "
+	StaticText "XV117 - Main Developer, ACS, Sprite Edits, Sprites, Decorate"
+	StaticText "Sergeant Mark IV - DOOM 4 Weapon Test 2 (Used as Base)"
+	StaticText "mryayayify - spriter"
+	StaticText "Dracologist - DOOM 4 Weapon Forge, actually code used for Vortex Rifle"
+	StaticText "Neccronixis - Original Weapon Sprites"
+	StaticText "Doomguy5th - New Sprites, Sounds, Effects and Code Recycled for this Mod"
+	StaticText "D4T Team - Sprites, Sounds and Decorated, already decorate code has heavy modifications in my mod"
+	StaticText "Tomtefar1988 - This mod is based on Tomtefar's Extension 1.8,"
+	StaticText "so it is also credited, some sprites, decorate and acs are used in this mod"
+}
+
+OptionValue "GloryKillType"
+{
+	1, "BD: Black Edition"
+	0, "DOOM 2016 Arsenal"
+}
+
+OptionValue "MPWeapons"
+{
+	1, "Disabled"
+	0, "Allowed"
+}
+
+OptionValue "SSGAim"
+{
+	1, "Single Barrel"
+	0, "Dual Barrel"
+}

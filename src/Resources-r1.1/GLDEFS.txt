@@ -1,0 +1,251 @@
+pointlight GreenLightAmmo1
+{
+    color 0.39 1.0 0.3
+    size 64
+}
+pointlight GreenLightAmmo2
+{
+    color 0.39 1.0 0.3
+    size 60
+}
+pointlight GreenLightAmmo3
+{
+    color 0.39 1.0 0.3
+    size 56
+}
+pointlight GreenSmallPoint2
+{
+	color 0.0 1.0 0.0
+    size 20
+}
+pointlight BlueSmallPoint2
+{
+    color 0.4 0.4 1.0
+    size 20
+}
+pointlight YellowSmallPoint1
+{
+    color 1.0 0.8 0.0
+    size 30
+}
+pointlight YellowSmallPoint2
+{
+    color 1.0 0.8 0.0
+    size 20
+}
+pointlight YellowMediumPoint1
+{
+    color 1.0 0.8 0.0
+    size 75
+}
+pointlight YellowMediumPoint2
+{
+    color 1.0 0.8 0.0
+    size 55
+}
+pointlight WhiteSmallPoint1
+{
+    color 1.0 1.0 1.0
+    size 30
+}
+pointlight RedSmallPoint2
+{
+    color 1.0 0.0 0.0
+    size 20
+}
+PulseLight WeaponUpgradeLight
+{
+    color 1.0 0.5 0.3
+    size 30
+	secondarySize 50
+    offset 0 20 0
+	Interval 1.2
+}
+PulseLight WeaponUpgradeLightRed
+{
+    color 1.0 0.0 0.0
+    size 45
+	secondarySize 65
+    offset 0 20 0
+
+}
+object D4BFGAmmo
+{
+    frame BAMMA { light GreenLightAmmo1 }
+    frame BAMMB { light GreenLightAmmo2 }
+    frame BAMMC { light GreenLightAmmo3 }
+}
+
+pointlight D4PlasmaBall
+{
+    color 0.0 0.0 1.0
+    size 128
+}
+object D4BFGBall
+{
+    frame BFGPA { light BFGBALL }
+    frame BFGPB { light BFGBALL }
+    frame BFGPC { light BFGBALL }
+    frame BFGPD { light BFGBALL }
+    frame BFGPE { light BFGBALL }
+
+    frame BFGBA { light BFGEXPLOA }
+    frame BFGBB { light BFGEXPLOB }
+	frame BFGBC { light BFGEXPLOC }
+	frame BFGBD { light BFGEXPLOD }
+	frame BFGBE { light BFGEXPLOE }
+	frame BFGBF { light BFGEXPLOF }
+	frame BFGBG { light BFGEXPLOG }
+	frame BFGBH { light BFGEXPLOH }
+	frame BFGBI { light BFGEXPLOI }
+	frame BFGBJ { light BFGEXPLOJ }
+	frame BFGBK { light BFGEXPLOK }
+}
+
+flickerlight BFGEXPLOA
+{
+    color 0.1 0.80 0.0
+    size 120
+	secondarySize 125
+	chance 0.99
+}
+flickerlight BFGEXPLOB
+{
+    color 0.1 0.85 0.0
+    size 140
+	secondarySize 147
+	chance 0.99
+}
+flickerlight BFGEXPLOC
+{
+    color 0.1 0.90 0.0
+    size 170
+	secondarySize 173
+	chance 0.99
+}
+flickerlight BFGEXPLOD
+{
+    color 0.1 0.95 0.0
+    size 200
+	secondarySize 204
+	chance 0.99
+}
+flickerlight BFGEXPLOE
+{
+    color 0.1 1.0 0.0
+    size 235
+	secondarySize 240
+	chance 0.99
+}
+flickerlight BFGEXPLOF
+{
+    color 0.1 0.85 0.0
+    size 210
+	secondarySize 216
+	chance 0.99
+}
+flickerlight BFGEXPLOG
+{
+    color 0.1 0.7 0.0
+    size 190
+	secondarySize 194
+	chance 0.99
+}
+flickerlight BFGEXPLOH
+{
+    color 0.08 0.55 0.0
+    size 170
+	secondarySize 174
+	chance 0.99
+}
+flickerlight BFGEXPLOI
+{
+    color 0.06 0.4 0.0
+    size 150
+	secondarySize 157
+	chance 0.99
+}
+flickerlight BFGEXPLOJ
+{
+    color 0.04 0.25 0.0
+    size 135
+	secondarySize 141
+	chance 0.99
+}
+flickerlight BFGEXPLOK
+{
+    color 0.02 0.1 0.0
+    size 120
+	secondarySize 127
+	chance 0.99
+}
+flickerlight2 BFGBALL
+{
+    color 0.1 0.80 0.0
+    size 110
+	secondarySize 130
+	interval 0.01
+}
+
+//Spheres
+pulselight QUADDDAMAGE
+{
+	color 0.3 0.0 1.0
+	size 40
+	secondarySize 42
+	interval 2.0
+	offset 0 16 0
+}
+
+object D4QuadDamage
+{
+	frame QUAD { light QUADDDAMAGE }
+}
+
+pulselight HASTEPOWER
+{
+	color 0.7 1.0 0.1
+	size 40
+	secondarySize 42
+	interval 2.0
+	offset 0 16 0
+}
+
+object D4HasteSphere
+{
+	frame HSTE { light HASTEPOWER }
+}
+
+pulselight REGENPOWER
+{
+	color 0.0 0.7 1.0
+	size 40
+	secondarySize 42
+	interval 2.0
+	offset 0 16 0
+}
+
+object D4RegenSphere
+{
+	frame REGN { light REGENPOWER }
+}
+
+object D4SoulSphere
+{
+	frame SOUL { light SOULSPHERE }
+}
+
+object D4Invulnerability
+{
+	frame PINV { light INVULN }
+}
+
+object D4BlurSphere
+{
+	frame PINS { light BLURSPHERE1 }
+
+	frame PINSA { light BLURSPHERE2 }
+	frame PINSB { light BLURSPHERE3 }
+	frame PINSC { light BLURSPHERE4 }
+	frame PINSD { light BLURSPHERE5 }
+}

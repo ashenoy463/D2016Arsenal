@@ -1,0 +1,175 @@
+Actor D4CyberDemon : TheCyberdemon Replaces TheCyberdemon
+{
+	var int user_healto;
+	var int user_staggercount;
+    Health 5000
+	DropItem "UpgradeBox", 64
+	DropItem "DemonStrengthRune" 25
+	DropItem "DemonRuneMix" 15
+	DropItem "ArgentPickup2" 255
+ 	DropItem "ArgentPickup2" 255
+ 	DropItem "ArgentPickup2" 255
+ 	DropItem "ArgentPickup2" 255
+ 	DropItem "ArgentPickup2" 255
+	PainChance "GloryKill", 255
+	PainChance "Stun", 0
+	WoundHealth 150
+	States
+	{
+	Wound:
+		CYBR Q 0 A_SetUserVar(user_healto,130)
+		CYBR Q 0
+		Goto Wounded
+
+	Wounded:
+		"####" "#" 0 A_GiveInventory("GloryKillableCyberDemon",1)
+		"####" "#" 0 Thing_SetTranslation(0,1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 A_SpawnItem("CybersHitBox", 0, 96,0)
+		"####" "#" 5 Bright
+		"####" "#" 0 Thing_SetTranslation(0,2)
+		"####" "#" 0 A_TakeInventory("GloryKillable",32767)
+		"####" "#" 0 A_SetUserVar(user_staggercount,user_staggercount+1)	//to keep track how many times has been staggered
+		"####" "#" 0 A_JumpIf(user_staggercount>=3,"DeathByStagger")	//if has been staggered 3 times, when the 3rd ends, it means death
+		"####" "#" 0 ACS_NamedExecuteAlways("HealMonAfterStagger",0,user_healto,0,0) //second numeric value is how much it will heal
+		Goto See
+		
+	DeathByStagger:
+		"####" "#" 0 A_Die
+		Goto Death
+
+	Death.ChainsawPinata:	
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_GiveToTarget("SuccessfulExecutionToken",1)
+		TNT1 A 0 A_SpawnItemEx("ChainsawExecutionBossPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto Death
+
+	Death.GloryKill:
+		CYBR "#" 0
+		Goto GloryKillGeneric
+
+	GloryKillGeneric:
+		"####" "#" 0 A_JumpIfInTargetInventory("GKFatalityMode",1,"GKFatalityMode") // Turn to Fatality Execution if the cvar is enabled
+		"####" "#" 0 A_GiveToTarget("ConfirmedGKill",1)
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 Thing_SetTranslation(0,2)
+		"####" A 0 A_Stop
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION) 
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION ) 
+		"####" AAAAAAAAAAAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,-18,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE )
+		"####" A 0 A_Pain
+		"####" AAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" A 0 A_Pain
+		"####" A 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGGG 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" AAAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR ) 
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GG 1 A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" GGGGGGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" GGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" GGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" GGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" GGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" GGGGGG 1 //A_Warp(AAPTR_TARGET,-50,-10,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" GG 1 //A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_TOFLOOR )
+		"####" G 1 A_SpawnItemEx("GloryKillBossPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto Death
+		
+	GKFatalityMode:
+		TNT1 A 0 A_SpawnItemEx("GloryKillBossPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto Fatalized
+		
+	Death.Fatality:
+		TNT1 A 0 A_GiveToTarget("FatalityRewardCyberDemon",1)
+	Fatalized:
+		TNT1 A 0 A_Pain
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+		TNT1 A 0 A_GiveToTarget("GoFatality", 1)
+		TNT1 A 0 A_GiveToTarget("CyberdemonFatality", 1)
+		TNT1 A 218
+		TNT1 A 0 A_BossDeath
+        Stop	
+	}
+}

@@ -1,0 +1,449 @@
+const int LGDmgMin = 7;
+const int LGDmgMax = 13;
+const int LGDmgAltMin = 5;
+const int LGDmgAltMax = 9;
+
+const int LGDmgUpgradeMin = 10;
+const int LGDmgUpgradeMax = 16;
+const int LGDmgAltUpgradeMin = 4;
+const int LGDmgAltUpgradeMax = 8;
+
+ACtor D4LightningGun : D4WeaponBase
+{
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 40
+	Weapon.AmmoType1 "D4Cells"
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 0
+    Inventory.PickupSound "PLSDRAW"
+	Obituary "%o was electrocuted by %k."
+	Inventory.PickupMessage "Picked up a Lightning Gun! The firepower is shocking!"
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NOAUTOAIM
+	Tag "Lightning Gun"
+	Decal "D4LGDecal"
+	States
+	{
+	WReady:
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+		Goto ReadyNoAmmo
+		LGNG A 1 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+		Goto ReadyNoAmmo
+		LGNG A 1 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+		Goto ReadyNoAmmo
+		LGNG B 1 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+		Goto ReadyNoAmmo
+		LGNG B 1 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+		Goto ReadyNoAmmo
+		LGNG C 1 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+		Goto ReadyNoAmmo
+		LGNG C 1 A_WeaponReady
+		Loop
+		
+	ReadyNoAmmo:
+		LGNO A 1 A_WeaponReady
+		Goto WReady
+		
+	StartUpgrader:
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_GiveInventory("UpgradeLightningGun",1)
+		TNT1 A 0 A_SelectWeapon("D4WeaponUpgrader")
+		Goto WReady
+	
+	Deselect:
+		TNT1 A 0 A_Takeinventory("NoParkour",1)
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon",1)
+		LGNS EDCBA 1
+		LGNS A 0
+		Goto DeselectSequence
+		
+	Select: 
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_Giveinventory("PlasmaGunSelected",1)
+		TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		LGNS A 0
+		Goto SelectSequence		
+	
+	Ready:
+		TNT1 A 0 A_GunFlash
+		TNT1 A 0 A_PlaySound("PLSDRAW")
+	SelectAnimation:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		LGNS ABCDE 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	Fire:
+        TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+        Goto NoAmmo
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_PlaySound("LightningGun/Fire", CHAN_WEAPON, 1, 1)
+		TNT1 A 0 A_PlaySound("LightningGun/Loop", 5, 0.3, 1)
+	HoldPrimary1:
+        TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+        Goto EndHold
+		TNT1 A 0 A_Takeinventory("D4Cells",1)
+		TNT1 A 0 A_GunFlash("PrimaryFlash")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunDamage", 1, "HoldPrimary1Upgraded")
+		LGNF D 1 Bright A_RailAttack(random(LGDmgMin,LGDmgMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuff",0,0,768,1)
+		LGNF E 1 Bright A_RailAttack(random(LGDmgMin,LGDmgMax),5,0,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+		TNT1 A 0 A_Refire("HoldPrimary2")
+		Goto EndHold
+		HoldPrimary1Upgraded:
+			LGNF D 1 Bright A_RailAttack(random(LGDmgUpgradeMin,LGDmgUpgradeMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuff",0,0,768,1)
+			LGNF E 1 Bright A_RailAttack(random(LGDmgUpgradeMin,LGDmgUpgradeMax),5,0,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+			TNT1 A 0 A_Refire("HoldPrimary2")
+			Goto EndHold
+	HoldPrimary2:
+        TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+        Goto EndHold
+		TNT1 A 0 A_Takeinventory("D4Cells",1)
+		TNT1 A 0 A_GunFlash("PrimaryFlash")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunDamage", 1, "HoldPrimary2Upgraded")
+		LGNF F 1 Bright A_RailAttack(random(LGDmgMin,LGDmgMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+		LGNF D 1 Bright A_RailAttack(random(LGDmgMin,LGDmgMax),5,0,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuff",0,0,768,1)
+		TNT1 A 0 A_Refire("HoldPrimary3")
+		Goto EndHold
+		HoldPrimary2Upgraded:
+			LGNF F 1 Bright A_RailAttack(random(LGDmgUpgradeMin,LGDmgUpgradeMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+			LGNF D 1 Bright A_RailAttack(random(LGDmgUpgradeMin,LGDmgUpgradeMax),5,0,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuff",0,0,768,1)
+			TNT1 A 0 A_Refire("HoldPrimary3")
+			Goto EndHold
+	HoldPrimary3:
+        TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+        Goto EndHold
+		TNT1 A 0 A_Takeinventory("D4Cells",1)
+		TNT1 A 0 A_GunFlash("PrimaryFlash")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunDamage", 1, "HoldPrimary3Upgraded")
+		LGNF E 1 Bright A_RailAttack(random(LGDmgMin,LGDmgMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+		LGNF F 1 Bright A_RailAttack(random(LGDmgMin,LGDmgMax),5,0,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+		TNT1 A 0 A_Refire("HoldPrimary1")
+		Goto EndHold
+		HoldPrimary3Upgraded:
+			LGNF E 1 Bright A_RailAttack(random(LGDmgUpgradeMin,LGDmgUpgradeMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+			LGNF F 1 Bright A_RailAttack(random(LGDmgUpgradeMin,LGDmgUpgradeMax),5,0,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+			TNT1 A 0 A_Refire("HoldPrimary1")
+			Goto EndHold
+	EndHold:
+		TNT1 A 0 A_PlaySound("LightningGun/End", CHAN_WEAPON)
+		LGNG A 1 A_StopSound(5)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	NoAmmoSecondary:
+		TNT1 A 0 A_JumpIfInventory("D4Cells",1,1)
+		Goto NoAmmo
+		LGNG A 1 A_PlaySound("BEP")
+		Goto WReady
+	NoAmmo:
+		LGNO A 1 A_PlaySound("BEP")
+		Goto WReady
+
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunAltFire", 1, 1)
+		Goto NoUpgrades
+        TNT1 A 0 A_JumpIfInventory("D4Cells",2,1)
+        Goto NoAmmoSecondary
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		LGNA A 3 A_PlaySound("LightningGun/Fire", CHAN_WEAPON, 1, 1)
+		LGNA B 3
+	HoldSecondary1:
+        TNT1 A 0 A_JumpIfInventory("D4Cells",2,1)
+        Goto AltEndHold
+		TNT1 A 0 A_Takeinventory("D4Cells",2)
+		TNT1 A 0 A_GunFlash("SecondaryFlash")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunDamage", 1, "HoldSecondary1Upgraded")
+		LGNA E 1 Bright A_FireBullets(0,0,1,random(LGDmgAltMin,LGDmgAltMax),"LGAltPuff",FBF_NORANDOM|FBF_NORANDOMPUFFZ,768)
+		LGNA F 1 Bright A_RailAttack(random(LGDmgAltMin,LGDmgAltMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+		TNT1 E 0 A_Refire("HoldSecondary2")
+		Goto AltEndHold
+		HoldSecondary1Upgraded:
+			LGNA E 1 Bright A_FireBullets(0,0,1,random(LGDmgAltUpgradeMin,LGDmgAltUpgradeMax),"LGAltPuffUpgraded",FBF_NORANDOM|FBF_NORANDOMPUFFZ,768)
+			LGNA F 1 Bright A_RailAttack(random(LGDmgAltUpgradeMin,LGDmgAltUpgradeMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+			TNT1 A 0 A_Refire("HoldSecondary2")
+			Goto AltEndHold
+	HoldSecondary2:
+        TNT1 A 0 A_JumpIfInventory("D4Cells",2,1)
+        Goto AltEndHold
+		TNT1 A 0 A_Takeinventory("D4Cells",2)
+		TNT1 A 0 A_GunFlash("SecondaryFlash")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunDamage", 1, "HoldSecondary2Upgraded")
+		LGNA G 1 Bright A_FireBullets(0,0,1,random(LGDmgAltMin,LGDmgAltMax),"LGAltPuff",FBF_NORANDOM|FBF_NORANDOMPUFFZ,768)
+		LGNA H 1 Bright A_RailAttack(random(LGDmgAltMin,LGDmgAltMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+		TNT1 E 0 A_Refire("HoldSecondary1")
+		Goto AltEndHold
+		HoldSecondary2Upgraded:
+			LGNA G 1 Bright A_FireBullets(0,0,1,random(LGDmgAltUpgradeMin,LGDmgAltUpgradeMax),"LGAltPuffUpgraded",FBF_NORANDOM|FBF_NORANDOMPUFFZ,768)
+			LGNA H 1 Bright A_RailAttack(random(LGDmgAltUpgradeMin,LGDmgAltUpgradeMax),5,1,"none","none",RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,0,"LGPuffNoBlood",0,0,768,1)
+			TNT1 A 0 A_Refire("HoldSecondary1")
+			Goto AltEndHold
+	AltEndHold:
+		TNT1 A 0 A_PlaySound("LightningGun/End", CHAN_WEAPON)
+		TNT1 A 0 A_StopSound(5)
+		LGNA B 3
+		LGNA A 3 
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	PrimaryFlash:
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"LGWorldPrimaryFlash")
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsCoop",1,"LGWorldPrimaryFlash")
+		Goto ContinuePrimary
+		
+		LGWorldPrimaryFlash:
+			LGNF A 0 A_RailAttack(0,5,0,None,"White",RGF_SILENT|RGF_FULLBRIGHT,0,"None",0,0,768,1,50,1.0,"LGworldactor")
+			Goto ContinuePrimary
+			
+	ContinuePrimary:
+		TNT1 A 0 A_SetBlend("LightBlue1",0.06,2)
+		ZZZZ C 1 A_Light2
+		ZZZZ C 0 A_Light0
+		Goto Flash
+		
+	SecondaryFlash:
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"LGWorldSecondaryFlash")
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsCoop",1,"LGWorldSecondaryFlash")
+		Goto ContinueSecondary
+		
+		LGWorldSecondaryFlash:
+			TNT1 A 0 A_RailAttack(0,1,0,None,"White",RGF_SILENT|RGF_FULLBRIGHT,0,"None",0,0,768,1,50,1.0,"LGworldactorAltFire")
+			Goto ContinueSecondary
+			
+	ContinueSecondary:
+		TNT1 A 0 A_SetBlend("99 33 FF",0.08,2)
+		ZZZZ C 1 A_Light2
+		ZZZZ C 0 A_Light0
+		Goto Flash
+		
+	Spawn:
+		D4W6 C -1
+		Stop
+// ------------------------------------------------------------------------------------
+//
+// Flash States, Here lies new animations under kicks, taunt and throw grenade
+//
+// ------------------------------------------------------------------------------------
+
+	PunchFlash:
+		LGNS ECA 1
+		Goto Flash
+		
+	KickFlash:
+		LGNS EDCB 1
+		LGNS A 8
+		LGNS BCDE 1
+		Goto Flash
+
+	AirKickFlash:
+		LGNS EDCB 1
+		LGNS A 10
+		LGNS BCDE 1
+		Goto Flash
+		
+	SlideKickStartFlash:
+		LGNS EDCB 1
+		LGNS A 17
+	SlideKickEndFlash:
+		LGNS A 5
+		LGNS BCDE 1
+		Goto Flash
+
+	TauntFlash:
+		LGNS EDCB 1
+		LGNS A 35
+		LGNS BCDE 1
+		Goto Flash
+		
+	GrenadeFlash:
+		LGNS EDCBA 1
+		Goto Flash
+	}
+}
+
+Actor LGworldactor
+{
+	+CLIENTSIDEONLY
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Alpha 0.7
+	Scale 0.7
+	Translation "0:255=%[0,0,0]:[0.8,1.2,1.6]"
+	States
+	{
+	Spawn:
+		LGWR Z 3 Bright
+		Stop
+	}
+}
+Actor LGworldactorAltFire : LGworldactor
+{
+	Translation "0:255=%[0,0,0]:[1.2,0.84,1.8]" 
+}
+
+Actor LGPuff
+{
+	DamageType Bullet
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	+MTHRUSPECIES
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		Stop
+	}
+}
+
+Actor LGPuffNoBlood : LGPuff
+{
+	+NOINTERACTION
+	+BLOODLESSIMPACT
+	+CLIENTSIDEONLY
+	+PUFFONACTORS
+}
+
+
+//------------------------------------------------------------------
+//	Secondary fire stuff
+//------------------------------------------------------------------
+Actor LGAltPuff
+{
+	+NOINTERACTION
+	+PUFFGETSOWNER
+	+PUFFONACTORS
+	+ALWAYSPUFF
+	+FORCEXYBILLBOARD
+	+MTHRUSPECIES
+	RenderStyle Add
+	Alpha 0.99
+	Translation "0:255=%[0,0,0]:[0.9,0.74,1.5]" 
+	Scale 0.4
+	DamageType Bullet
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Explode(20,92,0)
+		TNT1 A 0 A_Jump(256,"Type1a","Type1b","Type2a","Type2b","Type3a","Type3b","Type4a","Type4b","Type5a","Type5b")
+	Type1a:
+		DLI1 A 0
+		Goto Perform1
+	Type1b:
+		DLI1 L 0
+		Goto Perform2
+	Type2a:
+		DLI2 A 0
+		Goto Perform1
+	Type2b:
+		DLI2 L 0
+		Goto Perform2
+	Type3a:
+		DLI3 A 0
+		Goto Perform1
+	Type3b:
+		DLI3 L 0
+		Goto Perform2
+	Type4a:
+		DLI4 A 0
+		Goto Perform1
+	Type4b:
+		DLI4 L 0
+		Goto Perform2
+	Type5a:
+		DLI5 A 0
+		Goto Perform1
+	Type5b:
+		DLI5 L 0
+		Goto Perform2
+		
+	Perform1:
+		"####" BDHI 1 Bright
+		Stop
+	Perform2:
+		"####" MOST 1 Bright
+		Stop
+	}
+}
+
+Actor LGAltPuffUpgraded : LGAltPuff
+{
+	Translation "0:255=%[0,0,0]:[1.2,0.84,1.8]" 
+	Scale 0.5
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Explode(32,128,0)
+		TNT1 A 0 A_Jump(256,"Type1a","Type1b","Type2a","Type2b","Type3a","Type3b","Type4a","Type4b","Type5a","Type5b")
+	}
+}

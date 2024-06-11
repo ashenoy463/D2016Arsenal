@@ -1,0 +1,905 @@
+ACTOR D4RocketLauncher : D4WeaponBase replaces Rocket_Launcher
+{
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 5
+	Weapon.AmmoType1 "D4Rockets"
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 0
+    Inventory.PickupSound "RLANDRAW"
+	Inventory.PickupMessage "You got the Rocket Launcher!"
+	Obituary "%o rode %k's rocket."
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NOAUTOAIM
+	+WEAPON.NOALERT
+	Tag "Rocket Launcher"
+	States
+	{
+	Spawn:
+		D4W5 A 1
+		TNT1 A 0 A_SpawnItemEx("D4RocketLauncherSpawnerNoAmmo", 0, 0, 0, velx, vely, velz, angle, SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY)
+		Stop		
+		
+	WReady:
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"DualWieldAnimChecker")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DualWieldAnimChecker")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"DualWieldAnimChecker")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"DualWieldAnimChecker")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("StartDualWield",1,"DualWield")
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "ReadyDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"ReadyLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"ReadyDetonator")
+		RKLG A 1 A_WeaponReady
+		Loop
+		
+		ReadyDetonator:
+			RK1G A 1 A_WeaponReady(WRF_NOSECONDARY)
+			Goto WReady
+		
+		ReadyLock:
+			RK2G A 1 A_WeaponReady
+			Goto WReady
+		
+	Flash:
+		TNT1 A 1 A_JumpIfInventory("RocketLauncherDualWield", 1, "RightWeapon") // Dual Wield Checker
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive", 1, "Flash") //Lock-On Mode Checker
+		TNT1 A 0 A_JumpIfInventory("FiredSecondary", 1, "DetonateOne")
+		Loop
+
+	Deselect:
+		TNT1 A 0 A_JumpIfInventory("ChecksIsFiringTheRightGun",1,"WReady")
+		TNT1 A 0 ACS_NamedTerminate("DualWieldChecker")
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_Takeinventory("NoParkour",1)
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "DeselectDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"DeselectLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"DeselectDetonator")
+		RKLS A 0
+		Goto RealDeselect
+		
+		DeselectDetonator:
+			RK1S A 0
+			Goto RealDeselect		
+		DeselectLock:
+			RK2S A 0
+			Goto RealDeselect
+		
+	RealDeselect:
+		"####" EDCBA 1
+		"####" A 0
+		Goto DeselectSequence
+		
+	Select:
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_Giveinventory("RocketLauncherSelected",1)
+		TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"StartSelectLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"StartSelectDetonator")
+		RKLS A 0
+		Goto SelectSequence
+		StartSelectDetonator:
+			RK1S A 0
+			Goto SelectSequence
+		StartSelectLock:
+			RK2S A 0
+			Goto SelectSequence
+	
+	Ready:
+		TNT1 A 0 ACS_NamedExecuteAlways("DualWieldChecker")
+		TNT1 A 0 A_PlaySound("Weapon/Switch")
+	SelectAnimation:
+		TNT1 A 0 A_GunFlash
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "DeployDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"SelectLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"SelectDetonator")
+		RKLS A 0
+		Goto RealSelect
+		
+		SelectDetonator:
+			RK1S A 0
+			Goto RealSelect
+		SelectLock:
+			RK2S A 0
+			Goto RealSelect
+		
+	RealSelect:
+		"####" ABCDE 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto AmmoChecker
+		
+// ------------------------------------------------------------------------------------
+//
+// Fire
+//
+// ------------------------------------------------------------------------------------
+
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("BurstFireDummy", 1, "BurstRockets")
+		TNT1 A 0 A_JumpIfInventory("RocketRound",1,1)
+		Goto LoadRound
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_ALertMonsters
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn", 0, 0, 10, 0, 0, 0)
+		TNT1 A 0 A_FireCustomMissile("Alerter")
+		TNT1 A 0 A_PlaySound ("RocketLauncher/Fire",7)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAss",0,0,0,0)
+		TNT1 A 0 A_SetBlend("Orange",0.14,10)
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "FireDualWield")
+		//TNT1 A 0 A_FireCustomMissile("D4Rocket", 0,1,12,-2,0,0)
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"FireLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"FireDetonator")
+		RKLF A 0
+		Goto FireRelease
+		
+		FireDetonator:
+			RK1F A 0
+			Goto FireRelease
+		FireLock:
+			RK2F A 0
+			Goto FireRelease
+	
+	FireRelease:
+		"####" A 1 Bright A_FireCustomMissile("D4Rocket",0,1,7)
+		"####" A 0 A_FireCustomMissile("RocketGlassBreaker", 0, 1, 0, -6) 
+        "####" A 0 A_TakeInventory("RocketRound", 1)
+		"####" ABB 1 Bright
+		TNT1 A 0 A_JumpIfInventory("D4Rockets", 1, "InsertRocket")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+
+	FinishFiring:
+		RKLF A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "FinishFiringRelease")
+		RKLF A 0 A_JumpIfInventory("ModLockOnActive",1,"FinishFiringLock")
+		RKLF A 0 A_JumpIfInventory("ModDetonatorActive",1,"FinishFiringDetonator")
+		RKLF A 0
+		Goto FinishFiringRelease
+		
+		FinishFiringDetonator:
+			RK1F A 0
+			Goto FinishFiringRelease
+		FinishFiringLock:
+			RK2F A 0
+			Goto FinishFiringRelease
+			
+	FinishFiringRelease:
+		"####" CDEFGHIJKLMNP 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSECONDARY|WRF_NOBOB)
+		"####" QRSTUVW 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSECONDARY|WRF_NOBOB)
+		Goto FinishReload
+		
+	FinishReload:
+		RKLG A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "FinishReloadRelease")
+		RKLG A 0 A_JumpIfInventory("ModLockOnActive",1,"FinishReloadLock")
+		RKLG A 0 A_JumpIfInventory("ModDetonatorActive",1,"FinishReloadDetonator")
+		RKLG A 0
+		Goto FinishReloadRelease
+		
+		FinishReloadDetonator:
+			RK1G A 0
+			Goto FinishReloadRelease
+		FinishReloadLock:
+			RK2G A 0
+			Goto FinishReloadRelease
+			
+	FinishReloadRelease:
+		"####" AAAA 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSECONDARY|WRF_NOBOB)
+		"####" AAAAAAAA 1 A_Refire("Fire")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+// ------------------------------------------------------------------------------------
+//
+// Alt-Fire
+//
+// ------------------------------------------------------------------------------------
+		
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive", 1, "LockOn")
+		Goto NoUpgrades
+		
+	DetonateOne:
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive", 1, "Flash")
+		TNT1 A 1 
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive", 1, 1)
+		Goto Flash
+		TNT1 A 0 A_PlaySound("BEP",4)
+		TNT1 A 0 ACS_NamedExecuteAlways("DetonateRocket",0,1,0,0)
+        Goto Flash
+		
+	LockOn:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_playsound("RocketLauncher/Lock", 4)
+		TNT1 A 0 A_Refire("LockOnReady")
+		Goto WReady
+
+	LockOnReady:
+		TNT1 A 0 A_GiveInventory("BurstFireDummy", 1)
+		RK2A CDEFGHIJKLMNPQ 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		RK2A RSTUVW 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		TNT1 A 0 A_GiveInventory("BurstFireDummy", 1)
+		TNT1 A 0 A_Refire("LockOnToFire")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		TNT1 A 0 A_TakeInventory("BurstFireDummy", 3)
+		Goto WReady
+	LockOnToFire:
+		RK2G A 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		RK2A CDEFGHIJKLMNPQ 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		RK2A RSTUVW 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		TNT1 A 0 A_GiveInventory("BurstFireDummy", 1)
+		TNT1 A 0 A_Refire("LockOnStartToFire")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		TNT1 A 0 A_TakeInventory("BurstFireDummy", 3)
+		Goto WReady
+	LockOnStartToFire:
+		RK2G A 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		TNT1 A 0 A_Refire("LockOnStartToFire")
+		RK2G A 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		TNT1 A 0 A_TakeInventory("BurstFireDummy", 3)
+		Goto WReady
+		
+	BurstRockets:
+		TNT1 A 0 A_JumpIfInventory("RocketRound",1,1)
+        Goto LoadRound
+		TNT1 A 0 A_StopSound(4)
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAss",0,0,0,0)
+		TNT1 A 0 A_playsound("RocketLauncher/Burst", 5)
+		TNT1 A 0 A_SetBlend("Orange",0.14,10)
+		RK2F A 1 BRIGHT A_GunFlash("BurstRocketChecker")
+		Goto BurstContinue
+
+	BurstRocketChecker:
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"DeathMatchBurst")
+		TNT1 A 0 A_FireCustomMissile("D4RocketHoming",0,1,7)
+		Goto Flash
+
+	DeathMatchBurst:
+		TNT1 A 0 A_FireCustomMissile("D4RocketNoDetonate",0,1,7)
+		Goto Flash
+		
+	BurstContinue:
+		TNT1 A 0 A_TakeInventory("RocketRound", 1)
+		RK2F ABB 1 Bright
+		TNT1 A 0 A_JumpIfInventory("D4Rockets", 1, "InsertRocket2")
+		Goto WReady
+
+	InsertRocket2:
+		TNT1 AAAA 0
+		TNT1 A 0 A_JumpIfInventory("RocketRound",1,"CheckToFireAgain")
+		TNT1 A 0 A_JumpIfInventory("D4Rockets",1,1)
+		Goto CheckToFireAgain
+		TNT1 A 0 A_Giveinventory("RocketRound",1)
+		TNT1 A 0 A_Takeinventory("D4Rockets",1,TIF_NOTAKEINFINITE)
+		Goto InsertRocket2
+
+	CheckToFireAgain:
+		TNT1 A 0 A_TakeInventory("BurstFireDummy", 1)
+		TNT1 A 0 A_JumpIfInventory("BurstFireDummy", 1, "BurstRockets")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto FinishFiring		
+		
+// ------------------------------------------------------------------------------------
+//
+// Ammo Checker
+//
+// ------------------------------------------------------------------------------------
+		
+	NoAmmo:
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		RKLG A 0 A_JumpIfInventory("RocketLauncherDualWield",1,"DryFire")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"NoAmmoLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"NoAmmoDetonator")
+		RKLG A 0
+		Goto DryFire
+		
+		NoAmmoDetonator: 
+			RK1G A 0
+			Goto DryFire
+		NoAmmoLock:
+			RK2G A 0
+			Goto DryFire
+
+	DryFire:
+		"####" "#" 1 A_PlaySound("weapons/empty")
+		Goto WReady	
+
+	AmmoChecker:
+		TNT1 A 0 A_JumpIfInventory("RocketRound",1,"WReady")
+		Goto LoadRoundReady
+	
+	LoadRound:
+		TNT1 A 0 A_JumpIfInventory("RocketRound",1,"Fire")
+		TNT1 A 0 A_JumpIfInventory("D4Rockets",1,1)
+        Goto NoAmmo
+		TNT1 A 0 A_TakeInventory("D4Rockets", 1, TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("RocketRound", 1)
+		Goto WReady
+		
+	LoadRoundReady:
+		TNT1 A 0 A_JumpIfInventory("RocketRound",1,"WReady")
+		TNT1 A 0 A_JumpIfInventory("D4Rockets",1,1)
+        Goto WReady
+		TNT1 A 0 A_TakeInventory("D4Rockets", 1, TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("RocketRound", 1)
+		Goto WReady
+		
+	InsertRocket:
+		TNT1 A 0 A_JumpIfInventory("RocketRound",1,"FinishFiring")
+		TNT1 A 0 A_JumpIfInventory("D4Rockets",1,1)
+		Goto FinishFiring
+		TNT1 A 0 A_Giveinventory("RocketRound",1)
+		TNT1 A 0 A_Takeinventory("D4Rockets",1,TIF_NOTAKEINFINITE)
+		Goto InsertRocket
+		
+	NoUpgrades2:
+		TNT1 A 0 A_Print("You need a Lock On Upgrade.", 2)
+		Goto WReady
+		
+// ------------------------------------------------------------------------------------
+//
+// Dual Wield States
+//
+// ------------------------------------------------------------------------------------
+
+	ReadyDualWield:
+		RKLG A 1 A_WeaponReady(WRF_NOSECONDARY)
+		Goto WReady
+	RightWeapon:
+		RK3G A 1 A_JumpIfInventory("FiredSecondary", 1, "FireSecondary")
+		Goto Flash
+	DeployDualWield:	
+		RKLS A 0 A_GunFlash("FakeSelect")
+		Goto RealSelect
+	DeselectDualWield:	
+		TNT1 A 0 A_TakeInventory("IsDualWeapon", 1)
+		TNT1 A 0 A_TakeInventory("RocketLauncherDualWield", 1)
+		RKLS A 0 A_GunFlash("FakeDeselect")	
+		Goto RealDeselect
+	FakeSelect:
+		RK3S ABCDE 1
+		Goto AmmoCheckerSecondary
+	FakeDeselect:
+		RK3S EDCBA 1
+		Goto Flash
+	DualWieldAnimChecker:
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, 5)
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"SwapMod")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		Goto WReady
+		TNT1 A 0 A_Takeinventory("Taunting",1)
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		TNT1 A 0 A_Takeinventory("IsUpgradingWeapons",1)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKickDualWield")
+		Goto WReady
+		
+	DualWield:
+		TNT1 A 0 A_Takeinventory("StartDualWield",1)
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWieldEnabler", 1, "GetDual")
+		Goto FailDualWield
+		
+	GetDual:
+		TNT1 A 0 A_Giveinventory("NoParkour",1)
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "UnDual")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"DualLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"DualDetonator")
+		RKLS A 0
+		Goto DualProcced
+		
+		DualDetonator:
+			RK1S A 0
+			Goto DualProcced
+		DualLock:
+			RK2S A 0
+			Goto DualProcced
+		
+	DualProcced:
+		"####" EDCBA 2
+		"####" A 0 A_playsound("RocketLauncher/UnToggle", 5)
+		"####" A 8
+		TNT1 A 0 A_GiveInventory("IsDualWeapon", 1)
+		TNT1 A 0 A_GiveInventory("RocketLauncherDualWield", 1)
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_Takeinventory("NoParkour",1)
+		Goto DeployDualWield
+		
+	UnDual:
+		TNT1 A 0 A_TakeInventory("IsDualWeapon", 1)
+		TNT1 A 0 A_TakeInventory("RocketLauncherDualWield", 1)
+		TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_GunFlash("FakeDeselect")
+		RKLS EDCBA 2
+		RKLS A 0 A_playsound("RocketLauncher/UnToggle", 5)
+		RKLS A 8
+		Goto SelectAnimation
+		
+	//Fire
+	FireDualWield:
+		//TNT1 A 0 A_FireCustomMissile("D4Rocket", 0,1,12,-2,0,0)
+		RKLF A 1 BRIGHT A_FireCustomMissile("D4Rocket",0,0,9, -4, 0)
+		TNT1 A 0 A_FireCustomMissile("RocketGlassBreaker", 0, 1, 0, -6) 
+        TNT1 A 0 A_TakeInventory("RocketRound", 1)
+		RKLF ABB 1 Bright
+		TNT1 A 0 A_JumpIfInventory("D4Rockets", 1, "InsertRocket")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+
+	FireSecondary:
+		TNT1 A 0 A_JumpIfInventory("RocketRound2",1,1)
+		Goto LoadRoundSecondary
+		TNT1 A 0 A_GiveInventory("ChecksIsFiringTheRightGun",1)
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_ALertMonsters
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn", 0, 0, 10, 0, 0, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		TNT1 A 0 A_PlaySound ("RocketLauncher/Fire",7)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAss",0,0,0,0)
+		TNT1 A 0 A_SetBlend("Orange",0.14,10)
+		RK3F A 1 BRIGHT A_FireCustomMissile("D4Rocket",0,0,-9, -4, 0)
+		//TNT1 A 0 A_FireCustomMissile("D4Rocket", 0,1,12,-2,0,0)
+		TNT1 A 0 A_FireCustomMissile("RocketGlassBreaker", 0, 1, 0, -6) 
+        TNT1 A 0 A_TakeInventory("RocketRound2", 1)
+		RK3F ABB 1 Bright
+		TNT1 A 0 A_JumpIfInventory("D4Rockets", 1, "InsertRocketSecondary")
+		TNT1 A 0 A_TakeInventory("ChecksIsFiringTheRightGun",1)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto Flash
+
+	FinishFiringSecondary:
+		RK3F CDEFGHIJKLMNP 1
+		RK3F QRSTUVW 1
+		RK3G AAAA 1
+		RK3G AAAAAAAA 1 A_JumpIfInventory("FiredSecondary",1,"FireSecondary")
+		TNT1 A 0 A_TakeInventory("ChecksIsFiringTheRightGun",1)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto Flash
+		
+	//Ammo Checkers	
+	DryFire2:
+		RK3G A 1 A_PlaySound("weapons/empty")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		TNT1 A 0 A_TakeInventory("FiredSecondary",1)
+		TNT1 A 0 A_TakeInventory("ChecksIsFiringTheRightGun",1)
+		Goto Flash
+
+	AmmoCheckerSecondary:
+		TNT1 A 0 A_JumpIfInventory("RocketRound2",1,"Flash")
+		Goto LoadRoundReadySecondary
+		
+	LoadRoundSecondary:
+		TNT1 A 0 A_JumpIfInventory("RocketRound2",1,"FireSecondary")
+		TNT1 A 0 A_JumpIfInventory("D4Rockets",1,1)
+		Goto DryFire2
+		TNT1 A 0 A_TakeInventory("D4Rockets", 1)
+		TNT1 A 0 A_GiveInventory("RocketRound2", 1)
+		Goto LoadRoundSecondary
+		
+	LoadRoundReadySecondary:
+		TNT1 A 0 A_JumpIfInventory("RocketRound2",1,"Flash")
+		TNT1 A 0 A_JumpIfInventory("D4Rockets",1,1)
+		Goto Flash
+		TNT1 A 0 A_TakeInventory("D4Rockets", 1)
+		TNT1 A 0 A_GiveInventory("RocketRound2", 1)
+		Goto LoadRoundReadySecondary
+		
+	InsertRocketSecondary:
+		TNT1 A 0 A_JumpIfInventory("RocketRound2",1,"FinishFiringSecondary")
+		TNT1 A 0 A_JumpIfInventory("D4Rockets",1,1)
+		Goto FinishFiringSecondary
+		TNT1 A 0 A_Giveinventory("RocketRound2",1)
+		TNT1 A 0 A_Takeinventory("D4Rockets",1)
+		Goto InsertRocketSecondary
+		
+// ------------------------------------------------------------------------------------
+//
+// Mod Swaping
+//
+// ------------------------------------------------------------------------------------
+		
+	StartUpgrader:
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_GiveInventory("UpgradeRocketLauncher",1)
+		TNT1 A 0 A_SelectWeapon("D4WeaponUpgrader")
+		Goto WReady
+		
+	SwapMod:
+		TNT1 A 0 A_TakeInventory("Reloading", 1)
+		TNT1 A 0 A_JumpIfInventory("ModHasDetonator", 1, "ToDetonate")
+		TNT1 A 0 A_JumpIfInventory("ModHasLockOn", 1, "ToLockOn")
+		Goto NoUpgrades
+		
+		ToDetonate:
+			TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"FromLockOnToDetonate")
+			TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"DetonateToNextCheck") 
+			Goto FromNormalToSwap
+			
+			DetonateToNextCheck:
+				TNT1 A 0 A_JumpIfInventory("ModHasLockOn",1,"FromDetonateToLockOn")
+				Goto NoOtherMod
+			
+		ToLockOn:
+			TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"FromDetonateToLockOn")
+			TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"LockOnToNextCheck") 
+			Goto FromNormalToSwap
+			
+			LockOnToNextCheck:
+				TNT1 A 0 A_JumpIfInventory("ModHasDetonator",1,"FromLockOnToDetonate")
+				Goto NoOtherMod
+				
+	FromNormalToSwap:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		RKLG A 1 Offset(1,52)
+		RKLG A 1 Offset(2,72)
+		RKLG A 1 Offset(3,92)
+		RKLG A 1 Offset(4,112)
+		TNT1 A 0 A_JumpIfInventory("ModHasDetonator", 1, "SwapDetonate")
+		TNT1 A 0 A_JumpIfInventory("ModHasLockOn", 1, "SwapLockOn")
+		Goto NoOtherMod
+		
+	FromDetonateToLockOn:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		RK1G A 1 Offset(1,52)
+		RK1G A 1 Offset(2,72)
+		RK1G A 1 Offset(3,92)
+		RK1G A 1 Offset(4,112)
+		TNT1 A 0 A_TakeInventory("ModDetonatorActive", 1)
+	SwapLockOn:
+		TNT1 A 0 A_GiveInventory("ModLockOnActive", 1)
+		TNT1 A 0 A_playsound("RocketLauncher/Toggle/Lock", 4)
+		RK2T K 1 Offset(4,97)
+		RK2T K 1 Offset(4,82)
+		RK2T K 1 Offset(4,67)
+		RK2T K 1 Offset(4,52)
+		RK2T K 1 Offset(4,37)
+		RK2T KJIHGFEDCB 1
+		RK2T A 1 Offset(4,35)
+		RK2T A 1 Offset(3,34)
+		RK2T A 1 Offset(2,33)
+		RK2T A 1 Offset(1,32)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	FromLockOnToDetonate:	
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		RK2G A 1 Offset(1,52)
+		RK2G A 1 Offset(2,72)
+		RK2G A 1 Offset(3,92)
+		RK2G A 1 Offset(4,112)
+		TNT1 A 0 A_TakeInventory("ModLockOnActive", 1)
+	SwapDetonate:
+		TNT1 A 0 A_GiveInventory("ModDetonatorActive", 1)
+		TNT1 A 0 A_playsound("RocketLauncher/Toggle/Detonator", 4)
+		RK1T P 1 Offset(4,97)
+		RK1T P 1 Offset(4,82)
+		RK1T P 1 Offset(4,67)
+		RK1T P 1 Offset(4,52)
+		RK1T P 1 Offset(4,37)
+		RK1T ONMLKJ 1
+		RK1T IHGFEE 1
+		RK1T E 1 Offset(4,35)
+		RK1T D 1 Offset(3,34)
+		RK1T C 1 Offset(2,33)
+		RK1T B 1 Offset(1,32)
+		RK1T A 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+
+// ------------------------------------------------------------------------------------
+//
+// Flash States, Here lies new animations under kicks, taunt and throw grenade
+//
+// ------------------------------------------------------------------------------------
+	
+	PunchFlash:
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"PunchFlashLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"PunchFlashDetonator")
+		RKLS A 0
+		Goto RealPunchFlash
+
+		PunchFlashDetonator:
+			RK1S A 0
+			Goto RealPunchFlash
+		PunchFlashLock:
+			RK2S A 0
+			Goto RealPunchFlash
+			RealPunchFlash:
+				"####" ECA 1
+				"####" A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "UnFlash")
+				Goto Flash
+	
+	KickFlash:
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "KickFlashDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"KickFlashLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"KickFlashDetonator")
+		RKLS A 0
+		Goto RealKickFlash
+		
+		KickFlashDetonator:
+			RK1S A 0
+			Goto RealKickFlash
+		KickFlashLock:
+			RK2S A 0
+			Goto RealKickFlash
+			RealKickFlash:
+				"####" EDCB 1
+				"####" A 8
+				"####" BCDE 1
+				Goto Flash
+
+	AirKickFlash:
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "AirKickFlashDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"AirKickFlashLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"AirKickFlashDetonator")
+		RKLS A 0
+		Goto RealAirKickFlash
+
+		AirKickFlashDetonator:
+			RK1S A 0
+			Goto RealAirKickFlash
+		AirKickFlashLock:
+			RK2S A 0
+			Goto RealAirKickFlash
+			RealAirKickFlash:
+				"####" EDCB 1
+				"####" A 10
+				"####" BCDE 1
+				Goto Flash
+		
+	SlideKickStartFlash:
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "SlideKickStartFlashDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"SlideKickStartFlashLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"SlideKickStartFlashDetonator")
+		RKLS A 0
+		Goto RealSlideKickStartFlash
+		
+		SlideKickStartFlashDetonator:
+			RK1S A 0
+			Goto RealSlideKickStartFlash
+		SlideKickStartFlashLock:
+			RK2S A 0
+			Goto RealSlideKickStartFlash
+			RealSlideKickStartFlash:
+				"####" EDCB 1
+				"####" A 17
+	SlideKickEndFlash:
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "SlideKickEndFlashDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"SlideKickEndFlashLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"SlideKickEndFlashDetonator")
+		RKLS A 0
+		Goto RealSlideKickEndFlash
+
+		SlideKickEndFlashDetonator:
+			RK1S A 0
+			Goto RealSlideKickEndFlash
+		SlideKickEndFlashLock:
+			RK2S A 0
+			Goto RealSlideKickEndFlash
+			RealSlideKickEndFlash:
+				"####" A 5
+				"####" BCDE 1
+				Goto Flash
+
+	TauntFlash:
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"TauntFlashLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"TauntFlashDetonator")
+		RKLS A 0
+		Goto RealTauntFlash
+
+		TauntFlashDetonator:
+			RK1S A 0
+			Goto RealTauntFlash
+		TauntFlashLock:
+			RK2S A 0
+			Goto RealTauntFlash
+			RealTauntFlash:
+				"####" EDCB 1
+				"####" A 35
+				"####" BCDE 1
+				Goto Flash
+		
+	GrenadeFlash:
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWield", 1, "GrenadeFlashDualWield")
+		TNT1 A 0 A_JumpIfInventory("ModLockOnActive",1,"GrenadeFlashLock")
+		TNT1 A 0 A_JumpIfInventory("ModDetonatorActive",1,"GrenadeFlashDetonator")
+		RKLS A 0
+		Goto RealGrenadeFlash
+		
+		GrenadeFlashDetonator:
+			RK1S A 0
+			Goto RealGrenadeFlash
+		GrenadeFlashLock:
+			RK2S A 0
+			Goto RealGrenadeFlash
+			RealGrenadeFlash:
+				"####" EDCBA 1
+				Goto Flash
+
+// Dual Wield		
+	KickFlashDualWield:
+		RK3K ABCD 1
+		RK3K E 8
+		RK3K DCBA 1
+		Goto Flash
+
+	AirKickFlashDualWield:
+		RK3K ABCD 1
+		RK3K E 10
+		RK3K DCBA 1
+		Goto Flash
+		
+	SlideKickStartFlashDualWield:
+		RK3K ABCD 1
+		RK3K E 17
+	SlideKickEndFlashDualWield:
+		RK3K E 5
+		RK3K DCBA 1
+		Goto Flash
+		
+	GrenadeFlashDualWield:
+		RK3K ABCDE 1
+		Stop
+	}
+}
+
+ACTOR RocketRound : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 1
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 1
+}
+
+// Fake Ammo for Dual Wield Rocket Launcher
+ACTOR RocketRound2 : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 1
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 1
+}
+
+Actor RocketLauncherDualWield : Inventory {inventory.maxamount 1}
+Actor RocketLauncherDualWieldEnabler : Inventory {inventory.maxamount 1}
+Actor HasBlownUP : Inventory {inventory.maxamount 1}
+Actor BurstFireDummy : Inventory { inventory.maxamount 3 }
+
+ACTOR D4Rocket
+{
+	Radius 10
+	Height 8
+	Projectile
+	Speed 50
+    Damage 35
+	DamageType Explosive
+    MeleeDamage 0
+    Gravity 0.00
+	Scale 0.7
+    Decal "Scorch"
+    -NOGRAVITY
+    +EXTREMEDEATH
+    +BLOODSPLATTER 
+	SeeSound "weapons/RLL"
+	DeathSound "Explosion"
+	Obituary "$OB_MPROCKET"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("DetonateRocket",0,0,0,0)
+	Spawn1:
+		TNT1 A 0
+	    MISL A 1 Bright 
+		TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater")
+		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0)
+		TNT1 A 0 A_SpawnItem ("OldschoolRocketSmokeTrail2")
+		TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30))
+		Goto Spawn1
+		
+	SpawnUnderwater:
+	    TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0)
+	    TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
+	    Goto Spawn1
+	
+	BlowUpLikeCSGOBomb:
+		TNT1 A 0 ACS_NamedTerminate("DetonateRocket",0)
+		MISL A 0 A_PlaySound("BEP",4)
+        EXPL A 0 Radius_Quake (3, 8, 0, 15, 0)//(intensity, duration, damrad, tremrad, tid)
+		TNT1 A 0 A_CustomMissile("ExplosionSplashSpawner")
+        TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 AAA 0 A_CustomMissile ("BDExplosionparticles", 0, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AA 0 A_CustomMissile ("BDExplosionparticles2", 0, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AA 0 A_CustomMissile ("BDExplosionparticles3", 10, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+        EXPL A 0 A_CustomMissile ("BigNeoSmoke", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItemEx ("RocketExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_Explode(25,225)
+		TNT1 A 0 A_SpawnItemEx ("LiquidExplosionEffectSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		TNT1 A 0 A_PlaySound("distantexp", 5)
+		Stop
+		
+	StopActor:
+		TNT1 A 0
+		Stop
+		
+	XDeath:
+	Death:
+		TNT1 A 0 ACS_NamedTerminate("DetonateRocket",1)
+        EXPL A 0 Radius_Quake (3, 8, 0, 15, 0)//(intensity, duration, damrad, tremrad, tid)
+		TNT1 A 0 A_CustomMissile("ExplosionSplashSpawner")
+        TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 AAA 0 A_CustomMissile ("BDExplosionparticles", 0, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AA 0 A_CustomMissile ("BDExplosionparticles2", 0, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AA 0 A_CustomMissile ("BDExplosionparticles3", 10, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+        EXPL A 0 A_CustomMissile ("BigNeoSmoke", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItemEx ("RocketExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_Explode(15,75)
+		TNT1 A 2
+		TNT1 A 0 A_SpawnItemEx ("LiquidExplosionEffectSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		TNT1 A 15
+		TNT1 A 0 A_PlaySound("distantexp", 5)
+		Stop
+	}
+}
+		
+Actor D4RocketNoDetonate : D4Rocket
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		Goto Spawn1
+	}
+}
+
+Actor D4RocketHoming : D4Rocket
+{
++SEEKERMISSILE
+States
+	{
+	Spawn:
+		TNT1 A 0
+		Goto Spawn1
+
+	Spawn:
+		TNT1 A 0 
+	    MISL A 1 Bright A_SeekerMissile(45,45,SMF_LOOK|SMF_PRECISE)
+		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0)
+		TNT1 A 0 A_SpawnItem ("OldschoolRocketSmokeTrail2")
+		TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30))
+		
+		MISL A 1 Bright A_SeekerMissile(45,45,SMF_LOOK|SMF_PRECISE)
+		TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater")
+		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0)
+		TNT1 A 0 A_SpawnItem ("OldschoolRocketSmokeTrail2")
+		TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30))
+		Goto Spawn1
+	SpawnUnderwater:
+	    TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		MISL A 1 Bright A_SeekerMissile(45,45,SMF_LOOK|SMF_PRECISE)
+		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0)
+	    TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
+	    Goto Spawn1
+	}
+}

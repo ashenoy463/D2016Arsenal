@@ -1,0 +1,130 @@
+colorchanger ToBlackLG
+{
+	FadeStart	0.3
+	FadeTime	0.4
+}
+
+colorchanger ToBlackFaster
+{
+	FadeStart	0.5
+	FadeTime	0.5
+}
+
+fader GoAwayReaperSchorch
+{
+	DecayStart	0.5
+	DecayTime	2.0
+}
+
+decal D4LGDecal1
+{
+	pic LGDECAL1
+	shade "FF FF FF"
+	Animator ToBlackLG
+	x-scale 0.35
+	y-scale 0.35
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal D4LGDecal2
+{
+	pic LGDECAL2
+	shade "FF FF FF"
+	Animator ToBlackLG
+	x-scale 0.35
+	y-scale 0.35
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal D4LGDecal3
+{
+	pic LGDECAL3
+	shade "FF FF FF"
+	Animator ToBlackLG
+	x-scale 0.35
+	y-scale 0.35
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+decalgroup D4LGDecal
+{
+	D4LGDecal1	1
+	D4LGDecal2	1
+	D4LGDecal3	1
+}
+
+decal D4StaticRifle
+{
+	pic STRDECL
+	shade "FF 88 15"
+	Animator ToBlack
+	x-scale 0.18
+	y-scale 0.18
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+decal ReaperPrimaryNormal
+{
+	pic RPRDECL
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator ToBlackFaster
+}
+
+decal ReaperPrimaryExplosive
+{
+	pic RPRDECL
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator GoAwayReaperSchorch
+	LowerDecal "ReaperPrimaryScorchBlack"
+}
+
+decal ReaperSecondaryNormal
+{
+	pic RPRDECL
+	x-scale 0.23
+	y-scale 0.23
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator ToBlackFaster
+}
+
+
+//explosive shot
+decal ReaperPrimaryScorchBlack
+{
+	pic RPRDECL
+	shade "00 00 00"
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+}
+
+decal ReaperSecondaryExplosive
+{
+	//pic EXPSCRCH
+	pic RPRDECL
+	shade "00 00 00"
+	x-scale 0.55
+	y-scale 0.55
+	randomflipx
+	randomflipy
+}

@@ -1,0 +1,70 @@
+//Basic Definitions
+#include "Actors/D4Arsenal/Core/Tokens.dec" // Contains All Necesary Functions
+#include "Actors/D4Arsenal/Core/Ammo.dec" // New Ammo Definitions
+#include "Actors/D4Arsenal/Core/PlayerClass.dec" // Player Definition
+#include "Actors/D4Arsenal/Core/PlayerCheckers.dec" // Pinata Rebalancer
+#include "Actors/D4Arsenal/Core/GloryKill.dec" // Glory Kills
+#include "Actors/D4Arsenal/Core/ChainsawKill.dec" // Chainsaw Executions or Chainsaw GKills
+#include "Actors/D4Arsenal/Core/Parkmore.dec" // New Parkour System
+#include "Actors/D4Arsenal/WeaponSpawners.dec" // New Spawners
+#include "Actors/D4Arsenal/Effects.dec" // Contains Effects
+
+//Demon Runes
+#include "Actors/D4Arsenal/DemonRunes/RuneBaron.dec"
+#include "Actors/D4Arsenal/DemonRunes/RuneRevenant.dec"
+
+//Items
+#include "Actors/D4Arsenal/Items/HealthArmor.dec"
+#include "Actors/D4Arsenal/Items/Powerups.dec"
+#include "Actors/D4Arsenal/Items/Pinata.dec"
+
+//Equipment
+#include "Actors/D4Arsenal/Equipment/EquipmentTokens.dec"
+#include "Actors/D4Arsenal/Equipment/EquipmentSwitcher.dec"
+#include "Actors/D4Arsenal/Equipment/Pickups.dec"
+// SP Grenades
+#include "Actors/D4Arsenal/Equipment/FragGrenade.dec"
+#include "Actors/D4Arsenal/Equipment/SyphonGrenade.dec"
+#include "Actors/D4Arsenal/Equipment/Hologram.dec"
+// MP Grenades
+#include "Actors/D4Arsenal/Equipment/KineticMine.dec"
+#include "Actors/D4Arsenal/Equipment/PersonalTeleporter.dec"
+#include "Actors/D4Arsenal/Equipment/ShieldWall.dec"
+
+//Weapon Base, Containts all Functions and Features needed for weapons
+#include "Actors/D4Arsenal/Weapons/WeaponBase.dec"
+#include "Actors/D4Arsenal/Weapons/WeaponUpgrades.dec"
+#include "Actors/D4Arsenal/Weapons/CooldownTokens.dec"
+#include "Actors/D4Arsenal/Weapons/Pickups.dec"
+#include "Actors/D4Arsenal/UpgradeStation.dec" // Field Drones
+
+//Weaponry
+#include "Actors/D4Arsenal/Weapons/BFG9K.dec" // The Big Fucking Gun - Model 9000
+#include "Actors/D4Arsenal/Weapons/Chaingun.dec" // Chain Gun
+#include "Actors/D4Arsenal/Weapons/Chainsaw.dec" // Chainsaw
+#include "Actors/D4Arsenal/Weapons/ChainsawDM.dec" // Chainsaw rebalance for Deathmatch
+#include "Actors/D4Arsenal/Weapons/GaussCannon.dec" // Gauss Cannon
+#include "Actors/D4Arsenal/Weapons/GrenadeLauncher.dec" // Grenade Launcher
+#include "Actors/D4Arsenal/Weapons/HellShot.dec" // Hellshot
+#include "Actors/D4Arsenal/Weapons/LightningGun.dec" // Lightning Gun
+#include "Actors/D4Arsenal/Weapons/HAR.dec" // Heavy Machine Gun
+#include "Actors/D4Arsenal/Weapons/MancubusArm.dec" // Mancubus Arm
+#include "Actors/D4Arsenal/Weapons/Pistol.dec" // Unlimited Clip Pistol
+#include "Actors/D4Arsenal/Weapons/PlasmaRifle.dec" // Plasma Gun
+#include "Actors/D4Arsenal/Weapons/Reaper.dec" // Reaper
+#include "Actors/D4Arsenal/Weapons/Repeater.dec" // Repeater Rifle
+#include "Actors/D4Arsenal/Weapons/RevenantMissileBattery.dec" // DOOM 2016 Styled Hellish Missile Launcher
+#include "Actors/D4Arsenal/Weapons/RocketLauncher.dec" // Auto Rocket Launcher
+#include "Actors/D4Arsenal/Weapons/Shotgun.dec" // Combat Shotgun
+#include "Actors/D4Arsenal/Weapons/SuperShotgun.dec" // Super Shotgun
+#include "Actors/D4Arsenal/Weapons/VortexRifle.dec" // Vortex Rifle
+#include "Actors/D4Arsenal/Weapons/StaticRifle.dec" // Static Rifle
+
+// Melee Related
+#include "Actors/D4Arsenal/Weapons/Fists.dec"
+#include "Actors/D4Arsenal/Weapons/MeatShields.dec" // Meat Shield Code
+
+//Updated Stuff
+#include "Actors/D4Arsenal/Updated/Axe.dec" // Throwable Axe From Enhanced Weapons Mutators whit D2K16 Features
+#include "Actors/D4Arsenal/Updated/MG42.dec" // Enhanced MG42
+#include "Actors/D4Arsenal/Updated/MP40.dec" // Updated MP-40

@@ -1,0 +1,250 @@
+// ========================================================================================================================================
+//
+// Equipment Switch
+//
+// ----------------
+//
+// Decorate Script by XV117
+//
+// ========================================================================================================================================
+Actor SwitchEquipment : CustomInventory 
+{
+// ----- Switch Equipment Order -----
+// 1 Equipment - Frag Grenade
+// 2 Equipment - Syphon
+// 3 Equipment - Hologram
+// 4 Equipment - Shield Wall
+// 5 Equipment - Kinetic Mine
+// 6 Equipment - Personal Teleporter
+// ----------------------------------
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		// Checks Equipments Tokens to procced, if you no have anyone, turn to NoEquipment State
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"HaveFragGrenadeFirst")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"HaveSyphonFirst")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"HaveHologramFirst")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"HaveShieldWallFirst")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"HaveKineticMineFirst")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"HavePersonalTeleporterFirst")
+		Goto NoEquipment
+
+		// Case 1: You have obtained first the Frag Grenade
+		// Switch Method: Frag Grenade -> Syphon -> Hologram -> Shield Wall -> Kinetic Mine -> Personal Teleporter
+		HaveFragGrenadeFirst:
+			TNT1 A 0 A_JumpIfInventory("FragGrenadeActive",1,"CheckFGForOtherEquipment")
+			TNT1 A 0 A_JumpIfInventory("SyphonActive",1,"CheckFGForHologram")
+			TNT1 A 0 A_JumpIfInventory("HologramActive",1,"CheckFGForShieldWall")
+			TNT1 A 0 A_JumpIfInventory("ShieldWallActive",1,"CheckFGForKineticMine")
+			TNT1 A 0 A_JumpIfInventory("KineticMineActive",1,"CheckFGForPersonalTeleporter")
+			TNT1 A 0 A_JumpIfInventory("PersonalTeleporterActive",1,"EquipFragGrenade")
+			Goto EquipFragGrenade
+
+			CheckFGForOtherEquipment:
+				TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"EquipSyphon")
+				TNT1 A 0 A_JumpIfInventory("HasHologram",1,"EquipHologram")
+				TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"EquipShieldWall")
+				TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+				TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+				// If you not have other equipment, turn to NoOtherEquipment State
+				Goto NoOtherEquipment
+
+				CheckFGForHologram:
+					TNT1 A 0 A_JumpIfInventory("HasHologram",1,"EquipHologram")
+					// If you not have a Hologram, Checks for Shield Wall
+				CheckFGForShieldWall:
+					TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"EquipShieldWall")
+					// If you not have a Hologram or Shield Wall, Checks for Kinetic Mine
+				CheckFGForKineticMine:
+					TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+					// If you not have a Hologram, Shield Wall or Kinetic Mine, Checks for Personal Teleporter
+				CheckFGForPersonalTeleporter:
+					TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+					// If you not have a Hologram, Shield Wall, Kinetic Mine or Personal Teleport, switch to Frag Grenade
+					Goto EquipFragGrenade
+
+		// Case 2: You have obtained first the Syphon
+		// Switch Method: Syphon -> Hologram -> Shield Wall -> Kinetic Mine -> Personal Teleporter
+		HaveSyphonFirst:
+			TNT1 A 0 A_JumpIfInventory("SyphonActive",1,"CheckSYForOtherEquipment")
+			TNT1 A 0 A_JumpIfInventory("HologramActive",1,"CheckSYForShieldWall")
+			TNT1 A 0 A_JumpIfInventory("ShieldWallActive",1,"CheckSYForKineticMine")
+			TNT1 A 0 A_JumpIfInventory("KineticMineActive",1,"CheckSYForPersonalTeleporter")
+			TNT1 A 0 A_JumpIfInventory("PersonalTeleporterActive",1,"EquipSyphon")
+			Goto EquipSyphon
+
+			CheckSYForOtherEquipment:
+				TNT1 A 0 A_JumpIfInventory("HasHologram",1,"EquipHologram")
+				TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"EquipShieldWall")
+				TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+				TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+				// If you not have other equipment, turn to NoOtherEquipment State
+				Goto NoOtherEquipment
+
+				CheckSYForShieldWall:
+					TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"EquipShieldWall")
+					// If you not have a Shield Wall, Checks for Kinetic Mine
+				CheckSYForKineticMine:
+					TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+					// If you not have a Shield Wall or Kinetic Mine, Checks for Personal Teleport
+				CheckSYForPersonalTeleporter:
+					TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+					// If you not have a Shield Wall, Kinetic Mine or Personal Teleport, switch to Syphon
+					Goto EquipSyphon
+
+		// Case 3: You have obtained first the Hologram
+		// Switch Method: Hologram -> Shield Wall -> Kinetic Mine -> Personal Teleporter
+		HaveHologramFirst:
+			TNT1 A 0 A_JumpIfInventory("HologramActive",1,"CheckHGForOtherEquipment")
+			TNT1 A 0 A_JumpIfInventory("ShieldWallActive",1,"CheckHGForKineticMine")
+			TNT1 A 0 A_JumpIfInventory("KineticMineActive",1,"CheckHGForPersonalTeleporter")
+			TNT1 A 0 A_JumpIfInventory("PersonalTeleporterActive",1,"EquipHologram")
+			Goto EquipHologram
+
+			CheckHGForOtherEquipment:
+				TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"EquipShieldWall")
+				TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+				TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+				// If you not have other equipment, turn to NoOtherEquipment State
+				Goto NoOtherEquipment
+
+				CheckHGForKineticMine:
+					TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+					// If you not have a Kinetic Mine, switch to Hologram
+				CheckHGForPersonalTeleporter:
+					TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+					// If you not have a Kinetic Mine or Personal Teleport, switch to Hologram
+					Goto EquipHologram
+
+		// Case 4: You have obtained first the Shield Wall
+		// Switch Method: Shield Wall -> Kinetic Mine -> Personal Teleporter
+		HaveShieldWallFirst:
+			TNT1 A 0 A_JumpIfInventory("ShieldWallActive",1,"CheckSWForOtherEquipment")
+			TNT1 A 0 A_JumpIfInventory("KineticMineActive",1,"CheckSWForPersonalTeleporter")
+			TNT1 A 0 A_JumpIfInventory("PersonalTeleporterActive",1,"EquipShieldWall")
+			Goto EquipShieldWall
+
+			CheckSWForOtherEquipment:
+				TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+				TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+				// If you not have other equipment, turn to NoOtherEquipment State
+				Goto NoOtherEquipment
+
+				CheckSWForPersonalTeleporter:
+					TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+					// If you not have a Personal Teleporter, switch to Shield Wall
+					Goto EquipShieldWall
+
+		// Case 5: You have obtained first the Kinetic Mine
+		// Switch Method: Kinetic Mine -> PersonalTeleporter
+		HaveKineticMineFirst:
+			TNT1 A 0 A_JumpIfInventory("KineticMineActive",1,"CheckKMForPersonalTeleporter")
+			TNT1 A 0 A_JumpIfInventory("PersonalTeleporterActive",1,"EquipKineticMine")
+			Goto EquipKineticMine
+
+			CheckKMForPersonalTeleporter:
+				TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+				// If you not have other equipment, turn to NoOtherEquipment State
+				Goto NoOtherEquipment
+			
+		// Case 6: You have obtained first the Personal Teleporter
+		// No Switch Method, because if you only have the Personal Teleporter
+		HavePersonalTeleporterFirst:
+			TNT1 A 0 A_JumpIfInventory("PersonalTeleporterActive",1,"NoOtherEquipment")
+			Goto EquipPersonalTeleporter
+	
+	// Succesfully Equipment Switch
+	EquipFragGrenade:
+		TNT1 A 0 A_TakeInventory("SyphonActive",1)
+		TNT1 A 0 A_TakeInventory("HologramActive",1)
+		TNT1 A 0 A_TakeInventory("ShieldWallActive",1)
+		TNT1 A 0 A_TakeInventory("KineticMineActive",1)
+		TNT1 A 0 A_TakeInventory("PersonalTeleporterActive",1)
+		TNT1 A 0 A_GiveInventory("FragGrenadeActive",1)
+		TNT1 A 0 A_Print("Equipped a Fragmentation Grenade.",2)
+		Goto SwitchSound
+	EquipSyphon:
+		TNT1 A 0 A_TakeInventory("FragGrenadeActive",1)
+		TNT1 A 0 A_TakeInventory("HologramActive",1)
+		TNT1 A 0 A_TakeInventory("ShieldWallActive",1)
+		TNT1 A 0 A_TakeInventory("KineticMineActive",1)
+		TNT1 A 0 A_TakeInventory("PersonalTeleporterActive",1)
+		TNT1 A 0 A_GiveInventory("SyphonActive",1)
+		TNT1 A 0 A_Print("Equipped a Syphon Grenade.",2)
+		Goto SwitchSound
+	EquipHologram:
+		TNT1 A 0 A_TakeInventory("FragGrenadeActive",1)
+		TNT1 A 0 A_TakeInventory("SyphonActive",1)
+		TNT1 A 0 A_TakeInventory("ShieldWallActive",1)
+		TNT1 A 0 A_TakeInventory("KineticMineActive",1)
+		TNT1 A 0 A_TakeInventory("PersonalTeleporterActive",1)
+		TNT1 A 0 A_GiveInventory("HologramActive",1)
+		TNT1 A 0 A_Print("Equipped a Hologram Attractor.",2)
+		Goto SwitchSound
+	EquipShieldWall:
+		TNT1 A 0 A_TakeInventory("FragGrenadeActive",1)
+		TNT1 A 0 A_TakeInventory("SyphonActive",1)
+		TNT1 A 0 A_TakeInventory("HologramActive",1)
+		TNT1 A 0 A_TakeInventory("KineticMineActive",1)
+		TNT1 A 0 A_TakeInventory("PersonalTeleporterActive",1)
+		TNT1 A 0 A_GiveInventory("ShieldWallActive",1)
+		TNT1 A 0 A_Print("Equipped a Shield Wall.",2)
+		Goto SwitchSound
+	EquipKineticMine:
+		TNT1 A 0 A_TakeInventory("FragGrenadeActive",1)
+		TNT1 A 0 A_TakeInventory("SyphonActive",1)
+		TNT1 A 0 A_TakeInventory("HologramActive",1)
+		TNT1 A 0 A_TakeInventory("ShieldWallActive",1)
+		TNT1 A 0 A_TakeInventory("PersonalTeleporterActive",1)
+		TNT1 A 0 A_GiveInventory("KineticMineActive",1)
+		TNT1 A 0 A_Print("Equipped a Kinetic Mine.",2)
+		Goto SwitchSound
+	EquipPersonalTeleporter:
+		TNT1 A 0 A_TakeInventory("FragGrenadeActive",1)
+		TNT1 A 0 A_TakeInventory("SyphonActive",1)
+		TNT1 A 0 A_TakeInventory("HologramActive",1)
+		TNT1 A 0 A_TakeInventory("ShieldWallActive",1)
+		TNT1 A 0 A_TakeInventory("KineticMineActive",1)
+		TNT1 A 0 A_GiveInventory("PersonalTeleporterActive",1)
+		TNT1 A 0 A_Print("Equipped a Personal Teleporter.",2)
+		Goto SwitchSound
+		
+	SwitchSound:
+		TNT1 A 0 A_PlaySound("CLIPINSS",1)
+		Stop
+
+	// Messages
+	NoEquipment:
+		TNT1 A 0 A_Print("You not have any Equipment",2)
+		Stop
+	NoOtherEquipment:
+		TNT1 A 0 A_Print("You not have other Equipment",2)
+		Stop
+	}
+}
+
+Actor SwitchFirstEquipment : CustomInventory 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		// Checks Equipments Tokens to procced, if you no have anyone in your inventory, stop this actor
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"EquipFragGrenade")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"EquipSyphon")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"EquipHologram")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"EquipShieldWall")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"EquipKineticMine")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"EquipPersonalTeleporter")
+		Stop
+
+	// Succesfully Equipment Switch
+	EquipFragGrenade:	TNT1 A 0 A_GiveInventory("FragGrenadeActive",1)	Stop
+	EquipSyphon:	TNT1 A 0 A_GiveInventory("SyphonActive",1)	Stop
+	EquipHologram:	TNT1 A 0 A_GiveInventory("HologramActive",1)	Stop
+	EquipShieldWall:	TNT1 A 0 A_GiveInventory("ShieldWallActive",1)	Stop
+	EquipKineticMine:	TNT1 A 0 A_GiveInventory("KineticMineActive",1)	Stop
+	EquipPersonalTeleporter:	TNT1 A 0 A_GiveInventory("PersonalTeleporterActive",1)	Stop
+	}
+}

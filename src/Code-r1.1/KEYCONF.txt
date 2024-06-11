@@ -1,0 +1,26 @@
+clearplayerclasses
+addplayerclass Doomer2
+
+weaponsection "DOOM-2016"
+setslot 1 DSWeap2 DSWeap D4Axe D4Chainsaw D4ChainsawDM Melee_Attacks
+setslot 2 D4Repeater D4Pistol
+setslot 3 D4SSG D4Reaper D4ShotGun 
+setslot 4 D4Chaingun D4HAR
+setslot 5 D4GrenadeLauncher D4RocketLauncher
+setslot 6 D4PlasmaRifle D4LightningGun
+setslot 7 D4StaticRifle D4VortexRifle D4Hellshot
+setslot 8 D4GaussCannon D4BFG
+setslot 9 RevenantMissileBattery D4MancubusArm
+setslot 0 NukeLauncher MG42 D4MP40
+
+addkeysection "DOOM 2016 Arsenal" D4Arsenal
+AddMenuKey "Quick Melee (Needed to make Glory Kills)" punchem
+Alias punchem "pukename D4Punch"
+AddMenuKey "Select Upgrades" doupgrade
+Alias doupgrade "pukename D4DoUpgrade"
+AddMenuKey "Switch Grenades" dogrenadeswitch
+Alias dogrenadeswitch "pukename D4SwitchEquipment"
+addmenukey "Dash" +User3
+addkeysection "Parkmore" Parkmore
+addmenukey "Toggle Parkmore"  ptoggle
+alias ptoggle "puke -375"

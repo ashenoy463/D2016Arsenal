@@ -1,0 +1,47 @@
+// DOOM 2016 Arsenal - Monsters Database
+
+// Fatality Rewards
+#include "Actors/D4Arsenal/Core/FatalityRewards.dec" // Fatality Rewards
+
+// Doom - Monsters
+#include "Actors/D4Arsenal/Monsters/Arachnotron.dec"
+#include "Actors/D4Arsenal/Monsters/ArchVile.dec"
+#include "Actors/D4Arsenal/Monsters/BaronOfHell.dec"
+#include "Actors/D4Arsenal/Monsters/BullDemon.dec"
+#include "Actors/D4Arsenal/Monsters/Cacodemon.dec"
+#include "Actors/D4Arsenal/Monsters/Comando.dec"
+#include "Actors/D4Arsenal/Monsters/CyberDemon.dec"
+#include "Actors/D4Arsenal/Monsters/HellKnight.dec"
+#include "Actors/D4Arsenal/Monsters/Imps.dec"
+#include "Actors/D4Arsenal/Monsters/Mancubus.dec"
+#include "Actors/D4Arsenal/Monsters/PainElemental.dec"
+#include "Actors/D4Arsenal/Monsters/Revenant.dec"
+#include "Actors/D4Arsenal/Monsters/Sergeant.dec"
+#include "Actors/D4Arsenal/Monsters/SpiderMastermind.dec"
+#include "Actors/D4Arsenal/Monsters/Zombieman.dec"
+
+// Brutal DOOM - Monsters
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/AncientArachnotron.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/Aracnorb.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/Belphegor.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/ExtraMonsters.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/LabGuy.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/Nazis.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/PistolZombieman.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/SMGSergeant.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/Ubersoldat.dec"
+#include "Actors/D4Arsenal/Monsters/BrutalDOOM/Volcabus.dec"
+
+// Extra Stuff
+#include "Actors/D4Arsenal/Monsters/MonsterSpawners.dec" // Spawn Presets
+#include "Actors/D4Arsenal/Monsters/Bosses.dec" // Boss Definitions
+#include "Actors/D4Arsenal/Monsters/VanillaMonsters.dec" // Vanilla Monsters
+
+// DOOM 2016 Arsenal - Monsters
+#include "Actors/D4Arsenal/Monsters/D2016Arsenal/AssaultCommando.dec"
+#include "Actors/D4Arsenal/Monsters/D2016Arsenal/ChainsawLabguy.dec"
+#include "Actors/D4Arsenal/Monsters/D2016Arsenal/HARSergeant.dec"
+#include "Actors/D4Arsenal/Monsters/D2016Arsenal/RiotSergeant.dec"
+#include "Actors/D4Arsenal/Monsters/D2016Arsenal/RocketCommando.dec"
+#include "Actors/D4Arsenal/Monsters/D2016Arsenal/SSGSergeant.dec"
+#include "Actors/D4Arsenal/Monsters/D2016Arsenal/Exterminator.dec"

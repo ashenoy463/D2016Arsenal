@@ -1,0 +1,275 @@
+Actor FatalityReward : CustomInventory
+{
+	States
+	{
+	FatalityMessage:
+		TNT1 A 0 ACS_NamedExecuteAlways("FatalityMessages")
+		Stop
+	}
+}
+
+Actor FatalityRewardAncientArachnotron : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWAncientArachnotron",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWAncientArachnotron",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardArachnotron : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWArachnotron",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWArachnotron",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardAracnorb : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWAracnorb",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWAracnorb",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardArchvile : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWArchvile",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWArchvile",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardBaron : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWBaron",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWBaron",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardCyberDemon : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWCyberDemon",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWCyberDemon",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardDemon : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWDemon",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWDemon",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardCacoDemon : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWCacoDemon",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWCacoDemon",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardCommando : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWComando",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWComando",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardHellKnight : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWHellKnight",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWHellKnight",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardImp : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWImp",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWImp",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardMancubus : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWMancubus",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWMancubus",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardMastermind : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWMastermind",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWMastermind",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardPainElemental : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWPainElemental",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWPainElemental",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardRevenant : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWRevenant",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWRevenant",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardSergeant : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWSergeant",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardVolcabus : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWVolcabus",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWVolcabus",1)
+		Goto FatalityMessage
+	}
+}
+
+Actor FatalityRewardZombieMan : FatalityReward 
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_GiveInventory("D4HealthBonusRWZombieMan",1)
+		TNT1 A 0 A_GiveInventory("D4ArmorBonusRWZombieMan",1)
+		Goto FatalityMessage
+	}
+}
+
+// Rewards
+Actor D4HealthBonusFatality : D4HealthBonus
+{
+	Inventory.MaxAmount 600
+	Inventory.Amount 1
+}
+Actor D4ArmorBonusFatality : D4ArmorBonus
+{
+	Armor.Maxsaveamount 600
+	Armor.Saveamount 1
+}
+
+// Health Values
+Actor D4HealthBonusRWAncientArachnotron : D4HealthBonusFatality	{Inventory.Amount 60}
+Actor D4HealthBonusRWArachnotron : D4HealthBonusFatality	{Inventory.Amount 40}
+Actor D4HealthBonusRWAracnorb : D4HealthBonusFatality	{Inventory.Amount 30}
+Actor D4HealthBonusRWArchvile : D4HealthBonusFatality	{Inventory.Amount 75}
+Actor D4HealthBonusRWBaron : D4HealthBonusFatality	{Inventory.Amount 60}
+Actor D4HealthBonusRWCacoDemon : D4HealthBonusFatality	{Inventory.Amount 30}
+Actor D4HealthBonusRWCyberDemon : D4HealthBonusFatality	{Inventory.Amount 100}
+Actor D4HealthBonusRWComando : D4HealthBonusFatality	{Inventory.Amount 20}
+Actor D4HealthBonusRWDemon : D4HealthBonusFatality	{Inventory.Amount 20}
+Actor D4HealthBonusRWHellKnight : D4HealthBonusFatality	{Inventory.Amount 50}
+Actor D4HealthBonusRWImp : D4HealthBonusFatality	{Inventory.Amount 10}
+Actor D4HealthBonusRWMancubus : D4HealthBonusFatality	{Inventory.Amount 50}
+Actor D4HealthBonusRWMastermind : D4HealthBonusFatality	{Inventory.Amount 120}
+Actor D4HealthBonusRWPainElemental : D4HealthBonusFatality	{Inventory.Amount 30}
+Actor D4HealthBonusRWRevenant : D4HealthBonusFatality	{Inventory.Amount 40}
+Actor D4HealthBonusRWSergeant : D4HealthBonusFatality	{Inventory.Amount 20}
+Actor D4HealthBonusRWVolcabus : D4HealthBonusFatality	{Inventory.Amount 75}
+Actor D4HealthBonusRWZombieMan : D4HealthBonusFatality	{Inventory.Amount 5}
+
+// Armor Values
+Actor D4ArmorBonusRWAncientArachnotron : D4ArmorBonusFatality	{Armor.Saveamount 60}
+Actor D4ArmorBonusRWArachnotron : D4ArmorBonusFatality	{Armor.Saveamount 40}
+Actor D4ArmorBonusRWAracnorb : D4ArmorBonusFatality	{Armor.Saveamount 20}
+Actor D4ArmorBonusRWArchvile : D4ArmorBonusFatality	{Armor.Saveamount 100}
+Actor D4ArmorBonusRWBaron : D4ArmorBonusFatality	{Armor.Saveamount 100}
+Actor D4ArmorBonusRWCacoDemon : D4ArmorBonusFatality	{Armor.Saveamount 30}
+Actor D4ArmorBonusRWCyberDemon : D4ArmorBonusFatality	{Armor.Saveamount 100}
+Actor D4ArmorBonusRWComando : D4ArmorBonusFatality	{Armor.Saveamount 20}
+Actor D4ArmorBonusRWDemon : D4ArmorBonusFatality	{Armor.Saveamount 20}
+Actor D4ArmorBonusRWHellKnight : D4ArmorBonusFatality	{Armor.Saveamount 50}
+Actor D4ArmorBonusRWImp : D4ArmorBonusFatality	{Armor.Saveamount 10}
+Actor D4ArmorBonusRWMancubus : D4ArmorBonusFatality	{Armor.Saveamount 50}
+Actor D4ArmorBonusRWMastermind : D4ArmorBonusFatality	{Armor.Saveamount 80}
+Actor D4ArmorBonusRWPainElemental : D4ArmorBonusFatality	{Armor.Saveamount 30}
+Actor D4ArmorBonusRWRevenant : D4ArmorBonusFatality	{Armor.Saveamount 40}
+Actor D4ArmorBonusRWVolcabus : D4ArmorBonusFatality	{Armor.Saveamount 50}
+Actor D4ArmorBonusRWZombieMan : D4ArmorBonusFatality	{Armor.Saveamount 20}

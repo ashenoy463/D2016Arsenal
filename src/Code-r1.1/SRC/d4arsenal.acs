@@ -1,0 +1,186 @@
+#library "d4arsenal"
+#include "zcommon.acs"
+
+// Stamina Script
+// For a future inclusion of Modern Sprinting
+Script "StaminaChecker" (Void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+	TakeInventory("UsedStamina",1);
+	Delay(4);
+	}
+}
+
+// Check if player are in underwater to restrict kicks
+Script "PlayerCheckUnderwater" (Void)
+{
+	if(CheckInventory("IsPlayingAsDM") == 1)
+		terminate;
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+    {
+        If(GetActorProperty(ActivatorTID(), APROP_WaterLevel) == 3) GiveInventory("IsPlayerSwimming", 1);
+        Else TakeInventory("IsPlayerSwimming", 1);
+		Delay(1);
+    }
+}
+
+// Script taked from Tomtefars Extension, works better
+// Credits for Tomtefars
+script "NewUseInput" (Void)
+{
+	if(CheckInventory("IsPlayingAsDM") == 1)
+		terminate;
+	int buttons;
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		buttons = GetPlayerInput(-1, INPUT_BUTTONS);
+
+		If (buttons & BT_USE)
+		{
+			If((CheckInventory("IsTankPlayer") == 1)||(CheckInventory("IsVehiclePlayer") == 1)||(CheckInventory("IsDemonPlayer") == 1))
+			{TakeInventory("PressedUse", 100);}
+			Else
+			{
+				//PrintBold(s:":::::Pressed:::::");
+				TakeInventory("PressedUse", 100);
+			
+				int uid1 = UniqueTID();
+				int uid2 = UniqueTID();
+				int ptc = GetActorPitch(0)>>8;
+				int ang = GetActorAngle(0)>>8;
+				int speed = cos(GetActorPitch(0)) * 64 >> 16;
+				int vspeed = -sin(GetActorPitch(0)) * 64 >> 16;
+			
+				SpawnProjectile(0, "NewUseAttack", ang, speed, vspeed, 0, uid1);
+				SetActorPosition(uid1, GetActorX(uid1), GetActorY(uid1), GetActorZ(uid1)+40.0, FALSE);
+				SetActorPitch(uid1, ptc);
+				SetPointer(AAPTR_TARGET, 0, uid1);
+			
+				SpawnProjectile(0, "NewStealthAttack", ang, speed, vspeed, 0, uid2);
+				SetActorPosition(uid2, GetActorX(uid2), GetActorY(uid2), GetActorZ(uid2)+40.0, FALSE);
+				SetActorPitch(uid2, ptc);
+				SetPointer(AAPTR_TARGET, 0, uid2);
+			
+				//Thing_ChangeTID(uid, 0);
+			
+				while (buttons & BT_USE)
+				{
+					buttons = GetPlayerInput(-1, INPUT_BUTTONS);
+					delay(3);
+				}
+			}
+		}
+		delay(1);
+	}
+}
+
+// Flashlight - ACS Checkers
+// This a ACS version of the BD Flashlight
+// Code, work better in acs
+Script "D4FlashLightFunc" (Void)
+{
+	if((CheckInventory("IsPlayingAsDM") == 1)||(CheckInventory("IsPlayingAsCoop") == 1))
+		terminate;
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		int PlClass = GetActorClass (0);
+		If(strICmp(PlClass, "Doomer2") == 0 | strICmp(PlClass, "PlayerHeavyMachinegun") == 0)
+		{
+			if(CheckInventory("SwitchFlashlight") == 1)
+			{
+				TakeInventory("SwitchFlashlight", 1);			
+				// Checks player tokens
+				if(CheckInventory("FlashlightOn") == 1)
+				{
+					TakeInventory("FlashlightOn", 1);
+					PlaySound(0, "FLASHOFF", 5, 1.0, FALSE, ATTN_NORM);	
+					Delay(2);
+				}
+				Else
+				{
+					GiveInventory("FlashlightOn", 1);
+					ACS_NamedExecuteAlways("D4FlashlightHandling",0);
+					PlaySound(0, "FLASHON", 5, 1.0, FALSE, ATTN_NORM);
+					Delay(2);
+				}
+			}
+		}
+		Else if(CheckInventory("IsDemonPlayer") == 1)
+		{
+			if(CheckInventory("SwitchFlashlight") == 1)
+			{
+				TakeInventory("SwitchFlashlight", 1);		
+				TakeInventory("FlashlightOn", 1);
+				if(CheckInventory("DemonVision") == 1)
+				{
+					TakeInventory("DemonVision", 1);
+					TakeInventory("PowerDemonVision", 1);
+					Delay(2);
+				}
+				Else
+				{
+					GiveInventory("DemonVision", 1);
+					GiveInventory("PowerDemonVision", 1);
+					Delay(2);
+				}
+			}	
+		}
+		Else If((CheckInventory("IsTankPlayer") == 1)||(CheckInventory("IsVehiclePlayer") == 1))
+		{
+				TakeInventory("DemonVision", 1);
+				TakeInventory("PowerDemonVision", 1);
+		}
+	Delay(5);
+	}
+}
+
+Script "D4FlashlightHandling" (Void)
+{
+	int PlClass = GetActorClass (0);
+	If((CheckInventory("IsTankPlayer") == 1)||(CheckInventory("IsDemonPlayer") == 1))
+		terminate;
+	while(strICmp(PlClass, "Doomer2") == 0 | strICmp(PlClass, "PlayerHeavyMachinegun") == 0)
+	{
+		If(CheckInventory("FlashlightOn") == 1)
+			GiveInventory("D4FlashlightActor", 1);
+		Else
+			terminate;
+		Delay(3);
+	}
+	terminate;
+}
+
+// This Scripts Checks the Player Class
+Script "CheckPlayerClass" (Void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		int PlClass = GetActorClass (0);
+		if((CheckInventory("IsTankPlayer") == 1)||(CheckInventory("IsVehiclePlayer") == 1)||(CheckInventory("IsDemonPlayer") == 1))
+		{
+			If(strICmp(PlClass, "Doomer2") == 0)
+			{
+				TakeInventory("IsTankPlayer", 1);
+				TakeInventory("IsVehiclePlayer", 1);
+				if(CheckInventory("NightVisionTank") == 1)
+				{
+					TakeInventory("NightVisionTank", 1);
+					TakeInventory("PowerLightAmp", 1);
+				}
+			}
+		}
+		Else
+		{
+			if(strICmp(PlClass, "PlayerTank") == 0 | strICmp(PlClass, "PlayerMech") == 0 | strICmp(PlClass, "PlayerArtilleryTank") == 0)
+			{
+				GiveInventory("IsTankPlayer", 1);
+			}
+			Else if(strICmp(PlClass, "PlayerAttackHelicopter") == 0 | strICmp(PlClass, "PlayerBike") == 0 | strICmp(PlClass, "PlayerHeavyMachinegun") == 0)
+			{
+				GiveInventory("IsVehiclePlayer", 1);
+			}
+		}
+	Delay(5);
+	}
+}

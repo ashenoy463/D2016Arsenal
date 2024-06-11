@@ -1,0 +1,54 @@
+#library "Upgrader.acs"
+#include "zcommon.acs"
+
+Script "D4DoUpgrade" (VOID) NET
+{
+	If(CheckInventory("UpgraderToken") == 1)
+	{
+		Delay(1);
+		TakeInventory("UpgraderToken",1);	
+		terminate;
+	}
+	GiveInventory("UpgraderToken",1);	
+	If(CheckInventory("IsPlayingAsDM") == 1)
+		{
+				SetHUDSize(400,300,1);
+				SetFont("SMALLFONT");
+				HudMessage(s:"Upgrader not allowed in this Gamemode";HUDMSG_FADEOUT,100,CR_ORANGE,200.0,260.0,0.4,1.0);
+		}
+		Else
+		{
+			If(CheckInventory("UpgradeBoxToken") < 1)
+			{
+				SetHUDSize(400,300,1);
+				SetFont("SMALLFONT");
+				HudMessage(s:"Not Enought Upgrade Points";HUDMSG_FADEOUT,100,CR_ORANGE,200.0,260.0,0.4,1.0);
+			}
+			else If(CheckInventory("UpgradeBoxToken") >= 1)
+			{
+				If(CheckInventory("IsDualWeapon") == 1)
+				{
+					SetHUDSize(400,300,1);
+					SetFont("SMALLFONT");
+					HudMessage(s:"Can't be upgraded while using Dual Wield Feature";HUDMSG_FADEOUT,100,CR_ORANGE,200.0,260.0,0.4,1.0);
+				}
+				Else
+				{
+					If(CheckInventory("IsUpgradeableWeapon") == 1)
+					{
+						GiveInventory("D4WeaponUpgrader",1);
+						GiveInventory("StartUpgrader",1);	
+					}
+					Else
+					{
+						SetHUDSize(400,300,1);
+						SetFont("SMALLFONT");
+						HudMessage(s:"This weapon can't be upgraded";HUDMSG_FADEOUT,100,CR_ORANGE,200.0,260.0,0.4,1.0);
+					}
+				}
+			}
+	Delay(1);
+	TakeInventory("UpgraderToken",1);	
+	terminate;
+	}
+}

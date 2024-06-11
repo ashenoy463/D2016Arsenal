@@ -1,0 +1,222 @@
+// DOOM 4 Weapon Replacers
+Actor D4EMGReplacer : RandomSpawner replaces Pistol
+{
+	DropItem "D4PistolReplacer", 255, 10 // Spawn a Pistol or Bullet Ammo
+	DropItem "D4RepeaterSpawner", 255, 5 // Chances to spawn a repeater
+	DropItem "D4EquipmentReplacer", 255, 2 // Chances to spawn a random equipment
+}
+
+Actor D4EquipmentReplacer : RandomSpawner replaces GrenadeAmmo
+{
+	DropItem "D4FragGrenadePickup", 255, 10 // Standart Military Frag Grenades
+	DropItem "D4CommonEquipmentSpawner", 255, 2 // Common Spawner
+	DropItem "D4RareEquipmentSpawner", 255, 1 // Very Rare Spawner
+}
+Actor D4CommonEquipmentSpawner : RandomSpawner
+{
+	DropItem "D4SyphonGrenadePickup", 255, 1 // Demon Tech Grenade
+	DropItem "D4HologramPickup", 255, 1 // UAC Tactical Hologram distractor
+}
+Actor D4RareEquipmentSpawner : RandomSpawner
+{
+	DropItem "D4ShieldWallPickup", 255, 2 // UAC Tactical Shield Protection
+	DropItem "D4KineticMinePickup", 255, 2 // Military Proximity Mines
+	DropItem "D4PersonalTeleporterPickup", 255, 1 // UAC Experimental - Personal Teleporter Device
+}
+
+Actor D4ChaingunReplacer : RandomSpawner replaces Chaingun
+{
+	DropItem "D4HARSpawner", 255, 10
+	DropItem "D4ChaingunSpawner", 255, 1
+}
+
+Actor D4ShotgunReplacer : RandomSpawner
+{
+	DropItem "D4ShotgunSpawner", 255, 15
+	DropItem "D4StaticRifleSpawner", 255, 1
+}
+
+Actor D4SuperShotgunReplacer : RandomSpawner
+{
+	DropItem "D4SSGSpawner", 255, 5
+	DropItem "D4ReaperSpawner", 255, 1
+	DropItem "D4HellshotSpawner", 255, 1
+}
+
+Actor D4RocketLauncherReplacer : RandomSpawner
+{
+	DropItem "D4RocketLauncherSpawner", 255, 3
+	DropItem "D4GrenadeLauncherSpawner", 255, 3
+	DropItem "D4GaussCannonSpawner", 255, 1
+}
+
+Actor D4PlasmaRifleReplacer : RandomSpawner
+{
+	DropItem "D4PlasmaRifleSpawner", 255, 4
+	DropItem "D4LightningGunSpawner", 255, 2
+	DropItem "D4VortexRifleSpawner", 255, 3
+	DropItem "D4StaticRifleSpawner", 255, 2
+}
+
+//This Script is responsible to spawn SSG's on respective DOOM 1 Iwads
+//Made by Tomtefar1988
+ACTOR D4ShotgunChecker : CustomInventory Replaces Shotgun
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 //Spawn SSG on Dooms secret maps. Continue otherwise.
+		TNT1 A 0 A_JumpIf(x == 1600 && y == 1152,"SpawnSSG")	//Doom E1M9
+		TNT1 A 0 A_JumpIf(x == 576 && y == -896,"SpawnSSG")		//Doom E2M9
+		TNT1 A 0 A_JumpIf(x == -432 && y == 208,"SpawnSSG")		//Doom E3M9
+		TNT1 A 0 A_JumpIf(x == 176 && y == -64,"SpawnSSG")		//Doom E4M9
+		TNT1 A 0 A_JumpIf(x == -4400 && y == 1192,"SpawnSSG")	//Freedoom E1M9
+		TNT1 A 0 A_JumpIf(x == -480 && y == 64,"SpawnSSG")		//Freedoom E2M9
+		TNT1 A 0 A_JumpIf(x == 3848 && y == -2888,"SpawnSSG")	//Freedoom E3M9
+		TNT1 A 0 A_JumpIf(x == 280 && y == -152,"SpawnSSG")		//Freedoom E4M9
+		TNT1 A 0 A_JumpIf(x == 576 && y == -1168,"SpawnSSG")	//DTWID E1M9
+		TNT1 A 0 A_JumpIf(x == 224 && y == 0,"SpawnSSG")		//DTWID E2M9
+		TNT1 A 0 A_JumpIf(x == -784 && y == 976,"SpawnSSG")		//DTWID E3M9
+		Goto SpawnSG
+	SpawnSG:
+		TNT1 A 0 A_SpawnItem("D4ShotgunReplacer")
+		Stop
+	SpawnSSG:
+		TNT1 A 0 A_SpawnItem("D4SuperShotgunChecker")
+		Stop
+	}
+}
+
+ACTOR D4SuperShotgunChecker : CustomInventory Replaces SuperShotgun
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 2
+		TNT1 A 0 A_JumpIfInventory("DisableMPWeapons",1,"NoMP",AAPTR_PLAYER1) // Checks if are disabled Multiplayer Weapons
+		TNT1 A 0 A_SpawnItem("D4SuperShotgunReplacer")
+		Stop
+	NoMP:
+		TNT1 A 0 A_SpawnItem("D4SSGSpawner")
+		Stop
+	}
+}
+
+ACTOR D4RocketLauncherChecker : CustomInventory Replaces RocketLauncher
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 2
+		TNT1 A 0 A_JumpIfInventory("DisableMPWeapons",1,"NoMP",AAPTR_PLAYER1) // Checks if are disabled Multiplayer Weapons
+		TNT1 A 0 A_SpawnItem("D4RocketLauncherReplacer")
+		Stop
+	NoMP:
+		TNT1 A 0 A_SpawnItem("D4RocketLauncherSpawner")
+		Stop
+	}
+}
+
+ACTOR D4PlasmaRifleChecker : CustomInventory Replaces PlasmaRifle
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 2
+		TNT1 A 0 A_JumpIfInventory("DisableMPWeapons",1,"NoMP",AAPTR_PLAYER1) // Checks if are disabled Multiplayer Weapons
+		TNT1 A 0 A_SpawnItem("D4PlasmaRifleReplacer")
+		Stop
+	NoMP:
+		TNT1 A 0 A_SpawnItem("D4PlasmaRifleSpawner")
+		Stop
+	}
+}
+
+Actor D4PistolReplacer : CustomInventory Replaces PistolSpawner
+{
+    States
+    {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump(32, "SpawnMP40Ammo")
+		TNT1 A 0 A_Jump(76, "SpawnEMG")	
+		Goto SpawnBullet
+	SpawnBullet:
+		TNT1 A 0 A_SpawnItemEx ("D4BulletsSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	
+	SpawnEMG:
+		TNT1 A 0 A_SpawnItemEx ("D4PistolSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+		
+	SpawnMP40Ammo:
+		TNT1 A 0 A_JumpIfInventory("D4MP40",1,1,AAPTR_PLAYER1) //Checks if you have a MP40
+		Goto SpawnBullet
+		TNT1 A 0 A_SpawnItemEx ("Clip1",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+    }
+}
+
+Actor Clip1DropReplacer : D4PistolReplacer replaces CLIP1Drop
+{
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump(32, "SpawnMP40Ammo")
+		Goto SpawnBullet
+	}
+}
+
+Actor D4RepeaterReplacer : CustomInventory Replaces RifleSpawner
+{
+    States
+    {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("DisableMPWeapons",1,"NoMP",AAPTR_PLAYER1) // Checks if are disabled Multiplayer Weapons
+		TNT1 A 0 A_Jump(92, "SpawnRepeater")	
+	NoMP:
+		TNT1 A 0 A_SpawnItemEx ("D4BulletsSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	
+	SpawnRepeater:
+		TNT1 A 0 A_SpawnItemEx ("D4RepeaterSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+    }
+}
+
+Actor D4FlamethrowerReplacer : CustomInventory Replaces Flamethrower2
+{
+    States
+    {
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(ACS_NamedExecuteWithResult("MultiplayerCheck",0,0,0,0)==2,"MancubusArm")
+		TNT1 A 0 A_Jump(128, "FieldDrone") // Field Drone Spawning Preset	
+	MancubusArm:
+		TNT1 A 0 A_SpawnItem("D4MancubusArm",random(20, -20))
+		TNT1 A 0 A_SpawnItem("BigGas",random(20, -20))
+		Stop
+	FieldDrone:
+		TNT1 A 0 A_SpawnItemEx("FieldDrone",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+    }
+}
+
+Actor D4ChainsawReplacer : CustomInventory Replaces Chainsaw
+{
+    States
+    {
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(ACS_NamedExecuteWithResult("MultiplayerCheck",0,0,0,0)==2,"DMSpawn")
+		TNT1 A 0 A_SpawnItem("D4ChainsawSpawner",random(20, -20))
+		Stop
+	DMSpawn:
+		TNT1 A 0 A_SpawnItem("D4ChainsawSpawnerDM",random(20, -20))
+		Stop
+    }
+}

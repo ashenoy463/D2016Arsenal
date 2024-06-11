@@ -1,0 +1,35 @@
+Actor PlayerCheckerToken : Inventory {inventory.maxamount 1 +INVENTORY.UNDROPPABLE +UNDROPPABLE}
+
+// Glory Kill Pinata Controller, gives health correct ammount needed to player
+// Boss-Type Pinata, not affected by this
+Actor GKPlayer_LowHealth : PlayerCheckerToken {}
+Actor GKPlayer_RegularHealth : PlayerCheckerToken {}
+Actor GKPlayer_GoodHealth : PlayerCheckerToken {}
+
+// Chainsaw Kill Ammo Checkers
+Actor CKPlayer_HasBullets : PlayerCheckerToken {}
+Actor CKPlayer_HasShells : PlayerCheckerToken {}
+Actor CKPlayer_HasRockets : PlayerCheckerToken {}
+Actor CKPlayer_HasCells : PlayerCheckerToken {}
+Actor CKPlayer_HasSlugs : PlayerCheckerToken {}
+
+// Low Ammo Reserves
+Actor CKPlayer_LowBullets : PlayerCheckerToken {}
+Actor CKPlayer_LowShells  : PlayerCheckerToken {}
+Actor CKPlayer_LowRockets : PlayerCheckerToken {}
+Actor CKPlayer_LowCells : PlayerCheckerToken {}
+Actor CKPlayer_LowSlugs : PlayerCheckerToken {}
+
+// Regular Ammo Reserves
+Actor CKPlayer_RegularBullets : PlayerCheckerToken {}
+Actor CKPlayer_RegularShells : PlayerCheckerToken {}
+Actor CKPlayer_RegularRockets : PlayerCheckerToken {}
+Actor CKPlayer_RegularCells : PlayerCheckerToken {}
+Actor CKPlayer_RegularSlugs : PlayerCheckerToken {}
+
+// Good ammo Reserves
+Actor CKPlayer_GoodBullets : PlayerCheckerToken {}
+Actor CKPlayer_GoodShells : PlayerCheckerToken {}
+Actor CKPlayer_GoodRockets : PlayerCheckerToken {}
+Actor CKPlayer_GoodCells : PlayerCheckerToken {}
+Actor CKPlayer_GoodSlugs : PlayerCheckerToken {}

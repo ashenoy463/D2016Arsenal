@@ -1,0 +1,88 @@
+// This file is included in D2016ArsenalCode-rX.X.pk3
+#include "Actors/D4Arsenal/Monsters/ExterminationDay/BelphegorBoss.dec"
+
+// Armors
+Actor HBMediumArmor : D4LightArmor replaces MediumArmor
+{
+	Inventory.Pickupmessage "Picked up the Medium Combat Armor"
+	Armor.Savepercent 100
+	Armor.Saveamount 100
+	Armor.Maxsaveamount 175
+	States
+	{
+	Spawn:
+		D4AS FGHIJJJIHGFF 3 Bright
+		Loop
+	}
+}
+
+Actor HBHeavyArmor : D4HeavyArmor replaces D4BlueArmor
+{
+	Inventory.Icon "ARMOR"
+	Armor.Savepercent 100
+	Armor.Saveamount 175
+	Armor.Maxsaveamount 180
+	States
+	{
+	Spawn:
+		D4AR ABCDEEEDCBAA 3 Bright
+		Loop
+	}
+}
+
+Actor HBEliteArmor : D4HeavyArmor replaces EliteArmor
+{
+	Inventory.Pickupmessage "Picked up the Elite Guard Armor, the pinnacle of personal protection."
+	Armor.Savepercent 100
+	Armor.Saveamount 250
+	Armor.Maxsaveamount 300
+}
+
+Actor HBEliteArmorForUltraSphere : HBEliteArmor
+{
+	Armor.Savepercent 100
+	Armor.Saveamount 300
+	Armor.Maxsaveamount 300
+}
+
+// PowerUps
+Actor HBRegenSphere : RandomSpawner replaces NewLifeSphere {DropItem "D4RegenSphere"}
+Actor HBQuadDamage : RandomSpawner replaces QuadSphere {DropItem "D4QuadDamage"}
+
+Actor HBUltraSphere : D4Megasphere replaces UltraSphere
+{
+	Inventory.PickupMessage "You got the Ultrasphere !"
+	States
+	{
+	Spawn:
+		D4HX FGHIJJJIHGFF 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("HBEliteArmorForUltraSphere", 1)
+		TNT1 A 0 A_GiveInventory("GreaterSoulSphereHealth", 1)
+		Stop
+	}
+}
+
+// Hellbound Re-Replacers
+Actor HBMedikit : D4Medikit replaces D4Medikit
+{
+	States
+	{
+	Spawn:
+		D4HB A 0 A_Jump(240,2,3,4,5,6,7,8,9)
+		D4HB ABCDEEEDCBAA 3 Bright
+		Goto Spawn+1
+	}
+}
+Actor HBSoulSphereReplacer : RandomSpawner replaces SoulSphereReplacer
+{
+	DropItem "D4SoulSphere",	 255, 5
+	DropItem "D4HasteSphere",			 255, 1
+}
+Actor HBInfraredReplacer : RandomSpawner replaces InfraredReplacer
+{
+	DropItem "NightVisionSpawner",	 255, 5
+	DropItem "D4HasteSphere",	255, 2
+	DropItem "DemonRuneMix2",	255, 1
+}

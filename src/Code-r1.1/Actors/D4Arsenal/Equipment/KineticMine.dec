@@ -1,0 +1,190 @@
+// Kinetic Mine
+Actor D4KineticMine
+{
+	var int user_counter;
+	Projectile
+	Speed 20
+	-NOGRAVITY
+	+FORCEXYBILLBOARD
+	+CANBOUNCEWATER
+	+FRIENDLY
+	+ISMONSTER
+	+THRUACTORS
+	Scale 0.4
+	Gravity 1.2
+	Radius 3
+	Height 6
+	Obituary "%o didn't see it coming from %k."
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY ThrustThingZ(0,abs(velz),0,1)
+		Goto Idle
+		
+	Idle:
+		KMIN E 30 Light("YellowSmallPoint2")
+		Goto Death
+		
+	Death:
+		"####" "#" 0 A_PlaySound("Special/KineticMine/Arm",7,1.0,false,1.6)
+		"####" "#" 0 A_Stop
+		"####" "#" 0 A_ChangeFlag("SOLID",false)
+		"####" "#" 0 A_ChangeFlag("SHOOTABLE",false)
+		"####" "#" 0 A_ChangeFlag("MISSILE",false)
+		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP",false)
+		"####" "#" 0 A_ChangeFlag("NOCLIP",true)
+		"####" "#" 0 A_Stop
+		"####" "#" 0 ACS_NamedExecuteAlways("HologramGetPlayerTranslation")
+		Goto Active
+	
+	Active:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_NoGravity
+		TNT1 A 0 A_GiveInventory("MineCounter")
+		TNT1 A 0 A_RearrangePointers(AAPTR_DEFAULT, AAPTR_TARGET, AAPTR_DEFAULT) // Owner of grenade is stored as Master
+		KMIN E 10 Light("WhiteSmallPoint1")
+		Goto CoopReady
+		
+	CoopReady:
+		KMIN E 10 Light("YellowSmallPoint2")
+		
+		CoopeReadyLooper:
+			KMIN E 0 A_JumpIf(user_counter>=350,"Broke") //350*4tics = 40sec
+			KMIN EE 2 Light("YellowSmallPoint2") A_LookEx(LOF_NOSOUNDCHECK, 1, 128, 1, 360, "CoopFire")
+			KMIN J 0 A_SetUserVar(user_counter,user_counter+1)
+			Loop
+		
+	Broke:
+		KMIN EEEEEEEEEE 1 A_FadeOut
+		TNT1 A 35
+		Stop
+	
+	CoopFire:
+		TNT1 A 0 A_TakeInventory("MineCounter")
+		TNT1 A 0 A_PlaySound("Special/KineticMine/Alarm",6,1.0,false,1.5)
+		TNT1 A 0 A_AlertMonsters(512)
+		TNT1 A 0 A_FaceTarget
+		KMIN E 10 Light("RedSmallPoint2") Bright
+		TNT1 A 0 A_RemoveChildren(1)
+		TNT1 A 0 ThrustThing(angle*256/360,25,1,0)
+		D4EQ G 3 Light("RedSmallPoint2") Bright A_RearrangePointers(AAPTR_MASTER, AAPTR_DEFAULT, AAPTR_DEFAULT)
+		TNT1 A 0 A_SpawnItemEx("FragGrenadeExplosion",0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Stop
+		Stop
+	}
+}
+
+Actor D4KineticMineDM : D4KineticMine
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY ThrustThingZ(0,abs(velz),0,1)
+		Goto Idle
+		
+	Idle:
+		KMIN E 30 Light("YellowSmallPoint2")
+		Goto Death
+		
+	Death:
+		TNT1 A 0 ACS_NamedExecuteAlways("SingletonKineticMineInDM")
+		TNT1 A 0 A_PlaySound("Special/KineticMine/Arm",7,1.0,false,1.6)
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_ChangeFlag("SOLID",false)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE",false)
+		TNT1 A 0 A_ChangeFlag("MISSILE",false)
+		TNT1 A 0 A_ChangeFlag("NOBLOCKMAP",false)
+		TNT1 A 0 A_ChangeFlag("NOCLIP",true)
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoGravity
+		TNT1 A 0 A_GiveInventory("MineCounter")
+		TNT1 A 0 ACS_NamedExecuteAlways("HologramGetPlayerTranslation")
+		TNT1 A 0 A_RearrangePointers(AAPTR_DEFAULT, AAPTR_TARGET, AAPTR_DEFAULT) // Owner of grenade is stored as Master
+		Goto DMReady
+		
+	DMReady:
+		KMIN E 1 Light("YellowMediumPoint2") A_ChangeFlag("FRIENDLY",false)
+		KMIN E 0 A_SpawnItemEx("KinMinDetectionFX",0,0,0,0,0,0,0, SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION)
+		KMIN E 0 A_SpawnItemEx("KinMinDetectionFXRed",0,0,0,0,0,0,0, SXF_NOCHECKPOSITION)
+	DMCounter:
+		KMIN E 1 Light("YellowMediumPoint1") A_Stop
+		KMIN E 1 Light("YellowMediumPoint1") A_SetArg(0,args[0]+1)
+		KMIN E 1 Light("YellowMediumPoint1") A_JumpIf(args[0] >= 1000, "Broke")
+		KMIN E 1 Light("YellowMediumPoint2") A_LookEx(LOF_NOSOUNDCHECK, 1, 160, 1, 360, "DMFire")
+		KMIN E 0 A_JumpIf(args[0] % 9 == 0,"DMReady") //9*4=36 tics, almost every second
+		TNT1 A 35 A_Jump(256,"DMCounter")
+		Goto Broke
+		
+		DMSpawnIndicator:
+			KMIN E 1 A_SpawnItemEx("KinMinDetectionFX",0,0,0,0,0,0,0, SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION)
+			KMIN E 1 A_SpawnItemEx("KinMinDetectionFXRed",0,0,0,0,0,0,0, SXF_NOCHECKPOSITION)
+			TNT1 A 35 A_Jump(256,"DMCounter")
+			Goto DMCounter
+		
+	Broke:
+		KMIN EEEEEEEEEE 1 A_FadeOut
+		TNT1 A 35
+		Stop
+	
+	DMFire:
+		KMIN E 4 Light("YellowSmallPoint1") 
+		KMIN E 1 Light("YellowSmallPoint1") ACS_NamedExecuteAlways("KineticMineDMIFF",0)
+		TNT1 A 0 A_TakeInventory("MineCounter")
+		TNT1 A 0 A_PlaySound("Special/KineticMine/Alarm",6,1.0,false,1.5)
+		KMIN E 10 Light("RedSmallPoint2") Bright
+		TNT1 A 0 A_RemoveChildren(1)
+		TNT1 A 0 A_FaceTarget
+		KMIN E 2 ThrustThing(angle*256/360,25,1,0)
+		D4EQ G 1 Light("RedSmallPoint2") Bright A_RearrangePointers(AAPTR_MASTER, AAPTR_DEFAULT, AAPTR_DEFAULT)
+		TNT1 A 0 A_SpawnItemEx("FragGrenadeExplosion",0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_ChangeFlag("NOBLOCKMAP",0)
+		TNT1 A 0 A_ChangeFlag("NOINTERACTION",1)
+		TNT1 A 0 A_Stop
+		Stop
+	}
+}
+
+Actor KinMinDetectionFX
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	RenderStyle Add
+	Alpha 0.99
+	Scale 0.055
+	States
+	{
+	Spawn:
+		PING A 0 Bright
+		PING ABAB 1 Bright A_SetScale(scalex*1.4)
+	Looper:
+		PING A 0 Bright A_FadeOut(0.15)
+		PING A 1 Bright A_SetScale(scalex*1.4)
+		PING B 0 Bright A_FadeOut(0.15)
+		PING B 1 Bright A_SetScale(scalex*1.4)
+		Loop
+	}
+}
+
+Actor KinMinDetectionFXRed : KinMinDetectionFX
+{
+	Scale 0.115
+	-CLIENTSIDEONLY
+	Translation "0:255=%[0,0,0]:[1.5,0,0]"
+	States
+	{
+	Spawn:
+		X060 A 0 Bright
+		X060 AAAA 1 Bright A_SetScale(scalex*1.4)
+	Looper:
+		X060 A 0 Bright A_FadeOut(0.15)
+		X060 A 1 Bright A_SetScale(scalex*1.4)
+		X060 A 0 Bright A_FadeOut(0.15)
+		X060 A 1 Bright A_SetScale(scalex*1.4)
+		Loop
+	}
+}
+
+Actor MineCounter : Inventory  {Inventory.MaxAmount 52	Inventory.InterhubAmount 0}

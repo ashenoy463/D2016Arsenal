@@ -1,0 +1,999 @@
+ACTOR D4Pistol : D4WeaponBase replaces BrutalPistol
+{
+	Weapon.AmmoType1 "PistolTicCounter"
+	Weapon.AmmoGive1 0
+	Weapon.AmmoGive2 0
+	Weapon.AmmoUse1 0
+	Weapon.AmmoUse2 0
+    Inventory.PickupSound "Pistol/Select"
+	Inventory.PickupMessage "You got the EMG Sidearm!"
+	Obituary "%o was taken out by %k."
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NOALERT
+	+WEAPON.NOAUTOAIM
+	Tag "EMG Sidearm"
+	States
+	{
+	WReady:
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DualWieldAnimChecker")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"DualWieldAnimChecker")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		TNT1 A 0 A_JumpIfInventory("StartDualWield",1,"DualWield")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator",1,"RedReady")
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, 2)
+		PISG A 1 A_WeaponReady
+		Loop
+		PISG A 1 A_WeaponReady(WRF_NOSECONDARY)
+		Loop
+		
+	RedReady:
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, 2)
+		P1SG A 1 A_WeaponReady
+		Goto WReady
+		P1SG A 1 A_WeaponReady(WRF_NOSECONDARY)
+		Goto WReady
+		
+	StartUpgrader:
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_GiveInventory("UpgradePistol",1)
+		TNT1 A 0 A_SelectWeapon("D4WeaponUpgrader")
+		Goto WReady
+		
+	Flash:
+		TNT1 A 1 A_JumpIfInventory("PistolDualWield", 1, "PistolRight")
+		Loop
+	
+	Deselect:
+		TNT1 A 0 A_JumpIfInventory("ChecksIsFiringTheRightGun",1,"WReady")
+		TNT1 A 0 ACS_NamedTerminate("DualWieldChecker")
+		TNT1 A 1 A_JumpIfInventory("PistolDualWield",1,1)
+		Goto ProccedToDeselect
+		TNT1 A 0 A_GunFlash("FakeDeselect")
+		TNT1 A 0 A_Takeinventory("IsDualWeapon",1)
+		TNT1 A 0 A_Takeinventory("PistolDualWield",1)
+		Goto ProccedToDeselect
+	
+	ProccedToDeselect:
+		TNT1 A 0 A_Takeinventory("NoParkour",1)
+		TNT1 A 0 A_TakeInventory("PistolTicCounter", 999)
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator",1,"RedDeselect")
+		PISS A 0
+		Goto RealDeselect
+		
+		RedDeselect:
+			P1SS A 0
+			Goto RealDeselect
+	
+	RealDeselect:
+		"####" CBA 1
+		"####" A 0
+		Goto DeselectSequence
+		
+	Select: 
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator",1,"StartRedSelect")
+		PISS A 0
+		Goto SelectSequence
+		StartRedSelect:
+			P1SS A 0
+			Goto SelectSequence
+
+	Ready:
+		TNT1 A 0 A_GunFlash
+		TNT1 A 0 ACS_NamedExecuteAlways("DualWieldChecker")
+		TNT1 A 0 A_PlaySound("Pistol/Select")
+	SelectAnimation:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield",1,"DeployDualWield")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator",1,"RedSelect")
+		PISS A 0
+		Goto RealSelect
+		
+		RedSelect:
+			P1SS A 0
+			Goto RealSelect
+	
+	RealSelect:
+		"####" ABC 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	Spawn:
+		D4W1 A 1
+		TNT1 A 0 A_SpawnItemEx("D4PistolDroped", 0, 0, 0, velx, vely, velz, angle, SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY)
+		Stop
+		
+// Primary Fire Code
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("PistolAltMode", 1, "ReleaseAlt")
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, "FireDualWield")
+		TNT1 A 0 A_GunFlash("FirePrimary")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "FireRed")
+		PISF A 0 
+		Goto FireRelease
+		
+			FireRed:
+			P1SF A 0
+			Goto FireRelease
+			
+	FireRelease:
+		"####" A 1 BRIGHT
+		"####" BCD 1
+		"####" FFFF 1 A_WeaponReady(WRF_NOBOB)
+		"####" A 0 A_Refire("Fire")
+        "####" A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	FirePrimary:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "RedBullet")
+		TNT1 A 0 A_PlaySound("Pistol/Fire", 1)
+		TNT1 A 0 A_FireBullets(0,0,0,(random(10,15)),"D4PistolPuff",FBF_NORANDOM)
+		TNT1 A 0 A_FireCustomMissile("PistolplasmaTracer", 0,0,9,-4,0,0)
+		TNT1 A 0 A_SetBlend("SkyBlue",0.02,5)
+		Goto Recoil
+		
+		RedBullet:
+			TNT1 A 0 A_PlaySound("Pistol/FireRed",CHAN_WEAPON,1)
+			TNT1 A 0 A_FireBullets(0,0,0,(random(15,20)),"D4PistolRedPuff",FBF_NORANDOM)
+			TNT1 A 0 A_FireCustomMissile("RedPistolplasmaTracer", 0,0,9,-4,0,0)
+			TNT1 A 0 A_SetBlend("Red",0.05,7)
+			Goto Recoil
+		
+	Recoil:
+		TNT1 A 1 A_SetPitch(-0.4 + pitch)
+		TNT1 AA 1 A_SetPitch(0.2 + pitch)
+		Goto Flash
+				
+// Secondary Fire Code
+
+	AltFire:
+		TNT1 A 0 A_PlaySound("Pistol/Charge", 6)
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "SecondaryRed")
+		PISA ABCD 1
+		TNT1 A 0 A_GiveInventory("PistolAltMode", 1)
+	AltFire2:
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter", 52, "AltHoldLol")
+		Goto GiveAltFireToken
+		
+		GiveAltFireToken:
+			TNT1 A 0 A_JumpIfInventory("HasUpgradePistolFastCharge", 1, "GiveAltFireTokenUpgraded")
+			TNT1 A 0 A_GiveInventory("PistolTicCounter", 1)
+			Goto ProccedAlt
+		GiveAltFireTokenUpgraded:
+			TNT1 A 0 A_GiveInventory("PistolTicCounter", 2)
+			Goto ProccedAlt
+		
+	ProccedAlt:
+		PISA D 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		TNT1 A 0 A_Refire("AltFire2")
+		Goto UnAlt
+
+	AltHoldLol:
+		TNT1 A 0 A_PlaySound("Pistol/Charge/Loop", 5)
+		TNT1 A 0 A_FireCustomMissile("BlueFlareSpawn", 0, 0, 6, 1, 0, 0)
+		PISA D 1 BRIGHT A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		TNT1 A 0 A_Refire("AltHoldLol")
+		Goto UnAlt
+
+	ReleaseAlt:
+		TNT1 A 0 A_TakeInventory("PistolAltMode", 1)
+		TNT1 A 0
+		TNT1 A 0 A_StopSound(1)
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_StopSound(6)
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter", 8, "ProperAlt")
+		Goto FinishAltFire
+
+	UnAlt:
+		TNT1 A 0 A_TakeInventory("PistolTicCounter", 999)
+		TNT1 A 0 A_TakeInventory("PistolAltMode", 1)
+		PISA DCBA 1
+		Goto WReady
+		
+	// Red Variant
+	
+	SecondaryRed:
+		P1SA ABCD 1
+		TNT1 A 0 A_GiveInventory("PistolAltMode", 1)
+	AltFireRed:
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter", 52, "AltHoldReadyRed")
+		Goto GiveAltFireTokenRed
+		
+		GiveAltFireTokenRed:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolFastCharge", 1, "GiveAltFireTokenUpgradedRed")
+			TNT1 A 0 A_GiveInventory("PistolTicCounter", 1)
+			Goto ProccedAltRed
+		GiveAltFireTokenUpgradedRed:
+			TNT1 A 0 A_GiveInventory("PistolTicCounter", 2)
+			Goto ProccedAltRed
+		
+	ProccedAltRed:
+		P1SA D 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		TNT1 A 0 A_Refire("AltFireRed")
+		Goto UnAltRed
+
+	AltHoldReadyRed:
+		TNT1 A 0 A_PlaySound("Pistol/Red/Charge/Loop", 5)
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn", 0, 0, 6, 1, 0, 0)
+		P1SA D 1 BRIGHT A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY|WRF_NOSWITCH)
+		TNT1 A 0 A_Refire("AltHoldReadyRed")
+		Goto UnAltRed
+		
+	// Alt Finishers		
+	FinishAltFire:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "FinishAltFireRed")
+		TNT1 A 0 A_FireCustomMissile("BlueFlareSpawn", 0, 0, 6, 1, 0, 0)
+		TNT1 A 0 A_GunFlash("ReleaseBlue")
+		TNT1 A 0 A_FireCustomMissile("PistolplasmaTracer", 0,0,6,-4,0,0)
+		PISB A 1 BRIGHT A_SetPitch(-1.2 + pitch)
+		PISB B 0 A_AlertMonsters
+		PISB CD 1 A_SetPitch(0.6 + pitch)
+		PISB EFGHIJ 1 A_WeaponReady(1)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	FinishAltFireRed:
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn", 0, 0, 6, 1, 0, 0)
+		TNT1 A 0 A_GunFlash("ReleaseRed")
+		TNT1 A 0 A_FireCustomMissile("RedPistolplasmaTracer", 0,0,6,-4,0,0)
+		P1SB A 1 BRIGHT A_SetPitch(-1.2 + pitch)
+		P1SB B 0 A_AlertMonsters
+		P1SB CD 1 A_SetPitch(0.6 + pitch)
+		P1SB EFGHIJ 1 A_WeaponReady(1)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	ProperAltRed:
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn", 0, 0, 6, 1, 0, 0)
+		TNT1 A 0 A_GunFlash("ReleaseRed")
+		TNT1 A 0 A_FireCustomMissile("RedPistolheavyplasmaTracer", 0,0,6,-4,0,0)
+		P1SB B 1 BRIGHT A_SetPitch(-1.2 + pitch)
+		P1SB B 0 A_AlertMonsters
+		P1SB CD 1 A_SetPitch(0.6 + pitch)
+		P1SB EFGHIJ 1 A_WeaponReady(1)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	ProperAlt:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "ProperAltRed")
+		TNT1 A 0 A_FireCustomMissile("BlueFlareSpawn", 0, 0, 6, 1, 0, 0)
+		TNT1 A 0 A_GunFlash("ReleaseBlue")
+		TNT1 A 0 A_FireCustomMissile("PistolheavyplasmaTracer", 0,0,6,-4,0,0)
+		PISB B 1 BRIGHT A_SetPitch(-1.2 + pitch)
+		PISB B 0 A_AlertMonsters
+		PISB CD 1 A_SetPitch(0.6 + pitch)
+		PISB EFGHIJ 1 A_WeaponReady(1)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+
+	UnAltRed:
+		TNT1 A 0 A_TakeInventory("PistolTicCounter", 999)
+		TNT1 A 0 A_TakeInventory("PistolAltMode", 1)
+		P1SA DCBA 1
+		Goto WReady
+		
+// Release Alt Fire Checkers
+
+	ReleaseBlue:
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",52,"ReleaseLevel6B")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",43,"ReleaseLevel5B")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",34,"ReleaseLevel4B")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",25,"ReleaseLevel3B")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",16,"ReleaseLevel2B")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",8,"ReleaseLevel1B")
+		Goto NoReleaseBlue
+		
+			NoReleaseBlue:
+				TNT1 A 0 A_FireBullets(0,0,0,(random(10,15)),"D4PistolPuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Fire", 1)
+				TNT1 A 0 A_SetBlend("SkyBlue",0.02,5)
+				Goto TakePistolTic
+			ReleaseLevel1B:
+				TNT1 A 0 A_FireBullets(0,0,1,30,"D4PistolAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("SkyBlue",0.02,8)
+				Goto TakePistolTic
+			ReleaseLevel2B:
+				TNT1 A 0 A_FireBullets(0,0,1,40,"D4PistolAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("SkyBlue",0.04,8)
+				Goto TakePistolTic
+			ReleaseLevel3B:
+				TNT1 A 0 A_FireBullets(0,0,1,50,"D4PistolAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("SkyBlue",0.06,8)
+				Goto TakePistolTic
+			ReleaseLevel4B:
+				TNT1 A 0 A_FireBullets(0,0,1,60,"D4PistolAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("SkyBlue",0.08,8)
+				Goto TakePistolTic
+			ReleaseLevel5B:
+				TNT1 A 0 A_FireBullets(0,0,1,80,"D4PistolAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("SkyBlue",0.1,8)
+				Goto TakePistolTic
+			ReleaseLevel6B:
+				TNT1 A 0 A_FireBullets(0,0,1,100,"D4PistolAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Charge/FireStronger",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("SkyBlue",0.12,8)
+				Goto TakePistolTic
+
+	ReleaseRed:
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",52,"ReleaseLevel6R")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",43,"ReleaseLevel5R")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",34,"ReleaseLevel4R")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",25,"ReleaseLevel3R")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",16,"ReleaseLevel2R")
+		TNT1 A 0 A_JumpIfInventory("PistolTicCounter",8,"ReleaseLevel1R")
+		Goto NoReleaseRed
+		
+			NoReleaseRed:
+				TNT1 A 0 A_FireBullets(0,0,0,(random(15,20)),"D4PistolRedPuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/FireRed",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("Red",0.05,7)
+				Goto TakePistolTic		
+			ReleaseLevel1R:
+				TNT1 A 0 A_FireBullets(0,0,1,45,"D4PistolRedAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Red/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("Red",0.02,8)
+				Goto TakePistolTic
+			ReleaseLevel2R:
+				TNT1 A 0 A_FireBullets(0,0,1,60,"D4PistolRedAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Red/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("Red",0.04,8)
+				Goto TakePistolTic
+			ReleaseLevel3R:
+				TNT1 A 0 A_FireBullets(0,0,1,75,"D4PistolRedAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Red/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("Red",0.06,8)
+				Goto TakePistolTic
+			ReleaseLevel4R:
+				TNT1 A 0 A_FireBullets(0,0,1,90,"D4PistolRedAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Red/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("Red",0.08,8)
+				Goto TakePistolTic
+			ReleaseLevel5R:
+				TNT1 A 0 A_FireBullets(0,0,1,120,"D4PistolRedAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Red/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("Red",0.1,8)
+				Goto TakePistolTic
+			ReleaseLevel6R:
+				TNT1 A 0 A_FireBullets(0,0,1,150,"D4PistolRedAltFirePuff",FBF_NORANDOM)
+				TNT1 A 0 A_PlaySound("Pistol/Red/Charge/Fire",CHAN_WEAPON,1)
+				TNT1 A 0 A_SetBlend("Red",0.12,8)
+				Goto TakePistolTic
+				
+		TakePistolTic:
+			TNT1 A 0 A_TakeInventory("PistolTicCounter", 999)
+			Goto Flash
+		
+// Dual Wield Code
+	
+	DualWield:
+		TNT1 A 0 A_Takeinventory("StartDualWield",1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "RedPistolSprite")
+		PISG A 0
+		Goto ProccedDualWield
+	RedPistolSprite:
+		P1SG A 0
+		Goto ProccedDualWield
+	ProccedDualWield:
+		"####" A 0 A_JumpIfInventory("PistolDualWieldEnabler", 1, 1)
+		Goto FailDualWield
+        "####" A 0 A_GiveInventory("NoParkour", 1)
+		"####" A 0 A_JumpIfInventory("PistolDualWield", 1, "SinglePistol")
+		"####" A 6
+		"####" A 0 A_TakeInventory("IsUpgradeableWeapon", 1)
+		"####" A 0 A_Giveinventory("IsDualWeapon",1)
+		"####" A 0 A_Giveinventory("PistolDualWield",1)
+		"####" A 1 A_GunFlash("StartDual")
+		"####" A 5
+        "####" A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	SinglePistol:
+		"####" A 6
+		"####" A 0 A_GiveInventory("IsUpgradeableWeapon", 1)
+		"####" A 0 A_Takeinventory("IsDualWeapon",1)
+		"####" A 0 A_Takeinventory("PistolDualWield",1)
+		"####" A 1 A_GunFlash("EndDual")
+		"####" A 5
+        "####" A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+
+	PistolRight:
+		PI2G A 1 A_JumpIfInventory("FiredSecondary", 1, "FireSecondary")
+		Goto Flash
+		
+	StartDual:
+		PI2S ABCDE 1
+		Goto Flash
+		
+	EndDual:
+		PI2S EDCBA 1
+		Goto Flash
+
+	FakeSelect:
+		PI2Z ABC 1
+		Goto Flash
+	FakeDeselect:
+		PI2Z CBA 1
+		Goto Flash
+	DeployDualWield:
+		PISS A 0 A_GunFlash("FakeSelect")
+		PISS A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator",1,"RedSelect")
+		Goto RealSelect
+		
+	DualWieldAnimChecker:
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, 4)
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		Goto WReady
+		TNT1 A 0 A_Takeinventory("Taunting",1)
+		TNT1 A 0 A_Takeinventory("IsUpgradingWeapons",1)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKickDualWield")
+		Goto WReady
+		
+	FireDualWield:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "FireRedDualWield")
+		TNT1 A 0 A_PlaySound("Pistol/Fire", 1)
+		TNT1 A 0 A_FireBullets(random(-1,1),random(-1,1),0,(random(10,15)),"D4PistolPuff",FBF_NORANDOM)
+		TNT1 A 0 A_FireCustomMissile("PistolplasmaTracer", random(-1,1), 0, 11, -4, 0, random(-1,2))//Horizontal Spread, Vertical Spread, Numbers of Projectiles (Leave as -1 if its a single one), Damage Factor
+		TNT1 A 0 A_SetBlend("SkyBlue",0.02,5)
+		PISF A 1 BRIGHT 
+		PISF B 1 A_SetPitch(-0.4 + pitch)
+		PISF CD 1
+		PISF EFF 1
+		TNT1 A 0 A_Refire("Fire")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	FireRedDualWield:
+		TNT1 A 0 A_PlaySound("Pistol/FireRed",CHAN_WEAPON,1)
+		TNT1 A 0 A_FireBullets(random(-1,1),random(-1,1),0,(random(15,20)),"D4PistolRedPuff",FBF_NORANDOM)
+		TNT1 A 0 A_FireCustomMissile("RedPistolplasmaTracer", random(-1,1), 0, 11, -4, 0, random(-1,2))//Horizontal Spread, Vertical Spread, Numbers of Projectiles (Leave as -1 if its a single one), Damage Factor
+		TNT1 A 0 A_SetBlend("Red",0.05,7)
+		P1SF A 1 BRIGHT 
+		P1SF B 1 A_SetPitch(-0.4 + pitch)
+		P1SF CD 1
+		P1SF EFF 1
+		TNT1 A 0 A_Refire("Fire")
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	FireSecondary:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_GiveInventory("ChecksIsFiringTheRightGun",1)
+	    TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_PlaySound("Pistol/Fire", 2)
+		TNT1 A 0 A_FireBullets(random(-1,1),random(-1,1),0,(random(10,15)),"D4PistolPuff",FBF_NORANDOM)
+		TNT1 A 0 A_FireCustomMissile("PistolplasmaTracer", random(-1,1), 0, -11, -4, 0, random(-1,2))//Horizontal Spread, Vertical Spread, Numbers of Projectiles (Leave as -1 if its a single one), Damage Factor
+		TNT1 A 0 A_SetBlend("SkyBlue",0.02,5)
+		PI2F A 1 BRIGHT 
+		PI2F B 1 A_SetPitch(-0.4 + pitch)
+		PI2F CD 1
+		TNT1 A 0 A_TakeInventory("FiredSecondary",1)
+		PI2F EFF 1
+		PI2G A 0 A_JumpIfInventory("FiredSecondary",1,"FireSecondary")
+		TNT1 A 0 A_TakeInventory("ChecksIsFiringTheRightGun",1)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto Flash
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------
+//
+// Flash States, Here lies new animations under kicks, taunt and throw grenade
+//
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	PunchFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "PunchFlashRed")
+		PISS A 0
+		Goto RealPunchFlash
+
+		PunchFlashRed:
+			P1SS A 0
+			Goto RealPunchFlash
+			RealPunchFlash:
+				"####" CBA 1
+				TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, "UnFlash")
+				Goto Flash
+		
+	KickFlash:
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, "KickFlashDual")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "KickFlashRed")
+		PISK A 0
+		Goto RealKickFlash
+		
+		KickFlashRed:
+			P1SK A 0	
+			Goto RealKickFlash
+		KickFlashDual:
+			TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "KickFlashDualRed")
+			PI2K A 0
+			Goto RealKickFlash
+		KickFlashDualRed:
+			P12K A 0	
+			Goto RealKickFlash
+			RealKickFlash:
+				"####" ABCD 1
+				"####" E 8
+				"####" DCBA 1
+				Goto Flash
+
+	AirKickFlash:
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, "AirKickFlashDual")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "AirKickFlashRed")
+		PISK A 0
+		Goto RealAirKickFlash
+		
+		AirKickFlashRed:
+			P1SK A 0
+			Goto RealAirKickFlash
+		AirKickFlashDual:
+			TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "AirKickFlashDualRed")
+			PI2K A 0
+			Goto RealAirKickFlash
+		AirKickFlashDualRed:
+			P12K A 0		
+			Goto RealAirKickFlash
+			RealAirKickFlash:
+				"####" ABCD 1
+				"####" E 10
+				"####" DCBA 1
+				Goto Flash
+		
+	SlideKickStartFlash:
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, "SlideKickStartFlashDual")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "SlideKickStartFlashRed")
+		PISK A 0
+		Goto RealSlideKickStartFlash
+
+		SlideKickStartFlashRed:
+			P1SK A 0
+			Goto RealSlideKickStartFlash
+		SlideKickStartFlashDual:
+			TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "SlideKickStartFlashDualRed")
+			PI2K A 0
+			Goto RealSlideKickStartFlash
+		SlideKickStartFlashDualRed:
+			P12K A 0			
+			Goto RealSlideKickStartFlash			
+			RealSlideKickStartFlash:
+				"####" ABCD 1
+				"####" E 17
+	SlideKickEndFlash:
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, "SlideKickEndFlashDual")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "SlideKickEndFlashRed")
+		PISK A 0
+		Goto RealSlideKickEndFlash
+
+		SlideKickEndFlashRed:
+			P1SK A 0
+			Goto RealSlideKickEndFlash
+		SlideKickEndFlashDual:
+			TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "SlideKickEndFlashDualRed")
+			PI2K A 0
+			Goto RealSlideKickEndFlash
+		SlideKickEndFlashDualRed:
+			P12K A 0			
+			Goto RealSlideKickEndFlash
+			RealSlideKickEndFlash:
+				"####" E 5
+				"####" DCBA 1
+				Goto Flash
+
+	TauntFlash:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "TauntFlashRed")
+		PISS A 0
+		Goto RealTauntFlash
+
+		TauntFlashRed:
+			P1SS A 0
+			Goto RealTauntFlash
+			RealTauntFlash:
+				"####" CBA 1
+				"####" A 37
+				"####" ABC 1
+				Goto Flash
+		
+	GrenadeFlash:
+		TNT1 A 0 A_JumpIfInventory("PistolDualWield", 1, "GrenadeFlashDual")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "GrenadeFlashRed")
+		PISS A 0
+		Goto RealGrenadeFlash
+		
+		GrenadeFlashRed:
+			P1SS A 0
+			Goto RealGrenadeFlash	
+			RealGrenadeFlash:
+				"####" CBA 1
+				Goto Flash
+				
+			GrenadeFlashDual:
+				TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "GrenadeFlashDualRed")
+				PI2K A 0
+				Goto RealGrenadeFlashDual
+			GrenadeFlashDualRed:
+				P12K A 0			
+				Goto RealGrenadeFlashDual
+
+					RealGrenadeFlashDual:
+						"####" ABCDE 1
+						Stop
+	}
+}
+
+Actor PistolTicCounter : Ammo 
+{
+	Inventory.Amount 0 
+	inventory.maxamount 52 
+	Ammo.BackpackAmount 0 
+	Ammo.BackpackMaxAmount 52 
+	Inventory.Icon "D4W1A0"
+   	Tag "Pistol Charge"
+} // Pistol Charge - Token
+
+Actor PistolDualWield : Inventory {inventory.maxamount 1} // Dual Wield Token
+Actor PistolAltMode : Inventory {inventory.maxamount 1} 
+Actor PistolDualWieldEnabler : Inventory {inventory.maxamount 1}
+
+// Tracers
+
+Actor PistolplasmaTracer: FastProjectile
+{
++BLOODSPLATTER 
+-DONTSPLASH
+speed 200
+//damage (random(15,20))
+scale .2
+RenderStyle Add
+Alpha 0.9
+radius 2
+height 2
+//Decal "BulletDecalNew1"
+States
+{
+
+	Spawn:
+		TNT1 A 1 BRIGHT A_SpawnItemEx("PistolplasmaTracerTrail", 0,               0,              2)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail2", (2 *momx)/-35.0, -(2 *momy)/-35.0, 2+(2 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail3", (4 *momx)/-35.0, -(4 *momy)/-35.0, 2+(4 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail4", (6 *momx)/-35.0, -(6 *momy)/-35.0, 2+(6 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail5", (8 *momx)/-35.0, -(8 *momy)/-35.0, 2+(8 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail6", (10*momx)/-35.0, -(10*momy)/-35.0, 2+(10*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail7", (12*momx)/-35.0, -(12*momy)/-35.0, 2+(12*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail8", (14*momx)/-35.0, -(14*momy)/-35.0, 2+(14*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail9", (16*momx)/-35.0, -(16*momy)/-35.0, 2+(16*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail10", (18*momx)/-35.0, -(18*momy)/-35.0, 2+(18*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail11", (20*momx)/-35.0, -(20*momy)/-35.0, 2+(20*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolplasmaTracerTrail12", (22*momx)/-35.0, -(22*momy)/-35.0, 2+(22*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+		Loop
+	Death:
+		TNT1 A 0
+		Stop
+}
+}
+
+actor PistolplasmaTracerTrail
+{
+    Scale 0.03
+    RenderStyle Add
+    Alpha 0.9
+    +NOINTERACTION
+    +CLIENTSIDEONLY
+    States
+    {
+    Spawn:
+        SPKB A 2 BRIGHT
+        stop
+    }
+}
+
+actor PistolplasmaTracerTrail2: PistolplasmaTracerTrail {    Alpha 0.85 }
+actor PistolplasmaTracerTrail3: PistolplasmaTracerTrail {    Alpha 0.80 }
+actor PistolplasmaTracerTrail4: PistolplasmaTracerTrail {    Alpha 0.75 }
+actor PistolplasmaTracerTrail5: PistolplasmaTracerTrail {    Alpha 0.70 }
+actor PistolplasmaTracerTrail6: PistolplasmaTracerTrail {    Alpha 0.65 }
+actor PistolplasmaTracerTrail7: PistolplasmaTracerTrail {    Alpha 0.60 }
+actor PistolplasmaTracerTrail8: PistolplasmaTracerTrail {    Alpha 0.55 }
+actor PistolplasmaTracerTrail9: PistolplasmaTracerTrail {    Alpha 0.50 }
+actor PistolplasmaTracerTrail10: PistolplasmaTracerTrail {    Alpha 0.45 }
+actor PistolplasmaTracerTrail11: PistolplasmaTracerTrail {    Alpha 0.40 }
+actor PistolplasmaTracerTrail12: PistolplasmaTracerTrail {    Alpha 0.35 }
+
+Actor PistolheavyplasmaTracer: FastProjectile
+{
++BLOODSPLATTER 
+-DONTSPLASH
+speed 200
+//damage (random(80,90))
+scale .6
+RenderStyle Add
+Alpha 0.9
+radius 2
+height 2
+//damagetype Shotgun
+//Decal "Scorch"
+States
+{
+	Spawn:
+		TNT1 A 1 BRIGHT A_SpawnItemEx("PistolheavyplasmaTracerTrail", 0,               0,              2)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail2", (2 *momx)/-35.0, -(2 *momy)/-35.0, 2+(2 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail3", (4 *momx)/-35.0, -(4 *momy)/-35.0, 2+(4 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail4", (6 *momx)/-35.0, -(6 *momy)/-35.0, 2+(6 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail5", (8 *momx)/-35.0, -(8 *momy)/-35.0, 2+(8 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail6", (10*momx)/-35.0, -(10*momy)/-35.0, 2+(10*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail7", (12*momx)/-35.0, -(12*momy)/-35.0, 2+(12*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail8", (14*momx)/-35.0, -(14*momy)/-35.0, 2+(14*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail9", (16*momx)/-35.0, -(16*momy)/-35.0, 2+(16*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail10", (18*momx)/-35.0, -(18*momy)/-35.0, 2+(18*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail11", (20*momx)/-35.0, -(20*momy)/-35.0, 2+(20*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("PistolheavyplasmaTracerTrail12", (22*momx)/-35.0, -(22*momy)/-35.0, 2+(22*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+		Loop
+	Death:
+		TNT1 A 0
+		Stop
+}
+}
+
+actor PistolheavyplasmaTracerTrail
+{
+    Scale 0.2
+    RenderStyle Add
+    Alpha 0.9
+    +NOINTERACTION
+    +CLIENTSIDEONLY
+    States
+    {
+    Spawn:
+        SPKB A 2 BRIGHT
+        stop
+    }
+}
+
+actor PistolheavyplasmaTracerTrail2: PistolheavyplasmaTracerTrail {    Alpha 0.85 }
+actor PistolheavyplasmaTracerTrail3: PistolheavyplasmaTracerTrail {    Alpha 0.80 }
+actor PistolheavyplasmaTracerTrail4: PistolheavyplasmaTracerTrail {    Alpha 0.75 }
+actor PistolheavyplasmaTracerTrail5: PistolheavyplasmaTracerTrail {    Alpha 0.70 }
+actor PistolheavyplasmaTracerTrail6: PistolheavyplasmaTracerTrail {    Alpha 0.65 }
+actor PistolheavyplasmaTracerTrail7: PistolheavyplasmaTracerTrail {    Alpha 0.60 }
+actor PistolheavyplasmaTracerTrail8: PistolheavyplasmaTracerTrail {    Alpha 0.55 }
+actor PistolheavyplasmaTracerTrail9: PistolheavyplasmaTracerTrail {    Alpha 0.50 }
+actor PistolheavyplasmaTracerTrail10: PistolheavyplasmaTracerTrail {    Alpha 0.45 }
+actor PistolheavyplasmaTracerTrail11: PistolplasmaTracerTrail {    Alpha 0.40 }
+actor PistolheavyplasmaTracerTrail12: PistolheavyplasmaTracerTrail {    Alpha 0.35 }
+
+	// Red Variant
+
+Actor RedPistolplasmaTracer: FastProjectile
+{
++BLOODSPLATTER 
+-DONTSPLASH
+speed 200
+//damage (random(15,20))
+scale .2
+RenderStyle Add
+Alpha 0.9
+radius 2
+height 2
+//Decal "BulletDecalNew1"
+States
+{
+
+	Spawn:
+		TNT1 A 1 BRIGHT A_SpawnItemEx("RedPistolplasmaTracerTrail", 0,               0,              2)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail2", (2 *momx)/-35.0, -(2 *momy)/-35.0, 2+(2 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail3", (4 *momx)/-35.0, -(4 *momy)/-35.0, 2+(4 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail4", (6 *momx)/-35.0, -(6 *momy)/-35.0, 2+(6 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail5", (8 *momx)/-35.0, -(8 *momy)/-35.0, 2+(8 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail6", (10*momx)/-35.0, -(10*momy)/-35.0, 2+(10*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail7", (12*momx)/-35.0, -(12*momy)/-35.0, 2+(12*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail8", (14*momx)/-35.0, -(14*momy)/-35.0, 2+(14*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail9", (16*momx)/-35.0, -(16*momy)/-35.0, 2+(16*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail10", (18*momx)/-35.0, -(18*momy)/-35.0, 2+(18*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail11", (20*momx)/-35.0, -(20*momy)/-35.0, 2+(20*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolplasmaTracerTrail12", (22*momx)/-35.0, -(22*momy)/-35.0, 2+(22*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+		Loop
+	Death:
+		TNT1 A 0
+		Stop
+}
+}
+
+actor RedPistolplasmaTracerTrail
+{
+    Scale 0.03
+    RenderStyle Add
+    Alpha 0.9
+    +NOINTERACTION
+    +CLIENTSIDEONLY
+    States
+    {
+    Spawn:
+        WSKR A 2 BRIGHT
+        stop
+    }
+}
+
+actor RedPistolplasmaTracerTrail2: RedPistolplasmaTracerTrail {    Alpha 0.85 }
+actor RedPistolplasmaTracerTrail3: RedPistolplasmaTracerTrail {    Alpha 0.80 }
+actor RedPistolplasmaTracerTrail4: RedPistolplasmaTracerTrail {    Alpha 0.75 }
+actor RedPistolplasmaTracerTrail5: RedPistolplasmaTracerTrail {    Alpha 0.70 }
+actor RedPistolplasmaTracerTrail6: RedPistolplasmaTracerTrail {    Alpha 0.65 }
+actor RedPistolplasmaTracerTrail7: RedPistolplasmaTracerTrail {    Alpha 0.60 }
+actor RedPistolplasmaTracerTrail8: RedPistolplasmaTracerTrail {    Alpha 0.55 }
+actor RedPistolplasmaTracerTrail9: RedPistolplasmaTracerTrail {    Alpha 0.50 }
+actor RedPistolplasmaTracerTrail10: RedPistolplasmaTracerTrail {    Alpha 0.45 }
+actor RedPistolplasmaTracerTrail11: RedPistolplasmaTracerTrail {    Alpha 0.40 }
+actor RedPistolplasmaTracerTrail12: RedPistolplasmaTracerTrail {    Alpha 0.35 }
+
+Actor RedPistolheavyplasmaTracer: FastProjectile
+{
++BLOODSPLATTER 
+-DONTSPLASH
+speed 200
+//damage (random(80,90))
+scale .6
+RenderStyle Add
+Alpha 0.9
+radius 2
+height 2
+//damagetype Shotgun
+//Decal "Scorch"
+States
+{
+	Spawn:
+		TNT1 A 1 BRIGHT A_SpawnItemEx("RedPistolheavyplasmaTracerTrail", 0,               0,              2)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail2", (2 *momx)/-35.0, -(2 *momy)/-35.0, 2+(2 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail3", (4 *momx)/-35.0, -(4 *momy)/-35.0, 2+(4 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail4", (6 *momx)/-35.0, -(6 *momy)/-35.0, 2+(6 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail5", (8 *momx)/-35.0, -(8 *momy)/-35.0, 2+(8 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail6", (10*momx)/-35.0, -(10*momy)/-35.0, 2+(10*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail7", (12*momx)/-35.0, -(12*momy)/-35.0, 2+(12*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail8", (14*momx)/-35.0, -(14*momy)/-35.0, 2+(14*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail9", (16*momx)/-35.0, -(16*momy)/-35.0, 2+(16*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail10", (18*momx)/-35.0, -(18*momy)/-35.0, 2+(18*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail11", (20*momx)/-35.0, -(20*momy)/-35.0, 2+(20*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("RedPistolheavyplasmaTracerTrail12", (22*momx)/-35.0, -(22*momy)/-35.0, 2+(22*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+		Loop
+	Death:
+		TNT1 A 0
+		Stop
+}
+}
+
+actor RedPistolheavyplasmaTracerTrail
+{
+    Scale 0.2
+    RenderStyle Add
+    Alpha 0.9
+    +NOINTERACTION
+    +CLIENTSIDEONLY
+    States
+    {
+    Spawn:
+        WSKR A 2 BRIGHT
+        stop
+    }
+}
+
+Actor RedPistolheavyplasmaTracerTrail2: RedPistolheavyplasmaTracerTrail {    Alpha 0.85 }
+Actor RedPistolheavyplasmaTracerTrail3: RedPistolheavyplasmaTracerTrail {    Alpha 0.80 }
+Actor RedPistolheavyplasmaTracerTrail4: RedPistolheavyplasmaTracerTrail {    Alpha 0.75 }
+Actor RedPistolheavyplasmaTracerTrail5: RedPistolheavyplasmaTracerTrail {    Alpha 0.70 }
+Actor RedPistolheavyplasmaTracerTrail6: RedPistolheavyplasmaTracerTrail {    Alpha 0.65 }
+Actor RedPistolheavyplasmaTracerTrail7: RedPistolheavyplasmaTracerTrail {    Alpha 0.60 }
+Actor RedPistolheavyplasmaTracerTrail8: RedPistolheavyplasmaTracerTrail {    Alpha 0.55 }
+Actor RedPistolheavyplasmaTracerTrail9: RedPistolheavyplasmaTracerTrail {    Alpha 0.50 }
+Actor RedPistolheavyplasmaTracerTrail10: RedPistolheavyplasmaTracerTrail {    Alpha 0.45 }
+Actor RedPistolheavyplasmaTracerTrail11: RedPistolplasmaTracerTrail {    Alpha 0.40 }
+Actor RedPistolheavyplasmaTracerTrail12: RedPistolheavyplasmaTracerTrail {    Alpha 0.35 }
+Actor RedPistolheavyplasmaTracerTrail13: RedPistolheavyplasmaTracerTrail {    Alpha 0.30 }
+Actor RedPistolheavyplasmaTracerTrail14: RedPistolheavyplasmaTracerTrail {    Alpha 0.25 }
+Actor RedPistolheavyplasmaTracerTrail15: RedPistolheavyplasmaTracerTrail {    Alpha 0.20 }
+Actor RedPistolheavyplasmaTracerTrail16: RedPistolheavyplasmaTracerTrail {    Alpha 0.15 }
+Actor RedPistolheavyplasmaTracerTrail17: RedPistolheavyplasmaTracerTrail {    Alpha 0.10 }
+Actor RedPistolheavyplasmaTracerTrail18: RedPistolheavyplasmaTracerTrail {    Alpha 0.05 }
+
+// New Bullet Puffs Definition
+
+Actor D4PistolPuff : HitPuff
+{
+	scale .2
+	DamageType Minor
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		Goto Melee
+	Melee:
+		TNT1 AAAAA 0 A_SpawnItem("BlueFlareSmall")
+		TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+		BL1I ABCD 1 BRIGHT A_SpawnItem("BlueFlareSmall")
+		TNT2 AA 3 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+Actor D4PistolAltFirePuff : D4PistolPuff 
+{
+	scale .6
+	DamageType Shotgun 
+	Decal "SmallerScorch"
+	States
+	{	
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		Goto Melee
+	Melee:
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAA 0 A_SpawnItem("BlueFlareSmall")
+		TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaFireNonStatic", 2, 0, random (0, 360), 2, random (0, 180))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("BlueplasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+		BL1I ABCD 1 BRIGHT A_SpawnItem("BlueFlareSmall")
+		TNT2 AA 3 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+Actor D4PistolRedPuff : HitPuff
+{
+	scale .2
+	DamageType Normal
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		Goto Melee
+	Melee:
+		TNT1 AAAAA 0 A_SpawnItem("RedFlareSmall")
+		TNT1 AAAAA 0 A_CustomMissile ("RedPlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+		BL2I ABCD 1 BRIGHT A_SpawnItem("RedFlareSmall")
+		TNT2 AA 3 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+Actor D4PistolRedAltFirePuff : D4PistolRedPuff 
+{
+	scale .6
+	DamageType Shotgun 
+	Decal "SmallerScorch"
+	States
+	{	
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		Goto Melee
+	Melee:
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAA 0 A_SpawnItem("RedFlareSmall")
+		TNT1 AAAAA 0 A_CustomMissile ("RedPlasmaFireNonStatic", 2, 0, random (0, 360), 2, random (0, 180))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("RedPlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+		BL1I ABCD 1 BRIGHT A_SpawnItem("RedFlareSmall")
+		TNT2 AA 3 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}

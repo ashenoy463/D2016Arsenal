@@ -1,0 +1,1 @@
+user int xvhud_enablestats = 1;

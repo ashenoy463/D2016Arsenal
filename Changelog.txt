@@ -1,0 +1,249 @@
+// --------------------------------------------------------------------------------------------------------------------------
+//
+//	   Version History
+//
+//	(Developed by XV117)
+//
+// --------------------------------------------------------------------------------------------------------------------------
+//
+//	1.1 Release(7/11/2019)
+//
+//	Added New Weapons (Reaper and Static Rifle), BDv21 is now replaced by the Reaper
+//	Added Fast Charge and Damage Upgrades for Static Rifle
+//	Added Explosive Rounds and Charged Shot Upgrades for Reaper
+//	Added Cvar to Disable Glory Kills, This feature is requested from some players
+//	Added Ammo Detection Script for Chainsaw Pinata, that determines the actual ammo to Spawn
+//	Added SSG Aim (Alt-Fire) Mutator, whit user Cvar can be switch to fire a single or both barrels while using the Aim Feature
+//	Added Exo-Arms(Fast-Reload) and Double Trouble(Dual-Wield Enabler) Upgrades for SSG, the second upgrade is for balance porpusses
+//	Added New Equipments (Shield Wall, Kinetic Mine and Personal Teleporter)
+//	Changed Syphon effect on Monsters
+//	Changed Plasma Rifle now fires more faster, like as in 1.0 and removed unnecesary sprites
+//	Changed Enhanced SSG Reload Animation
+//	Changed Demon Players now Cancels the morph whit the "Dual Wield" Button
+//	Changed Enhanced Combat Shotgun Animations, Unnecesary Sprites has been removed
+//	Changed Haste now has effect on weapons to make a fast firing or fast switch
+//	Changed Player on HMGs can use the Flashlight
+//	Changed Removed the old Dev-1.1(04/07/2019) Quick Punch to replace whit Melee Combo System, like as in BE and PB
+//	Changed Some Sprites has been edited
+//	Changed Rebalanced GKs Pinatas to make a proper health drop
+//	Changed Some ACS Scripts is now called by the weapons, making a perfomance compensation
+//	Changed adapted all weapons to actual version of my weapon base
+//	Fixed Some Sounds that are no displaying on Zandronum
+//	Fixed H.A.R Dual wield Deploy animation
+//	Updated Weapon base to add Melee Combo and Smooth Select animations
+//	Updated the Player Vehicle Detection Script, to make a proper identification and gives a token using the CheckActorClass instead giving by weapons.
+//
+//	Dev-1.1(31/08/2019)
+//
+//	Added Support Patchs for Eday and Hellbound Revisited
+//	Added Support for Brutal DOOM Patch by Bloodwolf, You need load DOOM 2016 Arsenal after BDPatch to apply changes
+//	Added version of the Hud HXRTC compatible with DOOM 2016 Arsenal, file "D2016Arsenal-HXRTCHUD.pk3"
+//	Added Unique Glory Kill for Cyber Demon and Spider Mastermind
+//	Added Chainsaw to DOOM 2016 Weapons, Spawns whit D4Chainsaw and D4ChainsawDM for Multiplayer gamemodes
+//	Added New Pistol Sprites by _1337, i edited to make a propper Kick animations
+//	Added Hellshot Damage Upgrade
+//	Changed Changed now the file has been divided into 2 files, "D2016ArsenalCode-rX.X" and "D2016ArsenalResources-rX.X" to make changes to the code instead of replacing the entire file
+//	Changed BFG 9000 now shoots faster, it has been changed to use the D4T sprites that look better
+//	Changed BE: Glory Kills now spawn a pinata instead of giving the player a fatality reward
+//	Changed the chainsaw now can also perform executions that give ammo bonuses
+//	Changed Vortex rifle can now make better shots, the position of the rail attack has been corrected while using the Scope
+//	Changed Now you can get grenades when you get a backpack
+//	Changed Actor Names "D4PowerQuadDamage to PowerD4QuadDamage", "D4PowerHaste to PowerD4Haste" and removed actors "D4PowerRegen, D4PowerInvuln", is a fix for SBARINFO-Based Huds
+//	Changed The chances that enemies drop grenades by 50% less have been reduced.
+//	Enhanced First Person Glory Kill Executions
+//	Fixed Flash animations in weapons, this error was present due to a change in the base actor, which made the sprite overlap on the other during a tic
+//	Fixed a massive bug in multiplayer scripts, which broke all actors in Deatmatch and Teamgames in Zandronum
+//	Fixed Sergeant Sprite Conflict
+//	Fixed Cruelty Pinata Actors and Monster Spawner in BDPatch
+//	Removed Fatality Glory Kills for Berserk Executors
+//	Removed Old Updated BDv21 Chainsaw
+//	Removed ExtraWeaps.dec
+//	Removed FragGrenadedFix actor, this already included in Bloodwolf Patch
+//	Multiplayer Change Holograms now behave like a player but don't hurt
+//	Multiplayer Change Players can now be glory killed in Multiplayer, provided health is below 10.
+//
+//	Note: Now DOOM 2016 Arsenal requires BD Patch to 
+//	work correctly, but it can also work without it, 
+//	keep in mind that BDPatch solves the problems 
+//	related to brutal DOOM and the characteristics of 
+//	vehicles have been rebuilt.
+//	
+//	Dev-1.1(20/08/2019)
+//
+//	Added Orange Contour Sprites for all Monsters to indicate Glory Killable States (1MB more for the file)
+//	Added New Commando Variants (Assaulter and Demolitions)
+//	Added SSG Sergeant Variant (Has 50% Chances to Fire single barrel and 75% Chances to make a manual SSG Reload)
+//	Added Exterminator (Zombieman Variant)
+//	Added Equipments (Frag Grenades, Hologram and Syphon)
+//	Added CVar for Glory Kill Type Executions (DOOM 2016 Arsenal and BD Black Edition)
+//	Added Aracnorb, the code and sprites are present in BD v21 but are in disuse, which means that Mark was going to implement them, anyway this code revives the Aracnorbs and brings them back to BDv21.
+//	Changed Players executes a fatalities on monsters instead Glory Kills while using a Berserk powerup
+//	Changed Throw Grenade Animation (More Faster)
+//	Changed Syphon Grenades only affect players in DM Based Gamemodes
+//	Changed Monsters has low probability to drop grenades
+//	Changed Belphegor, Aracnorb and Volcabus has 1.56% chances to spawns
+//	Fixed Belphegor Fatality, Now drops a propper green gore
+//	Fixed Death.Plasma Bug in Belphegor Code
+//	Fixed H.A.R. Tactical Scope Fire Recoil
+//	
+//	Dev-1.1(12/08/2019)
+//
+//	Added Belphegor replacers
+//	Changed New Scopes for H.A.R, Vortex Rifle and Gauss Cannon
+//	Changed Restored the Heat Blast Effect for Plasma Rifle
+//	Changed New Sprites for Glory Kill System
+//	Enhanced Charged Fire Function for Precision Bolt and Vortex Rifle
+//
+//	Dev-1.1(05/08/2019) Quick-Fix
+//
+//	Changed Gamemode Checker now detects Zandronum Special Gamemodes
+//	Changed New Sprites for Grenade Launcher by IDDQD_1337
+//	Fixed SSG Quick-Punch Infinite bool looping
+//
+//	Dev-1.1(04/08/2019)
+//
+//	Added "Dual Repeater" to Dual Wielding System
+//	Changed Renoved Dual-Repeater Sprites
+//	Fixed Hellshot Cooldown Timer
+//	Fixed Revenant Missile Battery Upgrades Crash
+//	
+//	Dev-1.1(03/08/2019) Quick-Fix
+//
+//	Fixed Hellshot Deathmatch Alt Fire
+//	Fixed Rocket Launcher - Lock Burst Alt Fire
+//
+//	Dev-1.1(02/08/2019)
+//
+//	Added Basic Support for Deathmatch and Skulltag Gamemodes
+//	Added New Token "IsPlayingAsD4Arsenal" for HUDs
+//	Added Fatality Function for Morphed Players
+//	Added Brutal Dismenber for Morphed Players
+//	Fixed Weapon Upgrader Texts
+//	Fixed Mobile Turret Offsets
+//	Fixed Missing Health Bonus for Imp Wall Execution
+//	Fixed BFG Ammo Light Definition
+//
+//	Dev-1.1(30/07/2019)
+//
+//	Added HAR Sergeant added variant, has a 10% chance of replacing the common sergeant, is obviously armed with a heavy assault rifle and has a high fire rate although not as much as the commands and as a special fire can fire a piercing round or a burst of micro missiles
+//	Added Finally the DOOM 2016 power ups (Haste, Regen and Quad Damage)
+//	Added Unique Meat Shield actor, now all meat shields work under a single actor, making maintenance easy
+//	Added New Mod Swapping animations for the Gauss Cannon
+//	Added A key has been added for the Weapon Modification System "Use the [Weapon Upgrader] button" (In beta, although working at the moment)
+//	Added A cooling system for weapon modifications has been implemented
+//	Changed Now you can throw heads of Enemies, Lost souls, Cacodemon eyes and Fatalized Imps with the Quick Punch key, as long as these are in the player's inventory
+//	Changed The weapons code has been further revised and adjustments and improvements have been made to all weapons of the mod except the updated weapons
+//	Changed Now Dual Wield weapons are attached to the code of their counterparts, which means they will not be given the player with tricks because they now work with special tokens
+//	Changed Ammo system now uses actors similar to those of Death Foretold (Made to balance weapons and provide some cross compatibility and easy conversion of assets to Brutal DOOM)
+//	Changed Upgrade System
+//	Changed Merged whit some part of code from BD21.0.2 Patch by BLOODWOLF333 to fix my actors
+//	Changed Fully implementation of GK Execution Sys for Mancubus, Arch-Vile, CyberDemon, Mastermind and Bosses Variants
+//	Removed all innecesary actors from my mod (Some sub-addons or HUDs that still use these actors may not work properly)
+//	Fixed BFG infinite ammo bug
+//	Fixed Mobile Turret Missing Frames
+//
+//	Dev-1.1(04/07/2019)
+//
+//	Requires a Gold Version of Brutal DOOM v21 to Work
+//
+//	Added Dual Weapon Fire Checker "Checks is firing the right gun during dual wielding, fix the fucking bug during firing animation"
+//	Added New Variants for Sergeants, Zombieman and Labguy, makes gameplay more hard and adictive
+//	Added Quick-Punch Mechanic, needed for the Glory Kill System
+//	Added Implemented Glory Kill Execution System
+//	Added Grenade Launcher - Beta, need better sprites for this
+//	Added Lightninght Gun - Beta
+//	Added Laser-Guided Missile Upgrade for Revenant Missile Battery
+//	Added D4T Item Sprites
+//	Changed Dual Pistol and Single Pistol code has been splited in one
+//	Changed Parkour Detection System is now integrated on the Code of all Weapons
+//	Changed Alt-Mode Function on Weapons 
+//	Changed Stun bomb effect on monsters
+//	Changed Health ammount on items to balance the Glory Kill System
+//	Fixed Some functions not works properly in Zandronum
+//	Fixed Many, Many, Many, Many Bugs presents on previus versions
+//	Fixed Demon Runes not works correctly on GZDOOM 3.0 or lastest
+//	Removed SSG Grapple Hook - not yet more supported
+//	Removed Unnecessary Use-attack Flash state in Weapon Base, Now works on ACS
+//	Removed IsFlashOcupped Token
+//	Revised Chaingun Code
+//
+//	Release 1.0a Emergency Update - 27/10/2018
+//
+//	Added Attack SFX for Repeater Rifle
+//	Added Fire SFX for Combat Shotgun
+//	Added Flamme Cannon MK2 Upgrade for Mancubus Arm
+//	Changed Combat Shotgun Causes more damage
+//	Changed Reajusted Some Spawners
+//	Fixed a critical error whit loading this mod on lastest BDv21 Version
+//	Removed BDv21's Flammethrower, replaced by a Random Item Spawner
+//
+//	Note: This a Emergency Quick-Fix Update to work
+//	on lastest BDv21 Version (Release Candidate 2),
+//	none of my actors is affected and works correctly.
+//
+//	Release 1.0 (Out of Betas) - 21/10/2018
+//
+//	Tested on GZDOOM 3.5.1/Zandronum 3.0 and 3.1pre
+//	Untested whit UDV 2.12b, maybe not work whit thist
+//
+//	Requires a RC1 Quick-Fix Version of Brutal DOOM v21 to Work
+//
+//	Added Throwable Axe from Enhanced Weapons Mutator
+//	Added Revenant Missile Launcher Battery whit Upgrades
+//	Added DOOM Eternal-Styled Side-Dashing
+//	Added New Weapon Base
+//	Added New Animations for Kick, Air Kick, Slide Kick, Taunt and Toss Grenade
+//	Added Start Game Helmet Animation (Toggleable on ACS)
+//	Added Bullet Hole Effects from Brutal DOOM v20b
+//	Added Hellshot
+//	Added Reserved Ammo Detection for Rocket Launcher & Dual Rocket Launcher and SSG & Dual SSG
+//	Added Stun Bomb and Heat Blast Upgrades for Plasma Gun
+//	Added Remote Detonate and Lock-On Upgrades for Rocket Launcher
+//	Added Precision and Siege Mode Upgrades for Gauss Cannon
+//	Added Gatling Rotator and Mobile Turret Upgrades for Chaingun
+//	Added Grapple Hook Upgrade for SSG
+//	Added DOOM 2016 Hell Knight Pounce Attack
+//	Added DOOM 2016-Styled Dead Elite Soldiers whit dropped random Items
+//	Added Unused BDv21 Weapon Detection System (Removes all Unused Weapons from BDv21 from Player Inventory)
+//	Added Infrared Demon Vision for Demon Morph Rune Powerups
+//	Added Special Attacks for Demon Players, 5-10% chances to execute a special attack
+//	Added Night Vision for Tanks on ACS module
+//	Added Repeater Burst & Semi-Auto Fire-Modes
+//	Added Upgrade Item Pickup
+//	Added Special Tokens for HUDS
+//	Added New propper Meat Shields and Parkour for Fists
+//	Changed Chaingun fire mechanic
+//	Changed Updated MP40 and Axe
+//	Changed Gauss Cannon Fire Function
+//	Changed New Sprites for Weapons
+//	Changed Stamina Function now works on ACS
+//	Changed Player Class Definition now works on PlayerClass.txt file
+//	Changed Flashlight now works on ACS
+//	Changed Remaded all Dual Wielding Weapon System
+//	Changed New Decorate and Sprites for SSG & Dual SSG
+//	Changed Pistol Alt-Fire Function
+//	CHanged Demon Morph Rune System (May only works on previous versions of GZDOOM [ZDOOMLE, Zandronum]) 
+//	Enhanced Machinegun Micro-Missile Fire mode
+//	Enhanced BFG 9000 Fire function
+//	Fixed huge bugs on decorate system
+//	Removed Old-Stupid Weapon Base for Dual Wielding Weapon
+//	Removed WeaponForge Upgrades for Chaingun, Rocket Launcher, SSG, Repeater, BFG, Gauss Cannon and Plasma Gun
+//
+//	Note: Brutal DOOM - Mutators is not Compatible whit this
+//	Release Version.
+//
+//	Beta 5 - 28/08/2018 (Intitial Changelog Release)
+//
+//	Ported to Work whit RC 1 of Brutal DOOM
+//
+//	Added New Ammo for BFG
+//	Changed New Sprites for Gauss Gun
+//	Changed New Sprites for Ledge Climbing Function
+//	Changed Injected Parkour System for New Weapons
+//	Enhanced Player Revenant Sprites and Attack Function
+//	Fixed few Bugs whit Aug 09 Test of Brutal DOOM
+//	Fixed crashes
+//	Removed Some WeaponForge Functions for BFG and Gauss Gun (Rebalance)
+//
+//
+// --------------------------------------------------------------------------------------------------------------------------

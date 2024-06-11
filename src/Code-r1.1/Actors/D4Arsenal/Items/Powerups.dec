@@ -1,0 +1,366 @@
+ACTOR D4Megasphere : CustomInventory replaces Megasphere
+{
+	+COUNTITEM
+	+INVENTORY.BIGPOWERUP
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupMessage "$GOTMSPHERE" // "MegaSphere!"
+	Inventory.PickupSound "Items/MegaPickup"
+	Inventory.RespawnTics 2100 //60 secs
+	+FLOATBOB
+	scale 1.1
+	States
+	{
+	Spawn:
+		D4HX ABCDEEEDCBAA 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("D4ArmorForMega", 1)
+		TNT1 A 0 A_GiveInventory("MegasphereHealth", 1)
+		Stop
+	}
+}
+
+Actor D4ArmorForMega : BasicArmorBonus 
+{
+	Inventory.Icon "ARMOR"
+	Radius 20
+	Height 16
+	Inventory.Pickupmessage ""
+	Armor.Savepercent 100
+	Armor.Saveamount 200
+	Armor.Maxsaveamount 200
+	-COUNTITEM
+	+INVENTORY.QUIET
+	Scale 0.82
+	States
+	{
+	Spawn:
+		D4AR G 6 Bright
+		D4AR G 7 
+		loop
+	}
+}
+
+// Backpack
+Actor D4BackPack : CustomInventory replaces AmmoSuply 
+{
+	Scale 0.7
+	Inventory.PickupMessage "Picked up a backpack"
+	Height 26
+	Inventory.MaxAmount 1
+	Inventory.Amount 1
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.AUTOACTIVATE
+	+NOTIMEFREEZE
+	Inventory.PickUpSound "Backpack"
+	States
+	{
+	Spawn:
+		BPAK A -1 
+		Stop
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"DM")
+		Goto ProccedPickup
+	ProccedPickup:
+		TNT1 A 0 A_GiveInventory("RandomEquipment",1)
+		TNT1 A 0 A_JumpIfInventory("BackpackCounter",3,"Rollover")
+		TNT1 A 0 A_GiveInventory("BackpackCounter",1)
+		Goto AmmoGive
+
+	Rollover:
+		TNT1 A 0 A_TakeInventory("BackpackCounter",3)
+		TNT1 A 0 A_JumpIfInventory("BackpackLevel",6,"AmmoGive")
+		Goto AmmoIncrease
+		
+	AmmoIncrease:
+		TNT1 A 0 A_GiveInventory("D4BackpackItem",1)
+		TNT1 A 0 ACS_NamedExecuteAlways("BackPackGiver",0,0,0,0)
+		Stop
+		
+	AmmoGive:
+		TNT1 A 0 A_GiveInventory("D4Fuel", 1)
+	DM:
+		TNT1 A 0 A_GiveInventory("D4Bullets",10)
+		TNT1 A 0 A_GiveInventory("D4Shells"	, 4)
+		TNT1 A 0 A_GiveInventory("D4Cells"	,10)
+		TNT1 A 0 A_GiveInventory("D4Rockets", 1)
+		TNT1 A 0 A_GiveInventory("D4Slugs"	, 4)
+		TNT1 A 0 A_GiveInventory("GrenadeAmmo", 1)
+		Stop
+	}
+}
+
+Actor D4BackpackItem : BackpackItem
+{
+	Scale 0.7
+	Height 26
+	Inventory.MaxAmount 100
+	States
+	{
+	Spawn:
+		BPAK A -1 NoDelay 
+		Stop
+	}
+}
+
+Actor BackpackCounter	: Inventory	{ Inventory.MaxAmount 3 }
+Actor BackpackLevel		: Inventory	{ Inventory.MaxAmount 6 }
+
+// Power Ups
+ACTOR D4PowerUpPickup : CustomInventory
+{
+	Inventory.PickupSound "Items/PowerUp"
+	Inventory.MaxAmount 0
+
+	+COUNTITEM
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.FANCYPICKUPSOUND
+}
+
+// -- Berserk --
+
+ACTOR D4BerserkSphere : BerserkPack replaces Berserk
+{
+	Inventory.PickupMessage "Berserk! Who's a man and a half?"
+	Inventory.PickupSound "Items/PowerUp"
+
+	States
+	{
+	Spawn:
+		BZRK ABCDEFEDCB 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("PowerUp/Berserk", CHAN_7)
+		TNT1 A 0 A_GiveInventory("PowerStrength")
+		TNT1 A 0 HealThing(100, 0)
+		//TNT1 A 0 ACS_NamedExecuteAlways("GetBerserkEffect")
+		//TNT1 A 0 A_SelectWeapon("Melee_Attacks")
+		TNT1 A 20
+		TNT1 A 0 A_Print ("Press Reload (R) to alternate execution modes")
+		Stop
+	}
+}
+
+// -- Quad --
+
+ACTOR PowerD4QuadDamage : PowerDamage
+{
+	DamageFactor "Normal", 4
+}
+
+Actor D4QuadDamageGiver : PowerupGiver
+{
+	Powerup.Duration -45
+	powerup.color "purple", 0.15
+	Powerup.Type PowerD4QuadDamage
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.MaxAmount 0
+}
+
+ACTOR D4QuadDamage : D4PowerUpPickup
+{
+	Inventory.PickupMessage "Quad Damage!"
+	States
+	{
+	Spawn:
+		QUAD ABCDEFEDCB 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("PowerUp/QuadDamage", CHAN_7)
+		TNT1 A 0 A_GiveInventory("D4QuadDamageGiver")
+		Stop
+	}
+}
+
+// -- Haste --
+
+ACTOR PowerD4Haste : PowerSpeed
+{
+	Speed 1.5
+}
+
+Actor D4HasteGiver : PowerupGiver
+{
+	Powerup.Duration -45
+	powerup.color "Yellow", 0.08
+	Powerup.Type PowerD4Haste
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.MaxAmount 0
+}
+
+ACTOR D4HasteGiver2 : PowerupGiver
+{
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.MaxAmount 0
+	powerup.Type "DoubleFiringSpeed"
+	powerup.color "Red", 0.08
+	powerup.duration -45
+}
+
+ACTOR D4HasteSphere : D4PowerUpPickup
+{
+	Inventory.PickupMessage "Haste!"
+	States
+	{
+	Spawn:
+		HSTE ABCDEFEDCB 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("PowerUps/Haste", CHAN_7)
+		TNT1 A 0 A_GiveInventory("D4HasteGiver")
+		TNT1 A 0 A_GiveInventory("D4HasteGiver2")
+		Stop
+	}
+}
+
+// -- Regen --
+
+Actor D4RegenGiver : PowerupGiver
+{
+	Powerup.Duration -60
+	Powerup.Strength 2
+	powerup.color "cyan", 0.08
+	powerup.Type Regeneration
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.MaxAmount 0
+}
+
+ACTOR D4RegenSphere : D4PowerUpPickup
+{
+	Inventory.PickupMessage "Regeneration!"
+	States
+	{
+	Spawn:
+		REGN ABCDEFEDCB 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("PowerUp/Regen", CHAN_7)
+		TNT1 A 0 A_GiveInventory("D4RegenGiver")
+		Stop
+	}
+}
+
+// -- Invuln --
+
+ACTOR D4Invulnerability : D4PowerUpPickup replaces InvulnerabilitySphere
+{
+	Inventory.PickupMessage "Invulnerability! Holy shit!"
+	States
+	{
+	Spawn:
+		PINV AAABBBCCCDDD 2 Bright A_SpawnItem("GreenFlareMedium",0,20)
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("PowerUp/Invuln", CHAN_7)
+		TNT1 A 0 A_GiveInventory("InvulnerabilitySphere_")
+		Stop
+	}
+}
+
+// -- Demon Rune --
+ACTOR DemonRuneMix2: CustomInventory replaces DemonRuneMix
+{
+ scale 1.0
+ radius 16
+ height 16
+ +INVENTORY.BIGPOWERUP
+ +THRUGHOST
+ damage 0
+   Mass 1
+   Inventory.PickupMessage "You got the Demon Morph Rune!"
+    States
+    {
+	 Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("DemonRuneCheck")
+		TNT1 A 4
+	Live:	
+		DMRU AABBCCDD 2 Bright A_SpawnItem("RedFlareMedium",0,20)
+		Loop
+	Pickup:
+	    TNT1 A 1
+		TNT1 A 0 A_TakeInventory("PowerInvulnerable", 1)
+		TNT1 A 0 A_TakeInventory("InvulPostGloryKill", 1)
+		TNT1 A 0 A_TakeInventory("FlashlightOn", 1)
+		TNT1 A 0 A_TakeInventory("SwitchFlashlight", 1)
+		TNT1 A 0 A_Jump(128, "Revenant")
+		TNT1 A 0 ACS_NamedExecuteAlways("D4BaronRune")
+		Stop
+	Revenant:
+	    TNT1 A 0 ACS_NamedExecuteAlways("D4RevenantRune")
+		Stop
+	Cancels:
+		TNT1 A 0 A_SpawnItemEx("D4QuadDamage",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+    }
+}
+
+Actor NewDemonRuneBaron: DemonRuneMix2 replaces DemonRuneBaron
+{
+Inventory.PickupMessage "You got the Baron Morph Rune!"
+States
+	{
+	Pickup:
+	    TNT1 A 1
+		TNT1 A 0 A_TakeInventory("PowerInvulnerable", 1)
+		TNT1 A 0 A_TakeInventory("InvulPostGloryKill", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("D4BaronRune")
+		Stop
+    }
+}
+
+Actor NewDemonRuneRevenant: DemonRuneMix2 replaces DemonRuneRevenant
+{
+Inventory.PickupMessage "You got the Revenant Morph Rune!"
+States
+	{
+	Pickup:
+	    TNT1 A 1
+		TNT1 A 0 A_TakeInventory("PowerInvulnerable", 1)
+		TNT1 A 0 A_TakeInventory("InvulPostGloryKill", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("D4RevenantRune")
+		Stop
+    }
+}
+
+// Updated
+Actor SoulSphereReplacer : RandomSpawner replaces SoulSphere
+{
+	DropItem "D4SoulSphere",	 255, 3
+	DropItem "D4RegenSphere",			 255, 2
+	DropItem "D4QuadDamage",			 255, 1
+}
+
+Actor InfraredReplacer : RandomSpawner replaces Infrared
+{
+	DropItem "NightVisionSpawner",	 255, 3
+	DropItem "D4HasteSphere",			 255, 2
+	DropItem "D4QuadDamage",			 255, 1
+}
+
+Actor D4SoulSphere : LifeSphere replaces LifeSphere 
+{
+	Inventory.PickupSound "Items/PowerUp"
+}
+Actor D4BlurSphere : SuperBlurSphere replaces SuperBlurSphere 
+{
+	Inventory.PickupSound "Items/PowerUp"
+}
+ACTOR D4Automap : Allmap replaces Allmap
+{
+	Inventory.PickupSound "Items/Automap"
+}
+ACTOR D4Infrared : NightVision replaces NightVision
+{
+	Inventory.PickupSound "Items/Automap"
+}
+ACTOR D4Radsuit : Radsuits replaces Radsuit
+{
+	Inventory.PickupSound "Items/PowerUp"
+}

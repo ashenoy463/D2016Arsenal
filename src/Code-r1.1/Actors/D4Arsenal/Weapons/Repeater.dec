@@ -1,0 +1,710 @@
+ACTOR D4Repeater : D4WeaponBase replaces Rifle
+{
+	Weapon.SelectionOrder 1300
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 10
+	Weapon.AmmoType1 "D4Bullets"
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 0
+    Inventory.PickupSound "CLIPIN"
+	Inventory.PickupMessage "You got the Burst Rifle!"
+	Obituary "%o was shot down by %k's Burst Rifle."
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NOAUTOAIM
+	+WEAPON.NOALERT
+	Tag "Burst Rifle"
+	States
+	{
+	WReady:
+		// -----------------------------------------------------------------------
+		// Zoom Checker
+		// -----------------------------------------------------------------------
+		TNT1 A 0 A_JumpIfInventory("Zoomed",1,"ReadyAim")
+		// -----------------------------------------------------------------------
+		SkipZoomChecker:
+			TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+			TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"DualWieldAnimChecker")
+			TNT1 A 0 A_JumpIfInventory("Kicking",1,"DualWieldAnimChecker")
+			TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+			TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+			TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+			TNT1 A 0 A_JumpIfInventory("Taunting",1,"DualWieldAnimChecker")
+			TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+			TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+			TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+			TNT1 A 0 A_JumpIfInventory("StartDualWield",1,"DualWield")
+			TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "ReadyDualWield")
+			RPTG A 1 A_WeaponReady
+			Goto WReady
+		
+	ReadyAim:
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UnZoom")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"UnZoom")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"UnZoom")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "UnZoom")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"UnZoom")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"UnZoom")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "UnZoom")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "UnZoom")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"UnZoom")
+		TNT1 A 0 A_JumpIfInventory("StartDualWield",1,"UnZoom")
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterScope",1,"ReadySniper")
+		RPTG B 1 A_WeaponReady
+		Goto WReady
+		
+	ReadySniper:
+		TNT1 A 0 A_SetBlend("Cyan",0.15,3)
+		RPTG D 1 BRIGHT A_WeaponReady
+		Goto WReady
+		
+	StartUpgrader:
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_GiveInventory("UpgradeRepeater",1)
+		TNT1 A 0 A_SelectWeapon("D4WeaponUpgrader")
+		Goto WReady
+		
+	Flash:
+		TNT1 A 1 A_JumpIfInventory("RepeaterDualWield",1,"RightWeapon")
+		Loop
+	
+	Deselect:
+		TNT1 A 0 A_JumpIfInventory("ChecksIsFiringTheRightGun",1,"WReady")
+		TNT1 A 0 ACS_NamedTerminate("DualWieldChecker")
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_Takeinventory("NoParkour",1)
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield",1,"DeselectDualWield")
+		TNT1 A 0 A_Takeinventory("Zoomed",1)
+		TNT1 A 0 A_Takeinventory("ADSmode",1)
+        TNT1 A 0 A_ZoomFactor(1.0)
+		RPTS EDCBA 1
+		RPTS A 0
+		Goto DeselectSequence
+
+	Select:
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		RPTS A 0
+		Goto SelectSequence
+
+	Ready:
+		TNT1 A 0 A_GunFlash
+		TNT1 A 0 ACS_NamedExecuteAlways("DualWieldChecker")
+        TNT1 A 0 A_PlaySound("Weapon/Switch")
+	SelectAnimation:
+		TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield",1,"DeployDualWield")
+		RPTS ABCDE 1
+		TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield",1,"FireDual")
+		RPTG "#" 0 A_JumpIfInventory("D4Bullets",1,1)
+        Goto NoAmmo
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_JumpIfInventory("Zoomed",1,"FireAim")
+		TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",3,"FireBurst")
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",2,"FireTwo")
+		Goto FireSemi
+		
+		FireSemi:
+			TNT1 A 0 A_PlaySound("Repeater/Single",CHAN_WEAPON,1.0,false,0.9)
+			RPTF A 1 BRIGHT A_GunFlash("FirePrimary")
+			RPTF BC 1		
+			Goto FireEnd+1
+
+		FireTwo:
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			RPTF F 1 BRIGHT A_GunFlash("FirePrimary")
+			RPTF BC 1		
+			RPTF E 1 BRIGHT A_GunFlash("FirePrimary")
+			RPTF BC 1		
+			Goto FireEnd
+		
+		FireBurst:
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			RPTF F 1 BRIGHT A_GunFlash("FirePrimary")
+			RPTF BC 1		
+			RPTF E 1 BRIGHT A_GunFlash("FirePrimary")
+			RPTF BC 1		
+			RPTF F 1 BRIGHT A_GunFlash("FirePrimary")
+			RPTF BC 1		
+			Goto FireEnd
+		
+	FireEnd:
+		RPTF CC 1
+		RPTG AAA 1
+		RPTG A 1 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY)
+		RPTG A 4 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY)
+		TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+	
+	NoAmmo:
+		RPTG "#" 1 A_PlaySound("weapons/empty")
+		Goto WReady
+		
+	FirePrimary:		
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+		TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+		TNT1 A 0 A_JumpIfInventory("Zoomed",2,"DamageAltFire")
+		TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,12,-6,0,random(-1,1))
+		Goto DamageNormal
+		
+		DamageNormal:
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"DamageUpgraded")
+			TNT1 A 0 A_FireBullets(1.0, 1.0, 1, 7, "BulletPuff")
+			Goto FinishPrimary
+		DamageUpgraded:
+			TNT1 A 0 A_FireBullets(0.5, 0.5, 1, 12, "BulletPuff")
+			Goto FinishPrimary		
+		DamageAltFire:
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,0,0,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"DamageAltFireUpgraded")
+			TNT1 A 0 A_FireBullets(1.0, 1.0, 1, 10, "BulletPuff")
+			Goto FinishPrimary
+		DamageAltFireUpgraded:
+			TNT1 A 0 A_FireBullets(0.5, 0.5, 1, 15, "BulletPuff")
+			Goto FinishPrimary
+			
+	FinishPrimary:
+		TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,16,-2)
+		TNT1 A 0 A_SetBlend("orange",0.07,6)
+		TNT1 A 0 A_Takeinventory("D4Bullets",1)
+		TNT1 A 1 A_SetPitch(-1.0 + pitch)
+		TNT1 AA 1 A_SetPitch(0.5 + pitch)
+		Goto Flash
+
+	FireAim:
+		TNT1 A 0 A_PlaySound("Repeater/Single",CHAN_WEAPON,1.0,false,0.9)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterScope",1,"FireSniper")
+		RPTA A 1 BRIGHT A_GunFlash("FirePrimary")
+		RPTA BC 1		
+		RPTA CCB 1
+		RPTG B 1 A_WeaponReady(WRF_NOBOB)
+		RPTG B 4 A_WeaponReady(WRF_NOBOB)
+		Goto WReady
+
+	FireSniper:
+		TNT1 A 0 A_GunFlash("FirePrimary")
+		RPTG D 1 BRIGHT A_SetBlend("Cyan",0.15,3)
+		RPTG DD 1 BRIGHT A_SetBlend("Cyan",0.15,3)	
+		RPTG DDD 1 BRIGHT A_SetBlend("Cyan",0.15,3)
+		TNT1 A 0 A_SetBlend("Cyan",0.15,3)
+		RPTG D 1 BRIGHT A_WeaponReady(WRF_NOBOB)
+		TNT1 A 0 A_SetBlend("Cyan",0.15,3)
+		RPTG D 1 BRIGHT A_WeaponReady(WRF_NOBOB)
+		TNT1 A 0 A_SetBlend("Cyan",0.15,3)
+		RPTG D 1 BRIGHT A_WeaponReady(WRF_NOBOB)
+		TNT1 A 0 A_SetBlend("Cyan",0.15,3)
+		RPTG D 1 BRIGHT A_WeaponReady(WRF_NOBOB)
+		TNT1 A 0 A_SetBlend("Cyan",0.15,3)
+		RPTG D 1 BRIGHT A_WeaponReady(WRF_NOBOB)
+		Goto WReady
+		
+	AltFire:
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_JumpIfInventory("Zoomed",1,"UnZoom")
+		TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_Giveinventory("Zoomed",1)
+		TNT1 A 0 A_Giveinventory("ADSmode",1)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterScope",1,"StartSniper")
+        TNT1 A 0 A_ZoomFactor(1.6)
+		RPTG ACB 1		
+		Goto WReady
+		
+	UnZoom:
+		TNT1 A 0 A_Takeinventory("Zoomed",1)
+		TNT1 A 0 A_Takeinventory("ADSmode",1)
+        TNT1 A 0 A_ZoomFactor(1.0)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterScope",1,"EndSniper")
+		RPTG BCA 1
+		TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	StartSniper:		
+		TNT1 A 0 A_playsound("Repeater/Zoom/In", 4)
+        TNT1 A 0 A_ZoomFactor(6.25)
+		TNT1 A 0 A_GunFlash("StartSniperFlash")
+		RPTG D 10 BRIGHT
+		Goto WReady
+		
+	EndSniper:
+		TNT1 A 0 A_playsound("Repeater/Zoom/Out", 4)
+		TNT1 A 0 A_GunFlash("EndSniperFlash")
+		RPTG D 20 BRIGHT
+		TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	StartSniperFlash:
+		TNT1 A 1 A_SetBlend("Black",0.2,3)
+		TNT1 A 1 A_SetBlend("Black",0.4,3)
+		TNT1 A 1 A_SetBlend("Black",0.6,3)
+		TNT1 A 1 A_SetBlend("Black",0.8,3)
+        TNT1 AA 1 A_SetBlend("Black",1.0,3)
+		TNT1 A 1 A_SetBlend("Cyan",0.8,3)
+		TNT1 A 1 A_SetBlend("Cyan",0.6,3)
+		TNT1 A 1 A_SetBlend("Cyan",0.4,3)
+		Goto Flash
+		
+	EndSniperFlash:
+		TNT1 A 1 A_SetBlend("Cyan",0.4,3)
+		TNT1 A 1 A_SetBlend("Cyan",0.6,3)
+		TNT1 A 1 A_SetBlend("Cyan",0.8,3)
+		TNT1 A 1 A_SetBlend("Cyan",1.0,3)
+        TNT1 A 1 A_SetBlend("Black",1.0,3)
+		TNT1 A 1 A_SetBlend("Black",0.8,3)
+		TNT1 A 1 A_SetBlend("Black",0.6,3)
+		TNT1 A 1 A_SetBlend("Black",0.4,3)
+        TNT1 A 1 A_SetBlend("Black",0.2,3)
+		TNT1 AAAAAAAAAA 1 A_SetBlend("Black",1.0,3)
+		Goto Flash
+		
+	Spawn:
+		D4W2 B 1 
+		TNT1 A 0 A_SpawnItemEx("D4RepeaterSpawnerNoAmmo", 0, 0, 0, velx, vely, velz, angle, SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY)
+		Stop
+		
+// ------------------------------------------------------------------------------------
+//
+// Dual Wield States
+//
+// ------------------------------------------------------------------------------------
+
+	ReadyDualWield:
+		RP2G A 1 A_WeaponReady(WRF_NOSECONDARY)
+		Goto SkipZoomChecker
+		
+	RightWeapon:
+		RP1G A 1 A_JumpIfInventory("FiredSecondary", 1, "FireSecondary")
+		Goto Flash
+		
+	DualWieldAnimChecker:
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, 4)
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		Goto WReady
+		TNT1 A 0 A_Takeinventory("Taunting",1)
+		TNT1 A 0 A_Takeinventory("IsUpgradingWeapons",1)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKickDualWield")
+		Goto WReady
+		
+	DeployDualWield:
+		TNT1 A 0 A_GunFlash("FakeSelect")
+		RP2S DCBA 1
+		TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	DeselectDualWield:
+		TNT1 A 0 A_GunFlash("FakeDeselect")
+		RP2S ABCD 1
+        TNT1 A 0 A_TakeInventory("IsDualWeapon",1)
+		TNT1 A 0 A_TakeInventory("RepeaterDualWield", 1)
+		RP2S D 0
+		Goto DeselectSequence
+		
+	FakeSelect:
+		RP1S DCBA 1
+		Goto Flash
+		
+	FakeDeselect:
+		RP1S ABCD 1
+		Goto Flash
+		
+	DualWield:
+		TNT1 A 0 A_Takeinventory("StartDualWield",1)
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWieldEnabler", 1, "GetDual")
+		Goto FailDualWield
+		
+	GetDual:	
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "UnDual")
+		RPTD ABCC 1
+		RP2S D 4
+		TNT1 A 0 A_GiveInventory("RepeaterDualWield", 1)
+        TNT1 A 0 A_GiveInventory("IsDualWeapon",1)
+		TNT1 A 0 A_GunFlash("FakeSelect")
+		RP2S DCBA 1		
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	UnDual:
+		TNT1 A 0 A_TakeInventory("RepeaterDualWield", 1)
+        TNT1 A 0 A_TakeInventory("IsDualWeapon",1)
+		TNT1 A 0 A_GunFlash("FakeDeselect")
+		RP2S ABCD 1		
+		RP2S D 2
+		RPTD CBA 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	// Fire Dual Wield
+		
+	// All Shit out here works better in flash,
+	// not uses flash because that is ocupped by
+	// the Dual Wielding system, similar function
+	// only works on GZDOOM advanced, that breaks
+	// the Zandronum Multiplayer Support
+	
+	FireDual:
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",1,1)
+        Goto NoAmmoDualWield
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",3,"FireDualBurst")
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",2,"FireDualTwo")
+		Goto FireDualSemi
+	
+	NoAmmoDualWield:
+		RP2G A 1 A_PlaySound("weapons/empty")
+		Goto WReady
+		
+	// Semi-Auto
+		FireDualSemi:
+			TNT1 A 0 A_PlaySound("Repeater/Single",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeSingleDW")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")
+		ProccedSemiDW:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP2F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP2F BC 1 A_SetPitch(0.5 + pitch)
+			Goto FireEndDual+1
+		
+	// Two Fire
+	
+		FireDualTwo:
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeTwoDW1")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")			
+		ProccedTwoDW1:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP2F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP2F BC 1 A_SetPitch(0.5 + pitch)
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeTwoDW2")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")				
+		ProccedTwoDW2:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP2F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP2F BC 1 A_SetPitch(0.5 + pitch)
+			Goto FireEndDual
+		
+	// Normal Burst
+	
+		FireDualBurst:
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeBurstDW1")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")			
+		ProccedBurstDW1:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP2F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP2F BC 1 A_SetPitch(0.5 + pitch)
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeBurstDW2")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")				
+		ProccedBurstDW2:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP2F D 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP2F BC 1 A_SetPitch(0.5 + pitch)
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeBurstDW3")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")	
+		ProccedBurstDW3:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP2F E 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP2F BC 1 A_SetPitch(0.5 + pitch)
+			Goto FireEndDual
+			
+			
+	// Upgraded States
+			UpgradeSingleDW:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedSemiDW					
+			
+			UpgradeTwoDW1:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedTwoDW1					
+			
+			UpgradeTwoDW2:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedTwoDW2	
+				
+			UpgradeBurstDW1:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedBurstDW1					
+			
+			UpgradeBurstDW2:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedBurstDW2					
+			
+			UpgradeBurstDW3:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedBurstDW3	
+				
+	// End Fire Function		
+	
+	FireEndDual:
+		RP2F CF 1
+		RP2G A 5 A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY)
+		RP2G A 1 A_Refire
+		TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto SkipZoomChecker
+		
+	// Secondary Weapon Fire
+
+	FireSecondary:
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",1,1)
+        	Goto NoAmmoFL
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_GiveInventory("ChecksIsFiringTheRightGun",1)
+		TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",3,"FireFLBurst")
+		TNT1 A 0 A_JumpIfInventory("D4Bullets",2,"FireFLTwo")
+		Goto FireFLSemi
+	
+		NoAmmoFL:
+		RP1G A 1 A_PlaySound("weapons/empty")
+		TNT1 A 0 A_TakeInventory("ChecksIsFiringTheRightGun",1)
+		Goto Flash
+		
+	// Semi-Auto
+		FireFLSemi:
+			TNT1 A 0 A_PlaySound("Repeater/Single",CHAN_5,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,-12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeSingleFL")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")
+		ProccedSemiFL:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,-16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP1F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP1F BC 1 A_SetPitch(0.5 + pitch)
+			Goto FireEndFL+1
+		
+	// Two Fire
+	
+		FireFLTwo:
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_5,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,-12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeTwoFL1")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")			
+		ProccedTwoFL1:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,-16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP1F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP1F BC 1 A_SetPitch(0.5 + pitch)
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_5,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,-12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeTwoFL2")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")				
+		ProccedTwoFL2:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,-16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP1F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP1F BC 1 A_SetPitch(0.5 + pitch)
+			Goto FireEndFL
+		
+	// Normal Burst
+	
+		FireFLBurst:
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,-12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeBurstFL1")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")			
+		ProccedBurstFL1:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,-16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP1F A 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP1F BC 1 A_SetPitch(0.5 + pitch)
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,-12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeBurstFL2")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")				
+		ProccedBurstFL2:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,-16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP1F D 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP1F BC 1 A_SetPitch(0.5 + pitch)
+			TNT1 A 0 A_PlaySound("Repeater/Fire",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn", 0, 0, 4, -2, 0, 0)
+			TNT1 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+			TNT1 A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1),0,-12,-6,0,random(-1,1))
+			TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage",1,"UpgradeBurstFL3")
+			TNT1 A 0 A_FireBullets(10.0, 3.0, 1, 7, "BulletPuff")	
+		ProccedBurstFL3:
+			TNT1 A 0 A_FireCustomMissile("RifleCaseSpawn",5,0,-16,-2)
+			TNT1 A 0 A_SetBlend("orange",0.07,6)
+			TNT1 A 0 A_Takeinventory("D4Bullets",1)
+			RP1F E 1 BRIGHT A_SetPitch(-1.0 + pitch)
+			RP1F BC 1 A_SetPitch(0.5 + pitch)
+			Goto FireEndFL
+			
+			
+	// Upgraded States
+			UpgradeSingleFL:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedSemiFL					
+			
+			UpgradeTwoFL1:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedTwoFL1					
+			
+			UpgradeTwoFL2:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedTwoFL2	
+				
+			UpgradeBurstFL1:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedBurstFL1					
+			
+			UpgradeBurstFL2:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedBurstFL2					
+			
+			UpgradeBurstFL3:
+				TNT1 A 0 A_FireBullets(7.0, 2.5, 1, 12, "BulletPuff")
+				Goto ProccedBurstFL3	
+				
+	// End Fire Function for Secondary Weapon		
+	FireEndFL:
+		RP1F CF 1
+		RP1G A 4 A_TakeInventory("FiredSecondary",1)
+		RP1G A 2 A_JumpIfInventory("FiredSecondary", 1, "FireSecondary")
+		TNT1 A 0 A_TakeInventory("ChecksIsFiringTheRightGun",1)
+		TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto Flash
+		
+// ------------------------------------------------------------------------------------
+//
+// Flash States, Here lies new animations under kicks, taunt and throw grenade
+//
+// ------------------------------------------------------------------------------------
+
+	PunchFlash:
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "PunchFlashDual")
+		RPTS ECA 1
+		Goto Flash
+		
+	PunchFlashDual:
+		RP2S ACD 1
+		Goto UnFlash
+		
+	KickFlash:
+		RPTK A 0 A_JumpIfInventory("RepeaterDualWield", 1, "KickFlashDual")
+		Goto RealKickFlash	
+		
+	KickFlashDual:
+		RP2K A 0
+		Goto RealKickFlash		
+		
+		RealKickFlash:
+			"####" ABCD 1
+			"####" E 8
+			"####" DCBA 1
+			Goto Flash
+
+	AirKickFlash:
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "AirKickFlashDual")
+		RPTK A 0
+		Goto RealAirKickFlash
+		
+	AirKickFlashDual:
+		RP2K A 0
+		Goto RealAirKickFlash
+		
+		RealAirKickFlash:
+			"####" ABCD 1
+			"####" E 10
+			"####" DCBA 1
+			Goto Flash
+		
+	SlideKickStartFlash:
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "SlideKickStartFlashDual")
+		RPTS EDCB 1
+		RPTS A 17
+	SlideKickEndFlash:
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "SlideKickEndFlashDual")
+		RPTS A 5
+		RPTS BCDE 1
+		Goto Flash
+	
+	SlideKickStartFlashDual:
+		RP2K ABCD 1
+		RP2K E 17
+	SlideKickEndFlashDual:
+		RP2K E 5
+		RP2K DCBA 1
+		Goto Flash
+
+	TauntFlash:
+		RPTK ABCD 1
+		RPTK E 35
+		RPTK DCBA 1
+		Goto Flash
+		
+	GrenadeFlash:
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "GrenadeFlashDual")
+		RPTK A 0
+		Goto RealGrenadeFlash
+		
+	GrenadeFlashDual:
+		RP2K A 0
+		Goto RealGrenadeFlash
+
+		RealGrenadeFlash:
+			"####" ACE 1
+			TNT1 A 0 A_JumpIfInventory("RepeaterDualWield", 1, "UnFlash")
+			Goto Flash
+	}
+}
+
+Actor RepeaterDualWieldEnabler : Inventory {inventory.maxamount 1}
+ACtor RepeaterDualWield : Inventory {inventory.maxamount 1}

@@ -1,0 +1,330 @@
+ACTOR FieldDrone: SwitchableDecoration
+{
+    Radius 24
+	Height 60
+	+SOLID
+	+Friendly
+	+USESPECIAL
+	MONSTER
+	-COUNTKILL
+	+SHOOTABLE
+	+LOOKALLAROUND
+	-THRUACTORS
+	+NOINFIGHTING
+	MaxTargetRange 120
+	+NOBLOOD
+	Activation THINGSPEC_Activate | THINGSPEC_ThingTargets | THINGSPEC_NoDeathSpecial
+	Mass 999999
+	Speed 0
+	health 1000
+	+FLOATBOB
+	+NOGRAVITY
+	Tag "Field Drone"
+	Scale 1.0
+    States
+    {
+    Spawn:
+	    UABB AB 2 BRIGHT
+		Loop
+	
+	Active:
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 A_Stop
+		"####" A 0 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE ) 
+		"####" A 0 A_JumpIfInTargetInventory("IsPlayingAsDM", 1, "DeathMatchGiver")
+		"####" A 0 A_GiveToTarget("UpgradeBoxToken", 1)
+		Goto EndUpgrader
+	
+	DeathMatchGiver:
+		"####" A 0 A_GiveToTarget("D4Backpack", 1)
+		Goto EndUpgrader
+	
+	EndUpgrader:
+		"####" A 0 A_JumpIfInTargetInventory("IsDemonPlayer", 1, "Death")
+		"####" A 0 A_GiveToTarget("IsUpgradingWeapons", 1)
+		"####" ABABABAB 2 BRIGHT
+	Spawn2:
+		"####" CDCDCD 2 BRIGHT
+		TNT1 A 0 A_Die // Not needed
+	Death:	
+		PUFF A 0 A_PlaySound("player/cyborg/fist", 3)
+		TNT1 A 0 A_SpawnItemEx ("PLOFT2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		EXPL AAAAAA 0 A_CustomMissile ("MeleeSmoke", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 Radius_Quake (2, 6, 0, 5, 0)//(intensity, duration, damrad, tremrad, tid)
+		UABB E 1
+		TNT1 A 0 A_PlaySound("weapons/explode")
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 AA 0 A_CustomMissile ("XJunk1", 55, 0, random (0, 360), 2, random (40, 150))
+		TNT1 AA 0 A_CustomMissile ("XJunk2", 55, 0, random (0, 360), 2, random (40, 150))
+		TNT1 AAAA 0 A_CustomMissile ("XJunk3", 55, 0, random (0, 360), 2, random (40, 150))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 50, 0, random (0, 360), 2, random (0, 180))
+        TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 50, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 50, 0, random (0, 360), 2, random (0, 360))
+        TNT1 AAAAA 0 A_CustomMissile ("MediumExplosionFlames", 50, 0, random (0, 360), 2, random (0, 360))
+        EXPL AAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 50, 0, random (0, 360), 2, random (0, 360))
+		UABB E 1 A_FaceTarget
+		TNT1 A 0 A_ChangeFlag("USESPECIAL", 0)
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 1)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		TNT1 A 0 A_ChangeFlag("FLOATBOB", 0)
+		TNT1 A 0 ThrustThingZ(0,25,0,1)
+		UABB E 8 A_Recoil(3)
+		UABB F 500
+		Stop	
+	}
+}
+
+Actor UpgradeBox : CustomInventory replaces Revolver
+{
+	Radius 20
+	Height 22
+	Inventory.PickupMessage "You Picked up a Weapon Upgrade."
+	Inventory.UseSound "RocketLauncher/UnToggle"
+	States
+	{
+	Spawn:
+		WEUP A -1
+		Stop
+	Pickup:
+		TNT1 A 0 A_PlaySound("RocketLauncher/UnToggle",1)
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"DeathMatchGiver")
+		TNT1 A 0 A_GiveInventory("UpgradeBoxToken", 1)
+		Stop
+	DeathMatchGiver:
+		TNT1 A 0 A_TakeInventory("UpgradeBoxToken", 1)
+		TNT1 A 0 A_GiveInventory("D4Backpack", 1)
+		Stop
+	}
+}
+
+Actor FieldDroneSpawner : CustomInventory Replaces BackPack
+{
+    States
+    {
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(ACS_NamedExecuteWithResult("MultiplayerCheck",0,0,0,0)==2,"Spawn1")
+		TNT1 A 0 A_Jump(128, "FieldDrone") // Field Drone Spawning Preset
+	Spawn1:
+		TNT1 A 0 A_SpawnItemEx("D4Backpack",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		TNT1 A 0 A_Jump(32, "Equipment") // Chances to Spawn Equipments
+		Stop
+	FieldDrone:
+		TNT1 A 0 A_SpawnItemEx("FieldDrone",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	Equipment:
+		TNT1 A 0 A_SpawnItemEx("D4EquipmentReplacer",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+    }
+}
+
+
+// Elite Corpse Spawn Related
+actor D4DeadCorpse: DeadMarine Replaces DeadMarine
+{
+damagefactor "Avoid", 0.0
+damagefactor "Blood", 0.0    damagefactor "GreenBlood", 0.0    damagefactor "BlueBlood", 0.0    damagefactor "Taunt", 0.0    damagefactor "KillMe", 0.0
+damagefactor "Shrapnel", 100.0
+damagefactor "GibRemoving", 990.0
++NOTAUTOAIMED
++CLIENTSIDEONLY
++FLOORCLIP
+Radius 0
+	Game Doom
+	States
+	{
+    Spawn:
+	    TNT1 A 1
+		TNT1 AAAAA 0 A_CustomMissile ("SuperWallRedBlood", 10, 0, random (0, 360), 2, random (5, 40))
+		TNT1 AAAAAA 0 A_SpawnItemEx("Brutal_BloodSpot",random(64, -64),random(64, -64))
+		TNT1 A 0 A_SpawnItem("MediumBloodSpot")
+	    TNT1 A 0 A_CheckSight("Spawn2")
+		TNT1 A 0 A_JumpIf(ACS_NamedExecuteWithResult("MultiplayerCheck",0,0,0,0)==2,"DMSpawn")
+		// Dead Elite Soldiers
+		TNT1 A 0 A_Jump(128,"EndElite") // Decides to Spawn a Dead Elite Corpse
+		TNT1 A 0 A_SpawnItem("RandomEliteItem") // Random Item Dropped by a corpse
+		TNT1 A 1 A_SpawnItem("DeadEliteSoldier") // Dead Elite Soldier Variation 1
+		Goto Death
+		// End of Elite Soldier Spawning
+	DMSpawn:
+		TNT1 A 0 A_SpawnItem("RandomEliteItem") // Random Item Dropped by a corpse
+	EndElite:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("CurbstompedMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("AteMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("DeadRippedOffMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("FuckedMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("ADoomedSpaceMarine2")
+		Goto Death
+		TNT1 A 1 A_SpawnItem("ADoomedSpaceMarine")
+		Stop
+		
+    Spawn2:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("CurbstompedMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("AteMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("DeadRippedOffMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("FuckedMarine")
+		Goto Death
+		TNT1 A 0 A_Jump(160,2)
+		TNT1 A 1 A_SpawnItem("ADoomedSpaceMarine2")
+		Goto Death
+		TNT1 A 1 A_SpawnItem("ADoomedSpaceMarine")
+		Stop
+	Death:
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor DeadEliteSoldier
+{
+  Radius 32
+  Height 16
+  States
+  {
+  Spawn:
+    ELIT A -1
+    Loop
+  }
+}
+
+Actor RandomEliteItem : CustomInventory
+{
+    States
+    {
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(ACS_NamedExecuteWithResult("MultiplayerCheck",0,0,0,0)==2,"DMSpawn")
+		TNT1 A 0 A_Jump(92, "SpawnItem") // Chances to Spawn a extra item
+	SpawnDecider:
+		TNT1 A 0 A_Jump(112, "Upgrade","Upgrade","BackPack","Upgrade") // Ammo Supplies and Weapon Upgrades
+		TNT1 A 0 A_Jump(86, "AllMap", "Infrared", "AllMap") // Infrared or Auto-Map
+		Loop
+	SpawnItem:
+		TNT1 A 0 A_Jump(128, "Medikit") // Health pickups
+		TNT1 A 0 A_Jump(64, "BFGAmmo") // Ammo for your sexy BFG 9000
+		TNT1 A 0 A_Jump(32, "Equipment") // Random Equipment
+		TNT1 A 0 A_Jump(12, "RareEquipments") // Random Equipment
+		Loop
+// Multiplayer Spawners
+
+	DMSpawn:
+		TNT1 A 0 A_Jump(92, "SpawnItemDM") // Chances to Spawn a extra item
+	SpawnDeciderDM:
+		TNT1 A 0 A_Jump(112, "BackPack") // Backpack
+		TNT1 A 0 A_Jump(86, "AllMap", "EquipmentDM", "AllMap") // Auto-Map or Equipment
+		Loop
+	SpawnItemDM:
+		TNT1 A 0 A_Jump(128, "MedikitDM") // Health pickups
+		TNT1 A 0 A_Jump(64, "BFGAmmoDM") // Ammo for your sexy BFG 9000
+		TNT1 A 0 A_Jump(32, "EquipmentDM") // Random Equipment
+		Loop
+
+	EquipmentDM:
+		TNT1 A 0 A_SpawnItem("D4EquipmentReplacer",random(20, -20))
+		Stop
+	BFGAmmoDM:
+		TNT1 A 0 A_SpawnItem("D4BFGAmmo",random(20, -20))
+		Goto SpawnDeciderDM
+	MedikitDM:
+		TNT1 A 0 A_Jump(128,"SpawnMedikitDM") // Medikit
+		TNT1 A 0 A_Jump(64,"SpawnBerserkDM") // Berserk
+		TNT1 A 0 A_SpawnItem("Stimpack",random(20, -20))
+		Goto SpawnDeciderDM
+	SpawnMedikitDM:
+		TNT1 A 0 A_SpawnItem("Medikit",random(20, -20))
+		Goto SpawnDeciderDM
+	SpawnBerserkDM:
+		TNT1 A 0 A_SpawnItem("BerserkPack",random(20, -20))
+		Goto SpawnDeciderDM
+
+// Random Items
+	Infrared:
+		TNT1 A 0 A_SpawnItemEx("NightVision",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop	
+	Allmap:
+		TNT1 A 0 A_SpawnItemEx("Allmap",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	BackPack:
+		TNT1 A 0 A_Jump(82, "FieldDrone") // Rare Chance to drop a Field Drone
+		TNT1 A 0 A_SpawnItemEx("D4Backpack",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	FieldDrone:
+		TNT1 A 0 A_SpawnItemEx("FieldDrone",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	Upgrade:
+		TNT1 A 0 A_SpawnItemEx("UpgradeBox",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+// Extra Items
+	RareEquipments:
+		TNT1 A 0 A_SpawnItem("D4RareEquipmentSpawner",random(20, -20))
+		TNT1 A 0 A_Jump(64,"Medikit", "BFGAmmo") // Chances to Spawn whit Medikit or BFG Ammo
+		Goto SpawnDecider
+	Equipment:
+		TNT1 A 0 A_SpawnItem("D4EquipmentReplacer",random(20, -20))
+		TNT1 A 0 A_Jump(64,"Medikit", "BFGAmmo") // Chances to Spawn whit Medikit or BFG Ammo
+		Goto SpawnDecider
+	BFGAmmo:
+		TNT1 A 0 A_SpawnItem("D4BFGAmmo",random(20, -20))
+		Goto SpawnDecider
+	Medikit:
+		TNT1 A 0 A_Jump(128,"SpawnMedikit") // Medikit
+		TNT1 A 0 A_Jump(64,"SpawnBerserk") // Berserk
+		TNT1 A 0 A_SpawnItem("Stimpack",random(20, -20))
+		Goto SpawnDecider
+	SpawnMedikit:
+		TNT1 A 0 A_SpawnItem("Medikit",random(20, -20))
+		Goto SpawnDecider
+	SpawnBerserk:
+		TNT1 A 0 A_SpawnItem("BerserkPack",random(20, -20))
+		Goto SpawnDecider
+    }
+}
+
+Actor SpawnEliteOnBlueArmor : CustomInventory Replaces BlueArmor
+{
+    States
+    {
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(ACS_NamedExecuteWithResult("MultiplayerCheck",0,0,0,0)==2,"DMSpawn")
+		TNT1 A 1
+		TNT1 A 0 A_Jump(128, "EliteCorpse") // Spawn Elite Dead Corpse
+	HeavyArmor:
+		TNT1 A 0 A_SpawnItemEx ("D4BlueArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		TNT1 A 0 A_Jump(128,1) // Spawn Both Actors
+		Stop
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItem("RandomEliteItem",random(30, -25)) // Random Item Dropped by a corpse
+		TNT1 A 1 A_SpawnItem("DeadEliteSoldier",random(20, -20)) // Dead Elite Soldier Variation 1
+		Stop
+	EliteCorpse:
+		TNT1 A 0 A_SpawnItem("RandomEliteItem") // Random Item Dropped by a corpse
+		TNT1 A 1 A_SpawnItem("DeadEliteSoldier") // Dead Elite Soldier Variation 1
+		Stop
+	DMSpawn:
+		TNT1 A 0 A_Jump(128, "RandomItem")
+	FinishDM:
+		TNT1 A 0 A_SpawnItemEx ("D4BlueArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	RandomItem:
+		TNT1 A 0 A_SpawnItem("RandomEliteItem",random(30, -25)) // Random Item Dropped by a corpse
+		TNT1 A 0 A_Jump(32, "FinishDM")
+		Stop
+    }
+}

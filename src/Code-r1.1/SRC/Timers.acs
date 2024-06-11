@@ -1,0 +1,83 @@
+#library "TIMERS"
+#include "zcommon.acs"
+
+Script "ShotgunGrenadeTimer" (void)
+{
+	int var_timer;
+	if(CheckInventory("PowerDoubleFiringSpeed"))	var_timer=1;
+	else var_timer=3;
+	while(CheckInventory("SGGrenadeTimer"))
+	{
+		delay(var_timer);
+		TakeInventory("SGGrenadeTimer",1);
+	}
+	terminate;
+}
+
+Script "ShotgunTriShotTimer" (void)
+{
+	int var_timer;
+	if(CheckInventory("PowerDoubleFiringSpeed"))	var_timer=1;
+	else var_timer=3;
+	while(CheckInventory("SGTriShotTimer"))
+	{
+		delay(var_timer);
+		TakeInventory("SGTriShotTimer",1);
+	}
+	terminate;
+}
+
+Script "PlasmaStunBombTimer" (void)
+{
+	int var_timer;
+	if(CheckInventory("PowerDoubleFiringSpeed"))	var_timer=1;
+	else var_timer=3;
+	while(CheckInventory("PlasmaStunBombTimer"))
+	{
+		delay(var_timer);
+		TakeInventory("PlasmaStunBombTimer",1);
+	}
+	terminate;
+}
+
+Script "HellShotFlareTimer" (void)
+{
+	int var_timer;
+	if(CheckInventory("PowerDoubleFiringSpeed"))	var_timer=2;
+	else if(CheckInventory("IsPlayingAsDM"))var_timer=3;
+	else var_timer=5;
+	while(CheckInventory("HSFlareTimer"))
+	{
+		delay(var_timer);
+		TakeInventory("HSFlareTimer",1);
+	}
+	terminate;
+}
+
+Script "VortexRifleTimer" (void)
+{
+	if(CheckInventory("PowerDoubleFiringSpeed")) //haste
+	{
+		delay(18);
+		TakeInventory("VortexFireToken",1);
+	}
+	else
+	{
+		delay(36);
+		TakeInventory("VortexFireToken",1);
+	}
+}
+
+Script "GrenLaunchGasTimer" (void)
+{
+	int var_timer;
+	if(CheckInventory("PowerDoubleFiringSpeed"))var_timer=1;
+	else if(CheckInventory("IsPlayingAsDM"))var_timer=5;
+	else var_timer=3;
+	while(CheckInventory("GLGasTimer"))
+	{
+		delay(var_timer);
+		TakeInventory("GLGasTimer",1);
+	}
+	terminate;
+}

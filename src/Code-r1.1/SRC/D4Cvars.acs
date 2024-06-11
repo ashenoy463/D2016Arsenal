@@ -1,0 +1,36 @@
+#library "D4Cvars"
+#include "zcommon.acs"
+
+Script "D4CheckCvars" (VOID) NET
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		If(GetCvar( "donotclimb") == 1) {GiveInventory("DisableParkour", 1);}
+		Else {TakeInventory("DisableParkour", 1);}
+		
+		If(GetCvar( "donotdoublejump") == 1) {GiveInventory("DisableDJump", 1);}
+		Else {TakeInventory("DisableDJump", 1);}
+		
+		If(GetCvar( "donotsidestep") == 1) {GiveInventory("DisableSDash", 1);}
+		Else {TakeInventory("DisableSDash", 1);}
+		
+		If(GetCvar( "nopaineffect") == 1) {GiveInventory("DisablePainEffects", 1);}
+		Else {TakeInventory("DisablePainEffects", 1);}
+		
+		If(GetCvar( "togglehelmetanimation") == 1) {GiveInventory("DisableHelmetAnimation", 1);}
+		Else {TakeInventory("DisableHelmetAnimation", 1);}
+
+		If(GetCvar( "glorykilltype") == 1) {GiveInventory("GKFatalityMode", 1);}
+		Else {TakeInventory("GKFatalityMode", 1);}
+
+		If(GetCvar( "disabledglorykill") == 1) {GiveInventory("DisabledGloryKill", 1);}
+		Else {TakeInventory("DisabledGloryKill", 1);}
+
+		If(GetCvar( "disablempweapons") == 1) {GiveInventory("DisableMPWeapons", 1);}
+		Else {TakeInventory("DisableMPWeapons", 1);}
+
+		If(GetCvar( "d4_ssgaimfiremode") == 1) {GiveInventory("SSGAimModeSingle", 1);}
+		Else {TakeInventory("SSGAimModeSingle", 1);}
+		Delay(10);
+	}
+}

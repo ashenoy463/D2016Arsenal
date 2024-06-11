@@ -1,0 +1,875 @@
+ACTOR D4AssaultCommando : D4Commando //31136
+{
+  //$Title "Assault Commando"
+  //$Category "DOOM 2016 Arsenal - Monsters"
+   Radius 20
+   Height 56
+   Mass 125
+   PainChance 170
+   MONSTER 
+   +FLOORCLIP
+   -MISSILEMORE
+   -MISSILEEVENMORE
+   DropItem "D4RepeaterReplacer"
+   DropItem "D4EquipmentReplacer" 7
+   Obituary "%o was assaulted by a commando." 
+   Tag "Assault Commando"
+   States 
+   { 
+	Pain.Stun:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag(NOPAIN,1)
+		TNT1 A 0 A_Pain
+		ACPS GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG 5 A_GiveInventory(StunFXSpawner) // 5 Seconds
+		TNT1 A 0 A_ChangeFlag(NOPAIN,0)
+		Goto SeeContinue
+		
+	Death.Stun:
+		TNT1 A 0
+		Goto Death.Plasma
+		
+	Wound:
+		ACPS Z 0 A_SetUserVar(user_healto,30)
+		ACPS Z 0
+		Goto Wounded
+		
+	Death.ChainsawPinata:	
+		ACPS "#" 0
+		Goto ChainsawKill
+
+	Death.GloryKill:
+		ACPS "#" 0
+		Goto GloryKillGeneric
+
+	Spawn:
+		ACPS A 1
+		MPOS A 0 A_GiveInventory("SKChaingunGuy", 1)
+		Goto Stand
+	
+	Stand:
+		TNT1 A 0
+		TNT1 A 0 A_CheckSight("Stand2")
+		//TNT1 A 0 A_SpawnItem ("LegTarget100", 10)
+        	TNT1 A 0 A_SpawnItem ("HeadshotTarget20", 5, 44,0)
+		ACPS BB 9 A_Look
+		Loop
+	
+	Stand2:
+		ACPS B 15 A_Look
+		TNT1 A 0 A_CheckSight("Stand2")
+		Goto Stand
+
+   Idle:	
+	SearchForPlayer:
+		TNT1 A 0 A_ClearTarget
+	    TNT1 A 0 A_TakeInventory("EnemyMemory", 30)
+		TNT1 A 0 A_GiveInventory("SKChaingunguy", 1)
+		
+		ACPS A 0 A_SpawnItem("HeadshotTarget10", 0, 42,0)
+		ACPS A 10 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget10", 0, 42,0)
+		ACPS A 10 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget10", 0, 42,0)
+		ACPS A 10 A_Look
+		
+		TNT1 A 0 A_SetAngle(angle - 40)
+		ACPS A 0 A_SpawnItem("HeadshotTarget10", 0, 42,0)
+		ACPS A 10 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget10", 0, 42,0)
+		TNT1 A 0 A_SetAngle(angle + 40)
+		ACPS A 10 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget10", 0, 42,0)
+		ACPS A 10 A_Look
+		
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS A 4 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS B 4 A_Look
+		TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 30, 0, 0)
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS C 4 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS D 4 A_Look
+		TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 30, 0, 0)
+		
+		TNT1 A 0 A_jump(128, "SearchForPlayer")
+		
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS A 4 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS B 4 A_Look
+		TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 30, 0, 0)
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS C 4 A_Look
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		ACPS D 4 A_Look
+		TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 30, 0, 0)
+		Goto SearchForPlayer
+		
+	See:
+	TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+	TNT1 A 0 A_TakeInventory("SKChaingunGuy", 1)
+	TNT1 A 0 A_TakeInventory("EnemyMemory", 15)
+	TNT1 A 0 A_CheckSight("SeeNeverSeen")
+	Goto SeeContinue
+	
+	SeeContinue:
+		TNT1 A 0 A_JumpIfInventory("AssaultCommandoBeaconCount", 2, "SkipBeacon")
+	    TNT1 A 0 A_Jump(9, "DropBeacon")
+	SkipBeacon:
+	    	TNT1 A 0 A_CheckSight(3)
+        	TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 30, 0, 0)
+		TNT1 A 0 A_JumpIfInventory("EnemyMemory", 12, "SearchForPlayer")
+		TNT1 A 0 A_GiveInventory("EnemyMemory", 1)
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS AA 1 A_Chase
+		TNT1 A 0 A_TakeInventory("IsFiring", 1)
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_PlaySound("metalboot/steps",3)
+		ACPS AA 1 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS BB 1 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS BB 1 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS CC 1 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS CC 1 A_Chase
+		TNT1 A 0 A_PlaySound("metalboot/steps",3)
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS DD 1 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS DD 1 A_Chase
+		Loop
+		
+	SeeNeverSeen:
+	    TNT1 A 0 A_CheckSight(3)
+        TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 30, 0, 0)
+		TNT1 A 0 A_TakeInventory("SKChaingunGuy", 1)
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS AA 2 A_Chase
+		TNT1 A 0 A_TakeInventory("IsFiring", 1)
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_PlaySound("metalboot/steps",3)
+		ACPS AA 2 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS BB 2 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS BB 2 A_Chase
+
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS CC 2 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS CC 2 A_Chase
+		TNT1 A 0 A_PlaySound("metalboot/steps",3)
+
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS DD 2 A_Chase
+		ACPS A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+		ACPS DD 2 A_Chase
+        TNT1 A 0 A_CheckSight("SeeNeverSeen")
+		Goto SeeContinue
+	  
+	  MissileContinue:
+		TNT1 A 0 A_TakeInventory("IsFiring", 1)
+	  Missile:
+		TNT1 A 0 A_GiveInventory("ZombieManAmmo", 5)
+		TNT1 A 0 A_Jump(32, "Missile2") // Fast Fire
+		TNT1 A 0 A_Jump(16, "Missile3") // Crouch Attack
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS A 3 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS B 2 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS E 3 A_FaceTarget
+        
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+		ACPS F 3 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		ACPS E 1 A_FaceTarget
+        
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+		ACPS F 3 BRIGHT A_CustomMissile("ZombieManTracer", 38, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS E 1 A_FaceTarget
+        
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+		ACPS F 3 BRIGHT A_CustomMissile("ZombieManTracer", random(30, 42), 0, random(-9, 9), 0, random(-4, 6))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS E 1 A_FaceTarget
+        
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+		ACPS F 3 BRIGHT A_CustomMissile("ZombieManTracer", 38, 0, random(-10, 10), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS E 1 A_FaceTarget
+        
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+		ACPS F 3 BRIGHT A_CustomMissile("ZombieManTracer", random(30, 42), 0, random(-9, 9), 0, random(-4, 6))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS E 1 A_FaceTarget
+        
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+		ACPS F 3 BRIGHT A_CustomMissile("ZombieManTracer", random(30, 42), 0, random(-9, 9), 0, random(-4, 6))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS E 1 A_FaceTarget
+        
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+		ACPS F 3 BRIGHT A_CustomMissile("ZombieManTracer", random(30, 42), 0, random(-9, 9), 0, random(-4, 6))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS E 1
+		ACPS B 2
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		
+		ACPS A 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 0, 42,0)
+		TNT1 A 0 A_JumpIfInventory("ZombieManAmmo", 20, "Reload")
+        Goto SeeContinue
+		
+		
+		Missile2:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 3 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 1 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 2 A_FaceTarget
+        
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+		ACPS F 1 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+		ACPS F 1 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+		ACPS F 1 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+		ACPS F 1 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+		ACPS F 1 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 2 A_facetarget
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 5 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		TNT1 A 0 A_JumpIfInventory("ZombieManAmmo", 20, "Reload")
+		Goto SeeContinue
+		
+	Missile3:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 5 A_FaceTarget
+		ACP1 A 5 A_FaceTarget
+        
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 29, 20, 15, 0)
+        TNT1 A 0 A_CustomMissile("SmokeSpawner", 29, 10, 15, 0)
+		ACP1 B 2 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACP1 A 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 29, 20, 15, 0)
+        TNT1 A 0 A_CustomMissile("SmokeSpawner", 29, 10, 15, 0)
+		ACP1 B 2 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACP1 A 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 29, 20, 15, 0)
+        TNT1 A 0 A_CustomMissile("SmokeSpawner", 29, 10, 15, 0)
+		ACP1 B 2 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACP1 A 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 29, 20, 15, 0)
+        TNT1 A 0 A_CustomMissile("SmokeSpawner", 29, 10, 15, 0)
+		ACP1 B 1 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACP1 A 2 A_facetarget
+        
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+        TNT1 AA 0 A_CustomMissile("OrangeLensFlareAlt", 29, 20, 15, 0)
+        TNT1 A 0 A_CustomMissile("SmokeSpawner", 34, 10, 15, 0)
+		ACP1 B 1 BRIGHT A_CustomMissile("ZombieManTracer", 32, 0, random(-8, 8), 0, random(-3, 3))
+		
+		TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACP1 A 4 A_facetarget
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 46,0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		ACPS E 5 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 0, 40,0)
+		TNT1 A 0 A_JumpIfInventory("ZombieManAmmo", 20, "Reload")
+		Goto SeeContinue
+	
+	Reload:
+		TNT1 A 0 A_TakeInventory("ZombieManAmmo", 20)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        ACPS E 3
+		ACPS E 1 A_CustomMissile("EmptyClipSpawn", 38, 0, random(-11, 11), 0)
+        TNT1 A 0 A_PlaySound("Reload")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        ACP0 A 10
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        ACP0 A 10
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        ACP0 B 10
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        ACP0 C 10
+        TNT1 A 0 A_PlaySound("CLIPIN")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        ACP0 D 10
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        ACPS A 10
+        Goto SeeContinue
+		
+	DropBeacon:
+	  TNT1 A 0
+	  TNT1 A 0 A_GiveInventory("AssaultCommandoBeaconCount", 1)
+	  CPOS A 0 A_SpawnItem("HeadshotTarget4", 0, 36,0)
+	  TNT1 A 0 A_PlaySound("OPNGRN", 1)
+      RM19 A 5 
+	  CPOS A 0 A_SpawnItem("HeadshotTarget4", 0, 36,0)
+      RM19 B 5  
+	  CPOS A 0 A_SpawnItem("HeadshotTarget4", 0, 36,0)
+      RM19 C 5 
+	  CPOS A 0 A_SpawnItem("HeadshotTarget4", 0, 36,0)
+	  TNT1 A 0 A_SpawnItemEx ("RedFlare",0,0,2,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	  TNT1 A 0 A_PlaySound("weapons/pbarm", 2)
+      RM19 D 5  
+	  TNT1 A 0 A_SpawnItemEx("CommandoSpawnBeacon",0,0,0,0,0,0,0,288)
+	  CPOS A 0 A_SpawnItem("HeadshotTarget4", 0, 36,0)
+      RM19 E 4  
+	  CPOS A 0 A_SpawnItem("HeadshotTarget4", 0, 36,0)
+	  Goto	SeeContinue
+		
+		Pain.Melee:
+		ACPS G 3
+		TNT1 A 0 A_JumpIfInventory ("SKChaingunGuy", 1, "StealthKill")
+ 		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 42,0)
+        ACPS G 3 A_Pain
+        Goto See
+	  
+	  //
+	Pain:
+	Pain.Cut:
+	Pain.Saw:
+	Pain.IsFiring:
+		TNT1 A 0
+		TNT1 A 0 A_Stop
+	    	TNT1 A 0
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 5, 44,0)
+		TNT1 A 0 A_TakeInventory("SKChaingunGuy", 1)
+		ACPS G 2
+ 		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 5, 44,0)
+        	ACPS G 2 A_Pain
+		TNT1 A 0 A_TakeInventory("IsFiring", 1)
+        Goto SeeContinue
+
+	Pain.LowKick:
+	Pain.Kick:
+         	TNT1 A 0 A_Pain
+		TNT1 A 0 A_TakeInventory("IsFiring", 1)
+		TNT1 A 0 A_TakeInventory("SKChaingunGuy", 1)
+         	TNT1 A 0
+        	TNT1 A 0 ThrustThingZ(0,15,0,1)
+        	TNT1 A 0 A_FaceTarget
+        	TNT1 A 0 A_Recoil(3)
+         	ACPS G 2
+		RPBK ABC 2
+		ACPS A 0 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		RPBK C 8 A_Pain
+		ACPS A 0 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		RPBK D 8 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		ACPS A 0 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		RPBK C 8 A_Pain
+		RPBK D 8 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		ACPS A 0 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		RPBK C 8 A_Pain
+		RPBK D 8 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		ACPS A 0 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		RPBK C 8 A_Pain
+		RPBK D 8 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		ACPS A 0 A_SpawnItem("HeadshotTarget8", 5, 44,0)
+		RPBK BA 4
+		ACPS G 4
+         	Goto See
+
+	Pain.Melee:
+		ACPS G 4
+		TNT1 A 0 A_JumpIfInventory ("SKChaingunGuy", 1, "GotoStealthKill")
+ 		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 5, 44,0)
+        	ACPS G 4 A_Pain
+		TNT1 A 0 A_TakeInventory("IsFiring", 1)
+        	Goto See
+	  
+	 Possession:
+		TNT1 A 0 A_SetInvulnerable
+		ACPS G 3
+		ACPS G 3 A_Pain
+		"####" "#" 35 ACS_NamedExecuteAlways("Pos - Flicker effect")
+		TNT1 A 0 A_UnSetInvulnerable
+		Goto See
+	
+    	Death.MonsterShotgunBullet:
+	Death.Shotgun:
+	Death.HKFT:
+		TNT1 A 0
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 42, 0, random (170, 190), 2, random (0, 20))
+		TNT1 A 0 A_JumpIfCloser(50, "Death.SSG")
+		TNT1 A 0 A_Jump(24,"Death.Arm")
+		TNT1 A 0 ThrustThingZ(0,30,0,1)
+		TNT1 A 0 A_Recoil(6)
+		TNT1 A 0 A_JumpIfInventory("IsFiring", 1, "Death.Rare")
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		ACPS UV 4
+		TNT1 A 0 
+		ACPS W 4 A_JumpIf((MomY == 0), "TakeASit")
+		CPHM D 4 A_JumpIf((MomY == 0), "TakeASit")
+		CPHM EF 4
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItem ("DeadChaingunGuy_KilledByMinorHead", 3)
+		Stop
+		
+	Death:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(96,"Death.Rare")
+		TNT1 A 0 A_Jump(64,"Death.Arm")
+		ACPS H 11 A_Scream
+		ACPS I 7 A_NoBlocking
+		TNT1 AAA 0 A_SpawnItem("Blood", 0, 40)
+		ACPS JK 5
+		TNT1 A 0 A_Jump(110, "SufferBitch")
+		ACPS L 8
+		TNT1 AAA 0 A_SpawnItem("Blood", 0, 40)
+		ACPS M 6
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItem ("DeadAssaultCommando", 3)
+		stop
+		
+	Death.Rare:
+	TNT1 A 0
+	TNT1 A 0 A_FaceTarget
+	TNT1 A 0 A_Recoil(2)
+	ACPD A 3 A_Scream
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 32, 15, 0, 2, -20)
+	ACPD B 3 BRIGHT
+	ACPD A 3
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 32, 15, 0, 2, -20)
+	ACPD B 3 BRIGHT
+	ACPD C 2
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 24, 15, -20, 2, -20)
+	ACPD D 2 BRIGHT
+	ACPD C 2
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 24, 15, -20, 2, -20)
+	ACPD D 2 BRIGHT
+	ACPD E 2
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 24, 15, -20, 2, 20)
+	ACPD F 2 BRIGHT
+	ACPD G 2
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 24, 15, -10, 2, 40)
+	ACPD H 2 BRIGHT
+	TNT1 A 0 A_Recoil(1)
+	ACPD I 2
+	TNT1 A 0 A_JumpIf((MomY == 0), "TakeASit")
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 24, 15, -10, 2, 40)
+	ACPD J 2 BRIGHT
+	TNT1 A 0 A_JumpIf((MomY == 0), "TakeASit")
+	ACPD K 2
+	TNT1 A 0 A_SpawnItem ("RifleCaseSpawn", 0, 30,0)
+        TNT1 A 0 A_PlaySound("weapons/rifle", 1)
+	TNT1 A 0 A_CustomMissile ("ZombieManTracer", 12, 15, -20, 2, 40)
+	ACPD L 2 BRIGHT
+	TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_SpawnItem("DeadChaingunguyCPDRO")
+	TNT1 A -1
+	Stop
+		
+	Death.Cutless:
+	    TNT1 A 0
+		TNT1 A 0 A_Jump(180,"Death.Arm")
+		Goto Death
+	Death.DropedChaingunSpawner:
+	Death.Minigun:
+	Death.Arm:
+	    TNT1 A 0
+	    TNT1 AA 0 A_CustomMissile ("BloodMist", 40, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("XDeathChainArm", 45, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeath1", 45, 0, random (0, 360), 2, random (0, 160))
+
+	    CPOD H 10 A_Scream
+		CPOD I 1 A_NoBlocking
+		TNT1 A 1 A_SpawnItem ("BrutalizedAssaultCommando")
+	    Stop
+		
+	SufferBitch:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItem ("BrutalizedAssaultCommando2")
+		Stop
+		
+	HeadExploder:
+		TNT1 A 0 A_Jump(72, "Death.HeadExplode")
+		Goto Death.HeadMinor
+		
+    Death.Head:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInTargetInventory("HasPlasmaWeapon", 1, "Death.Plasma")
+		TNT1 A 0 A_JumpIfInTargetInventory("HasCutingWeapon", 1, "Death.Decaptate")
+		TNT1 A 0 A_JumpIfHealthLower(-30, "Death.HeadExplode")
+		TNT1 A 0 A_JumpIfInTargetInventory("RandomHeadExploder", 1, "HeadExploder")
+	Death.HeadMinor:
+		ACPS U 2
+        TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 60, 0, random (0, 360), 2, random (30, 90))
+        TNT1 AAAAA 0 A_CustomMissile ("BrainBlood", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SmallBrainPiece", random (45, 55), random (5, -5), random (170, 190), 2, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("SmallBrainPiece", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		ACPS V 5 A_Scream
+		ACPS W 6 
+		CPHM D 6 A_NoBlocking
+		CPHM EF 6
+		TNT1 A 0 A_PlaySound("BODYF",6)
+		
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+        TNT1 A 0 A_SpawnItem ("DeadChaingunGuy_KilledByMinorHead", 3)
+        Stop
+
+	Death.Melee:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory ("SKChaingunGuy", 1, "StealthKill")
+		Death.Kick:
+		Death.HeavyImpact:
+		ACPD A 9 A_FaceTarget
+		TNT1 A 0 A_Recoil(5)
+		ACPD C 9 A_Scream
+		ACPD E 8 A_NoBlocking
+		ACPD GIK 8 
+        	TNT1 A 0 
+         	TNT1 A 0 A_SpawnItem ("DeadChaingunGuy_KilledByMinorHead", 3)
+        	Stop
+
+	Raise:
+		ACPS N 5
+		ACPS MLKJIH 5
+		Goto See
+
+    Pain.KillMe:
+    Pain.Taunt:
+        TNT1 A 0
+	TNT1 A 0 HealThing(1)
+        Goto Missile
+    Death.KillMe:
+    Death.Taunt:
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+        TNT1 A 0 A_SpawnItem("D4AssaultCommando")
+        Stop	
+   } 
+}
+
+Actor AssaultCommandoBeaconCount : Inventory
+{
+inventory.maxamount 2
+}
+
+actor CommandoSpawnBeacon
+{
+  -SOLID
+  -SHOOTABLE
+  States
+  {
+  Spawn:
+	TNT1 A 0
+  SpawnTroops:
+	TNT1 A 0
+	BEAC Z 1
+	BEAC Z 3 A_SpawnItem("RedFlare", 0, 4)
+	BEAC Z 1 
+	BEAC Z 3 A_SpawnItem("RedFlare", 0, 4)
+	BEAC Z 1 
+	BEAC Z 3 A_SpawnItem("RedFlare", 0, 4)
+	BEAC Z 1 
+	TNT1 A 0 A_Playsound("MRNWT",9)
+    BEAC ZZZZZZZZZZ 5 A_SpawnItem("RedFlare", 0, 4)
+    BEAC Z 1 A_SpawnItemEx ("TeleportFog", -2, 1, 8, 0, 0, 0, 0, 1)
+    BEAC A 0 A_SpawnItemEx ("Zombieman", -10, 10, 10, 0, 0, 0, 0, 1)
+    BEAC ZZZZZZZZZZ 5 A_SpawnItem("RedFlare", 1, 4)
+    BEAC Z 1 A_SpawnItemEx ("TeleportFog", -2, 1, 8, 0, 0, 0, 0, 1)
+    BEAC A 0 A_SpawnItemEx ("Zombieman", 10, 10, 10, 0, 0, 0, 1)
+    BEAC ZZZZZZZZZZ 5 A_SpawnItem("RedFlare", 1, 4)
+    BEAC Z 1 A_SpawnItemEx ("TeleportFog", -2, 1, 8, 0, 0, 0, 0, 1)
+    BEAC A 0 A_SpawnItemEx ("ShotgunGuy", -10, -10, 10, 0, 0, 0, 0, 1)
+    BEAC Z 105
+    goto Death
+
+  Death:
+    TNT1 A 1 A_CustomMissile ("TeleportFog", 0, 0, 0, 0, 0)
+    stop
+  }
+}
+
+Actor DeadAssaultCommando: DeadChaingunGuy1
+{
+	States
+    {
+    Spawn:
+        ACPS N -1
+        Stop
+	}
+}
+
+actor HeadlessAssaultCommando: DeadAssaultCommando
+{
+    States
+    {
+    Spawn:
+       ACHS E -1 
+       Stop    
+	   }
+}
+
+ACTOR BrutalizedAssaultCommando
+{
+	Game Doom
+	Radius 16
+	Height 50
+	Health 30
+	DamageFactor "Blood", 0.0 DamageFactor "BlueBlood", 0.0 DamageFactor "GreenBlood", 0.0
+    DamageFactor "Avoid", 0.0
+	DamageFactor "Shrapnel", 0.0
+	DamageFactor "KillMe", 0.0
+	PainSound "commando/pain"
+	Mass 0x7FFFFFFF
+	-SOLID
+	+SHOOTABLE
+	+FLOORCLIP
+	Scale 1.0
+	States
+	{
+	Spawn:
+	ACHS FFFFFFFFFF 10 A_SpawnItem ("DripingBlood", 0, 23)
+	ACPS KLMN 6
+	TNT1 A 0 A_SpawnItem ("BrutalizedDeadCommando1")
+	Stop
+
+	Pain:
+    ACHS F 1 A_Pain
+	Goto Spawn
+
+	Death:
+	TNT1 A 0 A_CustomMissile ("MuchBlood", 1, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("XDeathChainArm", 45, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("XDeath1", 45, 0, random (0, 360), 2, random (0, 160))
+    TNT1 A 0 A_PlaySound("chainguy/death")
+	TNT1 A 0 A_SpawnItem ("BrutalizedCommando2")
+	Stop
+}}
+
+
+ACTOR BrutalizedAssaultCommando2
+{
+	Game Doom
+	Radius 12
+	Height 20
+	Health 60
+	DamageFactor "Blood", 0.0 DamageFactor "BlueBlood", 0.0 DamageFactor "GreenBlood", 0.0
+    DamageFactor "Avoid", 0.0
+	DamageFactor "Shrapnel", 0.0
+	DamageFactor "KillMe", 0.0
+	PainSound "commando/pain"
+	Mass 0x7FFFFFFF
+	-SOLID
+	+SHOOTABLE
+	+FLOORCLIP
+	Scale 1.0
+	States
+	{
+	Spawn:
+	CPOS A 0 A_SpawnItem("HeadshotTarget10", 0, 24,0)
+	ACB0 ABCB 6 A_SpawnItem ("DripingBlood", 0, 23)
+	TNT1 A 0 A_PlaySound("commando/pain")
+	TNT1 A 0 A_PlaySound("misc/xdeath2c", 3)
+	CPOS A 0 A_SpawnItem("HeadshotTarget10", 0, 24,0)
+	TNT1 AA 0 A_SpawnItem("Xdeath1", 0, 20)
+	TNT1 A 0 A_SpawnItem("MuchBlood", 0, 23)
+	ACB0 ABCB 6 A_SpawnItem ("DripingBlood", 0, 23)
+	CPOS A 0 A_SpawnItem("HeadshotTarget10", 0, 24,0)
+	TNT1 A 0 A_PlaySound("commando/pain")
+	TNT1 A 0 A_PlaySound("misc/xdeath2c", 3)
+	TNT1 A 0 A_SpawnItem("MuchBlood", 0, 23)
+	TNT1 AA 0 A_SpawnItem("Guts", 0, 20)
+	ACB0 ABCB 6 A_SpawnItem ("DripingBlood", 0, 23)
+	CPOS A 0 A_SpawnItem("HeadshotTarget10", 0, 24,0)
+	TNT1 A 0 A_PlaySound("commando/pain")
+	TNT1 A 0 A_PlaySound("misc/xdeath2c", 3)
+	TNT1 A 0 A_SpawnItem("MuchBlood", 0, 23)
+	TNT1 AA 0 A_SpawnItem("Xdeath1", 0, 20)
+	ACB0 ABCB 6 A_SpawnItem ("DripingBlood", 0, 23)
+	CPOS A 0 A_SpawnItem("HeadshotTarget10", 0, 24,0)
+	TNT1 A 0 A_PlaySound("commando/pain")
+	TNT1 A 0 A_PlaySound("misc/xdeath2c", 3)
+	TNT1 A 0 A_SpawnItem("MuchBlood", 0, 23)
+	TNT1 AA 0 A_SpawnItem("Xdeath1", 0, 20)
+	ACB0 ABCB 6 A_SpawnItem ("DripingBlood", 0, 23)
+	CPOS A 0 A_SpawnItem("HeadshotTarget10", 0, 24,0)
+	TNT1 A 0 A_PlaySound("commando/pain")
+	TNT1 A 0 A_PlaySound("misc/xdeath2c", 3)
+	TNT1 A 0 A_SpawnItem("MuchBlood", 0, 23)
+	TNT1 AA 0 A_SpawnItem("Xdeath1", 0, 20)
+	ACB0 ABCB 6 A_SpawnItem ("DripingBlood", 0, 23)
+	CPOS A 0 A_SpawnItem("HeadshotTarget10", 0, 24,0)
+	TNT1 A 0 A_PlaySound("commando/pain")
+	TNT1 A 0 A_PlaySound("misc/xdeath2c", 3)
+	TNT1 A 0 A_SpawnItem("MuchBlood", 0, 23)
+	TNT1 AA 0 A_SpawnItem("Guts", 0, 20)
+	ACPS LM 6
+	TNT1 A 0 A_PlaySound("BODYF",6)
+	ACPS M -1
+	Stop
+
+	Pain:
+    ACHS F 1 A_Pain
+	Goto Spawn
+
+	Death:
+	TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", 1, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeathChainArm", 45, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAA 0 A_CustomMissile ("XDeath1", 45, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeath2", 45, 0, random (0, 360), 2, random (0, 160))
+    TNT1 A 0 A_PlaySound("chainguy/death")
+	TNT1 A 0 A_SpawnItem ("BrutalizedCommandoLegs")
+	Stop
+	
+	Death.Head:
+	Death.MinorHead:
+	TNT1 A 0 A_PlaySound("misc/xdeath4")
+ 		TNT1 AAAA 0 A_CustomMissile ("Brains1", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("Brains3", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("Brains6", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("Brains7", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("BrainBlood", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("SmallBrainPiece", random (45, 55), random (5, -5), random (170, 190), 2, random (0, 40))
+		TNT1 AAAA 0 A_CustomMissile ("SmallBrainPiece", 25, 0, random (0, 360), 2, random (0, 160))
+		ACHS DDDDDDDE 3
+		TNT1 A 0 A_PlaySound("BODYF",6)
+		TNT1 A 0 A_SpawnItem ("HeadlessAssaultCommando")
+		Stop
+}}

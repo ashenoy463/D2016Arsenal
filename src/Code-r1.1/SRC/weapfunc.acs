@@ -1,0 +1,185 @@
+#library "weapofunc"
+#include "zcommon.acs"
+
+// Quick Punch Feature
+Script "D4Punch" (VOID) NET
+{
+	GiveInventory("Fistting", 1);
+}
+
+script "SetPlayerSpeed" (int percentage)
+{
+	SetActorProperty(0, APROP_Speed, percentage * 0.01);
+}
+
+// Checks and Remove all BDv21 Unused Weapons from player Inventory
+Script "WeaponRemover" (Void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+	// Classic Weapons
+	TakeInventory("ClassicFist",1);
+	TakeInventory("ClassicSaw",1);
+	TakeInventory("ClassicPistol",1);
+	TakeInventory("ClassicSMG",1);
+	TakeInventory("ClassicShotgun",1);
+	TakeInventory("ClassicSSG",1);
+	TakeInventory("ClassicChaingun",1);
+	TakeInventory("ClassicRocketLauncher",1);
+	TakeInventory("ClassicPlasmaRifle",1);
+	TakeInventory("VanillaBFG9000",1);
+	// Weapons
+	TakeInventory("AssaultShotgun",1);
+	TakeInventory("BIG_FUCKING_GUN",1);
+	TakeInventory("BFG10k",1);
+	TakeInventory("GrenadeLauncher",1);
+	TakeInventory("Machinegun",1);
+	TakeInventory("MiniGun",1);
+	TakeInventory("HitlersBuzzsaw",1);
+	TakeInventory("BrutalPistol",1);
+	TakeInventory("Plasma_Gun",1);
+	TakeInventory("RailGun",1);
+	TakeInventory("Rifle",1);
+	TakeInventory("Rocket_Launcher",1);
+	TakeInventory("Chain_saw",1);
+	TakeInventory("Shot_Gun",1);
+	TakeInventory("SSG",1);
+	TakeInventory("BrutalSMG",1);
+	TakeInventory("BrutalAxe",1);
+	TakeInventory("HellishMissileLauncher",1);
+	TakeInventory("MP40",1);
+	TakeInventory("Flamecannon",1);
+	TakeInventory("Revolver",1);
+	TakeInventory("Revolver2",1);
+	TakeInventory("Flamethrower2",1);
+	// Dual Wielding Weapons
+	TakeInventory("DualPistols",1);
+	TakeInventory("DUalPlasmaRifles",1);
+	TakeInventory("DualRifles",1);
+	TakeInventory("DualSMG",1);
+	TakeInventory("DualMP40",1);
+	// Unnecesary BDv21 Shit
+	TakeInventory("AmmoDroper",1);
+	Delay(10);
+	}
+}
+
+// Weapons Basic Functions
+Script "DualWieldChecker" (Void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		If(CheckInventory("IsDualWeapon") == 1)
+		{
+			If(CheckInventory("ChecksIsFiringTheRightGun") == 1)
+			{
+				TakeInventory("Fistting",1);
+				TakeInventory("Kicking",1);
+				TakeInventory("TossGrenade",1);
+				TakeInventory("Salute1",1);
+				TakeInventory("Salute2",1);
+				TakeInventory("StartDualWield",1);
+			}
+		}
+		Else TakeInventory("ChecksIsFiringTheRightGun",1);
+		Delay(1);
+	}
+}
+
+Script "RMBScript" (Void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		// Jetpack
+		If(CheckInventory("JetpackActivated") == 1)
+		{
+			TakeInventory("Grabbing_A_Ledge",1000);
+			TakeInventory("IsUpgradingWeapons",1);
+			TakeInventory("Kicking",1);
+			TakeInventory("Taunting",1);
+			TakeInventory("Salute1",1);
+			TakeInventory("Salute2",1);
+			TakeInventory("TossGrenade",1);
+			TakeInventory("StartDualWield",1);
+			TakeInventory("ExecuteDownedEnemy",1);
+		}
+		// Laser Guided part
+		If(CheckInventory("LaserMissileActivated") == 1)
+			GiveInventory("MBLaserHandler",1);
+		Delay(1);
+	}
+}
+
+// Rocket Detonator
+script "DetonateRocket" (int mode)
+{
+	int rocketTID = 0;
+	
+	// If we're throwing a C4
+	if (mode==0)
+	{
+		Thing_ChangeTID(0, 1337);
+		SetActivatorToTarget(0);
+		rocketTID = ActivatorTID() + 100;
+		Thing_ChangeTID(1337,rocketTID);
+	}
+	
+	// If we're blowing up C4
+	if (mode==1)
+	{
+		rocketTID = ActivatorTID() + 100;
+		SetActorState(rocketTID,"BlowUpLikeCSGOBomb");
+	}
+}
+
+// Static Rifle
+int t_lastStaticRifleBeep, b_staticRifleCharged;
+int worldTime;
+
+script "WorldTracker" OPEN
+{
+	while (++worldTime) delay(1);
+}
+
+Script "StaticRifleACS" (Void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+    {
+	if(!stricmp(GetWeapon(), "D4StaticRifle"))
+	{
+		int i = VectorLength(GetActorVelX(0), GetActorVelY(0)) >> 16;
+		if(gameType() == 2 || gameType() == 4)
+			i -= 3;
+		else
+			if(CheckInventory("HasUpgradeStaticRifleCharge"))
+				i -= 1;
+			else
+				i -= 4;
+			
+		
+		i = i * 2 / 3;
+		if(i > 1)
+		{
+			GiveInventory("StaticRifleChargingToken", i);
+			if(CheckInventory("StaticRifleChargingToken") >= 520)
+			{
+				if(!b_staticRifleCharged)
+				{
+					if(worldTime > t_lastStaticRifleBeep + 35)
+						PlaySound(0, "StaticRifle/ChargeMax", CHAN_WEAPON,0.6);
+
+					b_staticRifleCharged = true;
+					t_lastStaticRifleBeep = worldTime;
+				}
+			}
+			else
+				b_staticRifleCharged = false;
+		}
+		else if(worldTime > t_lastStaticRifleBeep + 70)
+			TakeInventory("StaticRifleChargingToken", 4);
+	}
+	else
+		TakeInventory("StaticRifleChargingToken", 4);
+		Delay(2);
+    }
+}

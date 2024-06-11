@@ -1,0 +1,218 @@
+// Common Base for Pickups
+Actor EquipmentPickup : CustomInventory
+{
+	+FORCEXYBILLBOARD
+	+DONTGIB
+	Inventory.PickupSound "Items/Grenades"
+	Inventory.PickupMessage ""
+	Scale 0.6
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		Stop
+	}
+}
+
+Actor D4FragGrenadePickup : EquipmentPickup
+{
+	Inventory.PickupMessage "Picked up a Frag Grenade."
+	States
+	{
+	Spawn:
+		D4EQ A -1
+		Stop
+	
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"GiveAmmo")
+		Goto EquipGrenade
+
+	EquipGrenade:
+		TNT1 A 0 A_GiveInventory("HasFragGrenade",1)
+		Goto Switch
+
+	Switch:
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("SwitchFirstEquipment",1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("GrenadeAmmo",1)
+		Stop
+	}
+}
+
+Actor D4HologramPickup : EquipmentPickup
+{
+	Inventory.PickupMessage "Picked up a Hologram Attractor."
+	Scale 0.5
+	States
+	{
+	Spawn:
+		D4EQ B -1
+		Stop
+	
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"GiveAmmo")
+		Goto EquipHologram
+
+	EquipHologram:
+		TNT1 A 1 A_GiveInventory("HasHologram",1)
+		Goto Switch
+
+	Switch:
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"GiveAmmo")
+		TNT1 A 1 A_GiveInventory("SwitchFirstEquipment",1)
+		Goto GiveAmmo
+	
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("GrenadeAmmo",1)
+		Stop
+	}
+}
+
+Actor D4SyphonGrenadePickup : EquipmentPickup
+{
+	Inventory.PickupMessage "Picked up a Syphon Grenade."
+	States
+	{
+	Spawn:
+		D4EQ CCD 2
+		D4EQ DEED 2 Bright
+		D4EQ DCC 2
+		Loop
+	
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"GiveAmmo")
+		Goto EquipSyphon
+
+	EquipSyphon:
+		TNT1 A 1 A_GiveInventory("HasSyphon",1)
+		Goto Switch
+
+	Switch:
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"GiveAmmo")
+		TNT1 A 1 A_GiveInventory("SwitchFirstEquipment",1)
+		Goto GiveAmmo
+	
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("GrenadeAmmo",1)
+		Stop
+	}
+}
+
+Actor D4ShieldWallPickup : EquipmentPickup
+{
+	Inventory.PickupMessage "Picked up a Shield Wall."
+	States
+	{
+	Spawn:
+		D4EQ F -1
+		Stop
+	
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"GiveAmmo")
+		Goto EquipShieldWall
+
+	EquipShieldWall:
+		TNT1 A 0 A_GiveInventory("HasShieldWall",1)
+		Goto Switch
+
+	Switch:
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("SwitchFirstEquipment",1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("GrenadeAmmo",1)
+		Stop
+	}
+}
+
+Actor D4KineticMinePickup : EquipmentPickup
+{
+	Inventory.PickupMessage "Picked up a Kinetic Mine."
+	Scale 0.5
+	States
+	{
+	Spawn:
+		D4EQ G -1
+		Stop
+	
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"GiveAmmo")
+		Goto EquipKineticMine
+
+	EquipKineticMine:
+		TNT1 A 1 A_GiveInventory("HasKineticMine",1)
+		Goto Switch
+
+	Switch:
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"GiveAmmo")
+		TNT1 A 1 A_GiveInventory("SwitchFirstEquipment",1)
+		Goto GiveAmmo
+	
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("GrenadeAmmo",1)
+		Stop
+	}
+}
+
+Actor D4PersonalTeleporterPickup : EquipmentPickup
+{
+	Inventory.PickupMessage "Picked up a Personal Teleporter."
+	Scale 0.4
+	States
+	{
+	Spawn:
+		D4EQ H -1
+		Stop
+	
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"GiveAmmo")
+		Goto EquipPersonalTeleport
+
+	EquipPersonalTeleport:
+		TNT1 A 1 A_GiveInventory("HasPersonalTeleporter",1)
+		Goto Switch
+
+	Switch:
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"GiveAmmo")
+		TNT1 A 1 A_GiveInventory("SwitchFirstEquipment",1)
+		Goto GiveAmmo
+	
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("GrenadeAmmo",1)
+		Stop
+	}
+}

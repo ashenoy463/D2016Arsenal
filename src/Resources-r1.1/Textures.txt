@@ -1,0 +1,85 @@
+// Scopes for HAR, Vortex and Gauss
+remap R016N0 R016N0H
+remap R016M0 R016M0H
+remap R016P0 R016P0H
+remap R016Q0 R016Q0H
+
+// Sprites Defs
+Sprite "X079B0", 128, 128
+{
+	Offset 64, 64
+	Patch "X079A0", 0, 0
+	{
+		Rotate 90
+	}
+}
+
+Sprite "X079C0", 128, 128
+{
+	Offset 64, 64
+	Patch "X079A0", 0, 0
+	{
+		Rotate 180
+	}
+}
+
+Sprite "X079D0", 128, 128
+{
+	Offset 64, 64
+	Patch "X079A0", 0, 0
+	{
+		Rotate 270
+	}
+}
+
+Sprite "X079E0", 128, 128
+{
+	Offset 64, 64
+	Patch "X079A0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "X079F0", 128, 128
+{
+	Offset 64, 64
+	Patch "X079B0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "X079G0", 128, 128
+{
+	Offset 64, 64
+	Patch "X079C0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "X079H0", 128, 128
+{
+	Offset 64, 64
+	Patch "X079D0", 0, 0
+	{
+		FlipX
+	}
+}
+
+// Heat Blast Effect Testing on Sprites
+/*
+Sprite "PL2FA0", 320, 168
+{
+	Patch "PL2FA0", 0, 0
+	{
+		UseOffsets
+	}
+	Patch "PL21A0", 0, 0
+	{
+		UseOffsets
+	}
+}*/
+
+// End of texture definition

@@ -1,0 +1,537 @@
+ACTOR D4RiotShieldGuy : D4Sergeant //replaces RiotShieldGuy
+{
+  	//$Title "Riot Shield Sergeant"
+  	//$Category "DOOM 2016 Arenal - Monsters"
+	Obituary "%o was assesinated by a Riot Shield Sergeant."
+	DropItem "D4EquipmentReplacer" 5
+	DropItem "D4PistolReplacer"
+	damagefactor "Avoid", 0.0
+	DropItem "RiotShieldDrop"
+	//+MissileEvenMore
+   +MISSILEMORE
+ Species "ZombieSoldier"
+	Tag "Riot Shield Sergeant"
++DONTHURTSPECIES
+        Speed 4
+	States
+	{		
+	Pain.Avoid: 
+		RPSZ A 1 A_FaceTarget
+		TNT1 A 0 A_Jump(255, "AvoidLeft", "AvoidRight")
+		Goto AvoidLeft
+
+    Death.Fatality:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("Clip", 0, 0, 40, 0, 0, 0, 0, 0, 128)
+        TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+		TNT1 A 0 A_GiveToTarget("GoFatality", 1)
+		TNT1 A 0 A_GiveToTarget("FatalityRewardSergeant",1)
+		TNT1 A 0 A_Scream
+        TNT1 A 0 A_GiveToTarget("RiotSergeantFatality1", 1)
+        Stop
+
+	//////////////////////////////////////
+
+	Spawn:
+	  TNT1 A 0
+	  TNT1 A 0 A_GiveInventory("SKShotgunGuy", 1)
+	  TNT1 A 0 A_GiveInventory("TypeSergeant", 1)
+	  TNT1 A 0 A_GiveInventory("ZombieManAmmo", random(6,15))
+	  RPSZ A 1
+	  Goto Stand
+
+	//Emergency manuever in case the monster gets killed by an "alerter" actor	
+    	Death.KillMe:
+    	Death.Taunt:
+    	Death.Avoid:
+	    	TNT1 A 0
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+        	TNT1 A 0 A_SpawnItem("D4RiotShieldGuy")
+		TNT1 A 0
+        	Stop
+
+	Stand:
+		TNT1 A 0 A_CheckSight("Stand2")
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 40,0)
+		RPSZ A 4 A_Look
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ A 4 A_Look
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ A 4 A_Look
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ A 4 A_Look
+		Loop
+		
+	Stand2:
+		RPSZ A 14 A_Look
+		Goto Stand
+		
+		
+	FallBack:
+	TNT1 A 0 A_CheckSight("Advance")
+	TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ D 1 A_FaceTarget
+	RPSZ D 2 A_Recoil(2)
+	TNT1 A 0 A_PlaySound("humans/step",3)
+	TNT1 A 0 A_jump(64, "Missile")
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ C 1 A_FaceTarget
+	RPSZ C 2 A_Recoil(2)
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ B 1 A_FaceTarget
+	RPSZ B 2 A_Recoil(2)
+	TNT1 A 0 A_PlaySound("humans/step",3)
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ A 1 A_FaceTarget
+	RPSZ A 2 A_Recoil(2)
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ D 1 A_FaceTarget
+	RPSZ D 2 A_Recoil(2)
+	TNT1 A 0 A_PlaySound("humans/step",3)
+	TNT1 A 0 A_jump(64, "Missile")
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ C 1 A_FaceTarget
+	RPSZ C 2 A_Recoil(2)
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ B 1 A_FaceTarget
+	RPSZ B 2 A_Recoil(2)
+	TNT1 A 0 A_PlaySound("humans/step",3)
+	TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	RPSZ A 1 A_FaceTarget
+	RPSZ A 2 A_Recoil(2)
+	TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+	GOto Missile
+	
+	
+	SearchForPlayer:
+	Idle:
+		TNT1 A 0 A_JumpIfHealthLower(1, "Death")
+	    TNT1 A 0 A_ClearTarget
+	    TNT1 A 0 A_TakeInventory("EnemyMemory", 30)
+		TNT1 A 0 A_GiveInventory("SKShotgunGUy", 1)
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ A 10 A_Look
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ C 10 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ A 10 A_Look
+        TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ D 10 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ A 10 A_Look
+		
+		RPSZ A 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		RPSZ B 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		RPSZ C 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		RPSZ D 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		
+		TNT1 A 0 A_Jump(128, "Idle")
+		RPSZ A 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		RPSZ B 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		RPSZ C 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		RPSZ D 4 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		Loop
+		
+	
+	See:
+	TNT1 A 0 A_JumpIfHealthLower(1, "Death")
+	TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+	TNT1 A 0 A_TakeInventory("SKZombieman", 1)
+	TNT1 A 0 A_TakeInventory("EnemyMemory", 15)
+	TNT1 A 0 A_CheckSight("SeeNeverSeen")
+	Goto SeeContinue
+	
+	SeeContinue:
+	TNT1 A 0 A_JumpIfHealthLower(1, "Death")
+	    TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+	    TNT1 A 0 A_JumpIfCloser(200, "FallBack")
+		//Advance:
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+		//TNT1 A 0 A_JumpIfInventory("EnemyMemory", 15, "SearchForPlayer")
+		TNT1 A 0 A_GiveInventory("EnemyMemory", 1)
+        TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 20, 0, 0)
+		TNT1 A 0 A_TakeInventory("SKShotgunGuy", 1)
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ AA 2 A_Chase
+			PLA6 A 0 A_Recoil(-2)
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ AA 2 A_Chase
+	PLA6 A 0 A_Recoil(-2)
+
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ BB 2 A_Chase
+	PLA6 A 0 A_Recoil(-2)
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_PlaySound("humans/step",3)
+		RPSZ BB 2 A_Chase
+	PLA6 A 0 A_Recoil(-2)
+
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ CC 2 A_Chase
+	PLA6 A 0 A_Recoil(-2)
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ CC 2 A_Chase
+	PLA6 A 0 A_Recoil(-2)
+
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ DD 2 A_Chase
+	PLA6 A 0 A_Recoil(-2)
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_PlaySound("humans/step",3)
+		RPSZ DD 2 A_Chase
+	PLA6 A 0 A_Recoil(-2)
+		Loop
+		
+	SeeNeverSeen:
+		TNT1 A 0 A_JumpIfCloser(200, "FallBack")
+	Advance:
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+        TNT1 A 0 A_SpawnItemEx("FootStep", 0, 0, 10, 0, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ AA 2 A_Chase
+		TNT1 A 0 A_Recoil(-1)
+		TNT1 A 0 A_TakeInventory("SKZombieman", 1)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ BB 2 A_Chase
+		TNT1 A 0 A_PlaySound("humans/step",3)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ CC 2 A_Chase
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 40,0)
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ DD 2 A_Chase
+		TNT1 A 0 A_PlaySound("humans/step",3)
+		Loop
+		
+		
+	///////////////////////////////////////	
+	Missile:
+		TNT1 A 0 A_TakeInventory("SKShotgunGuy", 1)
+	    	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_JumpIfCloser(90, "FallBack")
+		RPSZ E 4 A_FaceTarget
+	    	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ E 4 
+	    	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ E 4 A_FaceTarget
+		FireGun:
+        	TNT1 A 0 A_GiveInventory("ZombieManAmmo", 1)
+	    	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+        	TNT1 A 0 A_PlaySound("pfire")
+		TNT1 A 0 A_CustomMissile("DistantFireSoundRifle", 32, 0, 0, 1, 0)
+		RPSZ F 4 BRIGHT A_CustomMissile("MonsterRiotTracer", 28, 0, random(-12, 12), 0)
+		TNT1 A 0 A_SpawnItem ("PistolCaseSpawn", 0, 30,0)
+		TNT1 A 0 A_CustomMissile("OrangeLensFlareAlt", 34, 10, 15, 0)
+	    	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	    	RPSZ E 4 A_FaceTarget
+	    	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+	    	RPSZ E 4 A_FaceTarget
+		TNT1 A 0 A_Jump(96, "FireGun")
+        	TNT1 A 0 A_JumpIfInventory("ZombieManAmmo", 15, "Reload")
+		Goto SeeContinue
+
+	Reload:
+		TNT1 A 0 A_TakeInventory("ZombieManAmmo", 20)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        RSP6 A 3
+		RSP6 A 1 A_CustomMissile("EmptyClipSpawn", 38, 0, random(-11, 11), 0)
+        TNT1 A 0 A_PlaySound("Reload", 1)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        RSP6 A 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        RSP6 B 4
+        TNT1 A 0 A_PlaySound("prel", 3)
+        RSP6 B 4
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+        RSP6 C 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 4, 44,0)
+		TNT1 A 0 A_SpawnItem ("LegTarget12", 10)
+		RPSZ E 8
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+        Goto SeeContinue	
+		
+	Pain.Stun:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag(NOPAIN,1)
+		TNT1 A 0 A_Pain
+	    	TNT1 A 0 A_SpawnItemEx("RiotShieldPhysicsStunned", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 5 A_GiveInventory(StunFXSpawner) // 5 Seconds
+		TNT1 A 0 A_ChangeFlag(NOPAIN,0)
+		Goto SeeContinue
+	Wound:
+		RPSG C 0 A_SetUserVar(user_healto,20)
+		RPSG C 0
+		Goto Wounded
+		
+	Death.ChainsawPinata:	
+		RPSG "#" 0
+		Goto ChainsawKill
+
+	Death.GloryKill:
+		RPSG "#" 0
+		Goto GloryKillGeneric
+
+	Pain.Melee:
+	TNT1 A 0
+        TNT1 A 0 A_JumpIfInventory ("IsDown", 1, 6)
+		RPSZ A 3
+		TNT1 A 0 A_JumpIfInventory ("SKShotgunGuy", 1, "StealthKill")
+		RPSZ A 3 A_Pain
+		Goto SeeContinue
+        TNT1 AAAAA 0
+        TNT1 A 0 A_TakeInventory("IsDown", 1)
+	Pain:
+	Pain.Avoid: 
+	Pain.Kick:
+        TNT1 A 0 A_JumpIfInventory ("IsDown", 1, 6)
+		TNT1 A 0 A_TakeInventory("SKShotgunGuy", 1)
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4", 0, 40,0)
+		RPSZ D 4 A_Pain
+		RPSZ CBA 3 
+	DeployShield:
+        TNT1 AAAAA 0
+        TNT1 A 0 A_FaceTarget
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+        RPSZ E 4
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ E 4
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+        RPSZ E 4
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ E 4
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+        RPSZ E 4
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+		RPSZ E 4
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_TakeInventory("IsDown", 1)
+		RPSZ E 4
+	    TNT1 A 0 A_SpawnItemEx("RiotShieldPhysics", 20, 0, 5, 0, 0, 0, 0,SXF_NOCHECKPOSITION)
+        Goto SeeContinue
+		
+	Possession:
+		TNT1 A 0 A_SetInvulnerable
+		RPSZ A 3
+		RPSZ A 3 A_Pain
+		"####" "#" 35 ACS_NamedExecuteAlways("Pos - Flicker effect")
+		TNT1 A 0 A_UnSetInvulnerable
+		Goto See
+	}
+}
+
+actor RiotShieldPhysics: HeadshotTargetBase
+{
+Speed 9
++NOTARGET
+damagefactor "Cut", 0.01
+damagefactor "SSG", 0.01
+damagefactor "Melee", 0.01
+damagefactor "Cutless", 0.01
+damagefactor "Plasma", 0.01
+damagefactor "Blast", 0.01
+damagefactor "Taunt", 0.01
+damagefactor "Blood", 0.01
+damagefactor "BlueBlood", 0.01
+damagefactor "Head", 0.0
+damagefactor "MinorHead", 0.0
+damagefactor "KillMe", 0.0
+damagefactor "Explosive", 0.01
+damagefactor "DestroyShield", 0.0
+damagefactor "ExtremePunches", 1000
+Health 10000
+Radius 15
+Height 41
+BloodType "HitPuff"
+PainChance 255
++NOGRAVITY
++SHOOTABLE
++NOTELEPORT
+-SOLID
++NODAMAGETHRUST
+-THRUGHOST
++NORADIUSDMG
+-GHOST
+States
+{
+Spawn:
+XXXX A 10
+Stop
+
+Pain:
+Pain.Cutless:
+TNT1 A 0 A_PlaySound ("barrel/pain")
+Goto Spawn
+
+Pain.Bullet:
+TNT1 A 0 A_PlaySound ("barrel/pain")
+
+TNT1 A 1
+Goto Spawn
+
+Pain.SSG:
+Pain.Cut:
+Pain.Flames:
+Pain.Fire:
+Pain.Burn:
+Pain.Plasma:
+Pain.Eat:
+Pain.Blast:
+Pain.Rip:
+Pain.ImpFatalityMarine:
+Pain.HKF:
+Pain.Melee:
+TNT1 A 0 A_PlaySound ("barrel/pain")
+
+TNT1 AAAAAAAAAAAAAA 1
+Goto Spawn
+ }
+}
+
+Actor RiotShieldPhysicsStunned : RiotShieldPhysics
+{
+	States
+	{
+	Spawn:
+	XXXX A 300
+	Stop
+	}
+}
+
+Actor ExecutedRiotSergeant: DeadShotgunGuy1
+{
+	States
+	{
+	Spawn:
+		FSP6 L -1
+        Stop 
+		
+		Death:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItem("MeatDeathSmall")
+		TNT1 A 0 A_SpawnItem("DeadShotgunguySZD3C")
+		TNT1 AA 0 A_CustomMissile ("XDeathArm1", 32, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+ACTOR RiotShieldDrop
+{
+	Health 1000000000000
+	Mass 5
+	Radius 4
+	Height 2
+	+NoTarget
+	//+NeverTarget
+	+CantSeek
+	-CountKill
+	+NonShootable
+	+NoRadiusDmg
+	+DropOff
+	+NoTeleport
+	+Corpse
+	+NotAutoaimed
+	+NoBlood
+	+Notarget
+	+Friendly
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_GiveInventory("TargetIsAMarine")
+	Fly:
+		5L1D ABCDEFGH 3 A_CheckFloor("Ground")
+		Loop
+	Ground:
+		TNT1 A 0 A_PlaySound ("barrel/pain")
+		5L1D I 2100 A_SetFloorClip
+	Death:
+		5L1D I -1
+		Stop
+	}
+}
+
+ACTOR MonsterRiotTracer: Tracer
+{
++BLOODSPLATTER 
++THRUGHOST
+-DONTSPLASH
++THRUACTORS
+speed 90
+damage (random(2,4))
+seesound ""
+damagetype Bullet
+Decal "BulletChip"
+States
+{
+Spawn:
+	TRAC A 1 BRIGHT
+	TNT1 A 0 A_ChangeFlag("THRUACTORS", 0)
+Fly:
+	TRAC A 1 BRIGHT
+	Loop
+Death:
+    TNT1 A 1 A_SpawnItem("HitPuff")
+    Stop
+	}
+}

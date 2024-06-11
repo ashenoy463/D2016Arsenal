@@ -1,0 +1,236 @@
+#library "CHAINSAW"
+#include "zcommon.acs"
+
+
+//*******************************************************
+//*******************************************************
+//	Chainsaw enemy health checker
+//*******************************************************
+//*******************************************************
+
+int fuel_to_take;
+Script "ChainsawTargetCheck" (void)
+{
+	if(!stricmp(GetWeapon(), "D4Chainsaw"))
+	{
+		int enemyhealth;
+		int fuel = CheckInventory("D4Fuel");
+		
+		enemyhealth = FuncGetTargetHealth();
+		
+		fuel_to_take = enemyhealth / 101 + 1;
+		if(enemyhealth == 0) fuel_to_take = 0;
+		
+		if( fuel_to_take > fuel )
+		{}
+		
+		SetResultValue(fuel_to_take);
+	}
+	else
+	{
+		// Deathmatch chainsaw is a glorified equipment.
+		// It kills any one target, but always takes all remaining ammo.
+		SetResultValue(1);
+	}
+}
+
+function int FuncGetTargetHealth (void)
+{
+	int health;
+	int ActivatorWas = ActivatorTid();
+	SetActivator(0, AAPTR_PLAYER_GETTARGET);
+	health = GetActorProperty(0, APROP_Health);
+	SetActivator(ActivatorWas);
+	return health;
+}
+
+Script "DiePlease" (void)
+{
+	int x = getActorX(0);
+	int y = getActorY(0);
+	int z = getActorZ(0);
+	x = x + cos(getActorAngle(0)) * 24;
+	y = y + sin(getActorAngle(0)) * 24;
+	int ActivatorWas = ActivatorTid();
+	SetActivatorToTarget(0);
+	SetActorPosition(0, x, y, z, false);
+}
+
+Script "TakeFuel" (void)
+{
+	if(!stricmp(GetWeapon(), "D4Chainsaw"))
+		TakeInventory("D4Fuel",fuel_to_take);
+	else
+		TakeInventory("D4FuelDM",100);
+	TakeInventory("SuccessfulExecutionToken",1);
+}
+
+function int MarkTarget(void)
+{
+	int ActivatorWas = ActivatorTid();
+	
+	SetActivatorToTarget(0);
+	int TargetWas = ActivatorTid();
+	if(!TargetWas) Thing_ChangeTid(0, UniqueTID());
+	TargetWas = ActivatorTid();
+	
+	SetActivator(ActivatorWas);
+	return TargetWas;
+}
+
+// Player Ammo Detection
+Script "ChainsawPlayerAmmoDetection" (void)
+{
+	while(GetActorProperty(0, APROP_HEALTH) > 0)
+	{
+		// Ammo Enablers
+		int hasbullets = CheckInventory("CKPlayer_HasBullets");
+		int hasshells = CheckInventory("CKPlayer_HasShells");
+		int hascells = CheckInventory("CKPlayer_HasCells");
+		int hasrockets = CheckInventory("CKPlayer_HasRockets");
+		int hasslugs = CheckInventory("CKPlayer_HasSlugs");
+		
+		// Ammo Checkers
+		int bullets = CheckInventory("D4Bullets");
+		int shells = CheckInventory("D4Shells");
+		int cells = CheckInventory("D4Cells");
+		int rockets = CheckInventory("D4Rockets");
+		int slugs = CheckInventory("D4Slugs");
+
+		// Bullets
+		If(hasbullets == 1)
+		{
+			If(bullets < 50)
+			{
+				GiveInventory("CKPlayer_LowBullets", 1);
+				TakeInventory("CKPlayer_RegularBullets", 1);
+				TakeInventory("CKPlayer_GoodBullets", 1);
+			}
+			Else If(bullets >= 50 && bullets <= 150) 
+			{
+				TakeInventory("CKPlayer_LowBullets", 1);
+				GiveInventory("CKPlayer_RegularBullets", 1);
+				TakeInventory("CKPlayer_GoodBullets", 1);
+			}
+			Else If(bullets >= 150 ) 
+			{
+				TakeInventory("CKPlayer_LowBullets", 1);
+				TakeInventory("CKPlayer_RegularBullets", 1);
+				GiveInventory("CKPlayer_GoodBullets", 1);
+			}
+		}
+		Else If((CheckInventory("D4Repeater") == 1)||(CheckInventory("D4HAR") == 1)||(CheckInventory("D4Chaingun") == 1))
+		{
+			GiveInventory("CKPlayer_HasBullets", 1);
+		} 
+		
+		// Shells
+		If(hasshells == 1)
+		{
+			If(shells < 15)
+			{
+				GiveInventory("CKPlayer_LowShells", 1);
+				TakeInventory("CKPlayer_RegularShells", 1);
+				TakeInventory("CKPlayer_GoodShells", 1);
+			}
+			Else If(shells >= 15 && shells <= 30) 
+			{
+				TakeInventory("CKPlayer_LowShells", 1);
+				GiveInventory("CKPlayer_RegularShells", 1);
+				TakeInventory("CKPlayer_GoodShells", 1);
+			}
+			Else If(shells >= 30 ) 
+			{
+				TakeInventory("CKPlayer_LowShells", 1);
+				TakeInventory("CKPlayer_RegularShells", 1);
+				GiveInventory("CKPlayer_GoodShells", 1);
+			}
+		}
+		Else If((CheckInventory("D4ShotGun") == 1)||(CheckInventory("D4SSG") == 1)||(CheckInventory("D4Reaper") == 1))
+		{
+			GiveInventory("CKPlayer_HasShells", 1);
+		}
+		
+		// Cells
+		If(hascells == 1)
+		{
+			If(cells < 50)
+			{
+				GiveInventory("CKPlayer_LowCells", 1);
+				TakeInventory("CKPlayer_RegularCells", 1);
+				TakeInventory("CKPlayer_GoodCells", 1);
+			}
+			Else If(cells >= 50 && cells <= 150) 
+			{
+				TakeInventory("CKPlayer_LowCells", 1);
+				GiveInventory("CKPlayer_RegularCells", 1);
+				TakeInventory("CKPlayer_GoodCells", 1);
+			}
+			Else If(cells >= 150 ) 
+			{
+				TakeInventory("CKPlayer_LowCells", 1);
+				TakeInventory("CKPlayer_RegularCells", 1);
+				GiveInventory("CKPlayer_GoodCells", 1);
+			}
+		}
+		Else If((CheckInventory("D4PlasmaRifle") == 1)||(CheckInventory("D4LightningGun") == 1))
+		{
+			GiveInventory("CKPlayer_HasCells", 1);
+		}
+		
+		// Rockets
+		If(hasrockets == 1)
+		{
+			If(rockets < 10)
+			{
+				GiveInventory("CKPlayer_LowRockets", 1);
+				TakeInventory("CKPlayer_RegularRockets", 1);
+				TakeInventory("CKPlayer_GoodRockets", 1);
+			}
+			Else If(rockets >= 10 && rockets <= 25) 
+			{
+				TakeInventory("CKPlayer_LowRockets", 1);
+				GiveInventory("CKPlayer_RegularRockets", 1);
+				TakeInventory("CKPlayer_GoodRockets", 1);
+			}
+			Else If(rockets >= 25 ) 
+			{
+				TakeInventory("CKPlayer_LowRockets", 1);
+				TakeInventory("CKPlayer_RegularRockets", 1);
+				GiveInventory("CKPlayer_GoodRockets", 1);
+			}
+		}
+		Else If((CheckInventory("D4GrenadeLauncher") == 1)||(CheckInventory("D4RocketLauncher") == 1))
+		{
+			GiveInventory("CKPlayer_HasRockets", 1);
+		}
+
+		// Slugs
+		If(hasslugs == 1)
+		{
+			If(slugs < 8)
+			{
+				GiveInventory("CKPlayer_LowSlugs", 1);
+				TakeInventory("CKPlayer_RegularSlugs", 1);
+				TakeInventory("CKPlayer_GoodSlugs", 1);
+			}
+			Else If(slugs >= 8 && slugs <= 16) 
+			{
+				TakeInventory("CKPlayer_LowSlugs", 1);
+				GiveInventory("CKPlayer_RegularSlugs", 1);
+				TakeInventory("CKPlayer_GoodSlugs", 1);
+			}
+			Else If(slugs >= 16 ) 
+			{
+				TakeInventory("CKPlayer_LowSlugs", 1);
+				TakeInventory("CKPlayer_RegularSlugs", 1);
+				GiveInventory("CKPlayer_GoodSlugs", 1);
+			}
+		}
+		Else If((CheckInventory("D4GaussCannon") == 1)||(CheckInventory("D4VortexRifle") == 1)||(CheckInventory("D4StaticRifle") == 1))
+		{
+			GiveInventory("CKPlayer_HasSlugs", 1);
+		}
+	Delay(5);
+	}
+}

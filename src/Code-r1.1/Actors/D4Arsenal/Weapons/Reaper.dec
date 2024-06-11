@@ -1,0 +1,829 @@
+Actor D4Reaper : D4WeaponBase replaces Unmaker
+{
+	Weapon.AmmoUse1 2
+	Weapon.AmmoGive1 0
+	Weapon.AmmoType1 "D4Shells"
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 0
+	Tag "Reaper"
+	Obituary "%o was sowed by %k."
+    Inventory.PickupSound "CLIPINSS"
+	Inventory.PickupMessage "Reaper. Go reap what you sowed!"
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NOAUTOAIM
+	+WEAPON.NOALERT
+	States
+	{
+	WReady:
+		TNT1 A 0 A_JumpIfInventory("ReaperAltMode",1,"ReadyAlt")
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"StartUpgrader")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		RPRN A 1 A_WeaponReady
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"SpecialMode")
+		Loop
+				
+	StartUpgrader:
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_GiveInventory("UpgradeReaper",1)
+		TNT1 A 0 A_SelectWeapon("D4WeaponUpgrader")
+		Goto WReady
+		
+	ReadyAlt:
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM E 1 Bright A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"SpecialMode")
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM E 1 Bright A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"SpecialMode")
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM E 1 Bright A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"SpecialMode")
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM F 1 Bright A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"SpecialMode")
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM F 1 Bright A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"SpecialMode")
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"TakeAltFast")
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Taunting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("StartUpgrader",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM F 1 Bright A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"SpecialMode")
+		Goto WReady
+	
+	Spawn:
+		D4W3 C -1
+		Stop
+	
+	Deselect:
+		RPRM A 0 A_TakeInventory("ReaperAltMode",1)
+		TNT1 A 0 A_Takeinventory("NoParkour",1)
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_StopSound(6)
+		RPRS EDCBA 1
+		RPRS A 0
+		Goto DeselectSequence
+			
+	Select: 
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_Giveinventory("PlasmaGunSelected",1)
+		TNT1 A 0 A_GiveInventory("IsUpgradeableWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		RPRS A 0
+		Goto SelectSequence
+	
+	Ready:
+		TNT1 A 0 A_GunFlash
+		TNT1 A 0 A_PlaySound("Weapon/Switch")		
+	SelectAnimation:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		RPRS ABCDE 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+// ------------------------------------------------------------------------------------
+//
+// Special
+//
+// ------------------------------------------------------------------------------------
+		
+	SpecialMode:
+		"####" "#" 0 A_TakeInventory("Reloading",1)		
+		"####" "#" 1
+		"####" "#" 0 A_JumpIfInventory("HasUpgradeReaperExplosive",1,3)
+		"####" "#" 0 A_JumpIfInventory("IsPlayingAsDM",1,"ArePlayingDeathMatch")
+		"####" "#" 0 A_Print("You need the Explosive Projectile Upgrade", 2)
+		Goto WReady
+		"####" "#" 1 A_PlaySound("CLIPINSS",1)
+		"####" "#" 0 A_JumpIfInventory("ReaperExplosiveOn",1,3)
+		"####" "#" 0 A_GiveInventory("ReaperExplosiveOn",1)
+		"####" "#" 0 A_Print("Fire-Mode: Explosive")
+		Goto WReady
+		"####" "#" 0 A_Takeinventory("ReaperExplosiveOn",1)
+		"####" "#" 0 A_Print("Fire-Mode: Normal")
+		Goto WReady
+
+	ExplosiveTake:
+		TNT1 A 0 A_JumpIfInventory("D4Shells",4,3)
+		TNT1 A 0 A_Takeinventory("ReaperExplosiveOn",1)
+		TNT1 A 0 A_Print("Fire-Mode: Normal")
+		Goto FireNormal
+		TNT1 A 0 A_Takeinventory("D4Shells",2)
+		Goto FireNormal
+
+	ExplosiveTakeAlt:
+		TNT1 A 0 A_JumpIfInventory("D4Shells",4,3)
+		TNT1 A 0 A_Takeinventory("ReaperExplosiveOn",1)
+		TNT1 A 0 A_Print("Fire-Mode: Normal")
+		Goto FireAltContinue
+		TNT1 A 0 A_Takeinventory("D4Shells",2)
+		Goto FireAltContinue
+		
+// ------------------------------------------------------------------------------------
+//
+// Fire
+//
+// ------------------------------------------------------------------------------------
+
+	Fire:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("ReaperAltMode",1,"FireAlt")
+		TNT1 A 0 A_JumpIfInventory("ReaperExplosiveOn",1,"ExplosiveTake")
+	FireNormal:
+		TNT1 A 0 A_FireCustomMissile("ReaperDummyAmmoSpender",0,1,0,0,0,0)
+	FireContinue:
+		TNT1 A 0 A_PlaySound("Repeater/Single",CHAN_WEAPON,1.0,false,0.9)
+		RPRN B 1 Bright A_GunFlash("FirePrimary")
+		RPRN C 1 
+		RPRN D 1 Bright A_GunFlash("FirePrimary")
+		RPRN E 1 
+		RPRN F 1 Bright A_GunFlash("FirePrimary")
+		RPRN G 1 
+		RPRN B 1 Bright A_GunFlash("FirePrimary")
+		RPRN C 1 
+		RPRN D 1 Bright A_GunFlash("FirePrimary")
+		RPRN E 1 
+		RPRN F 1 Bright A_GunFlash("FirePrimary")
+		RPRN G 1 
+		//Allow Quick switch from here
+		TNT1 A 0 A_JumpIfInventory("PowerDoubleFiringSpeed",1,8) //haste!
+		"####" "#" 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		RPRN A 3 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		RPRN A 3 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		RPRN A 3 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		RPRN A 3 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		RPRN A 3 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+// ------------------------------------------------------------------------------------
+//
+// Alt Mode
+//
+// ------------------------------------------------------------------------------------
+
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,2)
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeReaperChargedFire",1,1)
+		Goto NoUpgrades
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("ReaperAltMode",1,"AltEnd")
+		RPRM A 0 A_PlaySound("Reaper/ChargeShot",5,0.5)
+		RPRM A 0 A_PlaySound("Reaper/ChargedBoneCrackLoop",6,1,1)
+		RPRM A 0 A_GiveInventory("ReaperAltMode",1)
+		RPRM ABCD 4
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto ReadyAlt
+		
+	TakeAltFast:
+		RPRM A 0 A_PlaySound("Reaper/Disengage",5,1.0,false,1.4)
+		RPRM A 0 A_TakeInventory("ReaperAltMode",1)
+		RPRM A 0 A_StopSound(6)
+		Goto WReady
+		
+	AltEnd:
+		RPRM A 0 A_PlaySound("Reaper/Disengage",5,1.0,false,1.4)
+		RPRM A 0 A_TakeInventory("ReaperAltMode",1)
+		RPRM A 0 A_StopSound(6)
+		RPRM DCA 3
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		
+	FireAlt:
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"FireAltContinue")
+		TNT1 A 0 A_JumpIfInventory("ReaperExplosiveOn",1,"ExplosiveTakeAlt")
+	FireAltContinue:
+		TNT1 A 0 A_GunFlash("FireSecondary")
+		RPRM G 1 Bright Offset(20,52)
+		RPRM G 1 Bright Offset(17,49) 
+		RPRM G 1 Bright Offset(14,46) 
+		RPRM G 1 Bright Offset(11,43) 
+		RPRM B 1 Bright Offset(8,40) 
+		RPRM B 1 Bright Offset(6,38) 
+		RPRM B 1 Bright Offset(4,36) 
+		RPRM B 1 Bright Offset(2,34) 
+		RPRM B 10 Bright Offset(1,33) 
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM B 3 Bright A_WeaponReady(WRF_NOPRIMARY|WRF_NOBOB)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM B 3 Bright A_WeaponReady(WRF_NOPRIMARY|WRF_NOBOB)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM C 3 Bright A_WeaponReady(WRF_NOPRIMARY|WRF_NOBOB)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM D 3 Bright A_WeaponReady(WRF_NOPRIMARY|WRF_NOBOB)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"AltEnd")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"AltEnd")
+		RPRM D 3 Bright A_WeaponReady(WRF_NOPRIMARY|WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto ReadyAlt
+
+// ------------------------------------------------------------------------------------
+//
+// Special Fire States
+//
+// ------------------------------------------------------------------------------------
+
+	FirePrimary:
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"FireDM")
+		TNT1 A 0 A_JumpIfInventory("ReaperExplosiveOn",1,"FireExplosive")
+		Goto FireNormalShot
+		
+		FireNormalShot:
+			TNT1 A 0 A_FireCustomMissile("ReaperPrimaryProjectile",random(2,-2),0,7,0,0,0)
+			Goto FinishFire
+			
+		FireExplosive:
+			TNT1 A 0 A_FireCustomMissile("ReaperPrimaryProjectileExplo",random(2,-2),0,7,0,0,0)
+			Goto FinishFire
+			
+		FireDM:
+			TNT1 A 0 A_FireCustomMissile("ReaperPrimaryProjectileDM",random(2,-2),0,7,0,0,0)
+			Goto FinishFire
+		
+	FinishFire:
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_ZoomFactor(0.985,ZOOM_NOSCALETURNING)
+		TNT1 A 0 A_SetBlend("orange",0.07,3)
+		TNT1 A 1 A_SetPitch(pitch-1.0)
+		TNT1 A 1 A_SetPitch(pitch+1.0)
+		TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING)
+		Goto Flash
+
+		FireSecondary:
+			TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"AltFireDM")
+			TNT1 A 0 A_JumpIfInventory("ReaperExplosiveOn",1,"AltFireExplosive")
+			Goto AltFireNormal
+			
+			AltFireNormal:
+				TNT1 A 0 A_FireCustomMissile("ReaperSecondaryProjectile",0,1,7,0,0,0)
+				Goto FinishAltFire
+				
+			AltFireExplosive:
+				TNT1 A 0 A_FireCustomMissile("ReaperSecondaryProjectileExplo",0,1,7,0,0,0)
+				Goto FinishAltFire
+
+			AltFireDM:
+				TNT1 A 0 A_FireCustomMissile("ReaperSecondaryProjectileDM",0,1,7,0,0,0)
+				Goto FinishAltFire
+		
+		FinishAltFire:
+			TNT1 A 0 A_AlertMonsters
+			TNT1 A 0 A_SetBlend("orange",0.1,10)
+			TNT1 A 0 A_ZoomFactor(0.985,ZOOM_NOSCALETURNING)
+			TNT1 A 0 A_PlaySound("Reaper/FireBig",CHAN_WEAPON,1.0,false,0.9)
+			TNT1 A 0 A_PlaySound("Reaper/DischargeMechsound",5,0.6)
+			TNT1 A 0 A_SetBlend("orange",0.04,10)
+			TNT1 A 3 A_SetPitch(pitch-3.0)
+			TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING)
+			TNT1 AAAAAA 1 A_SetPitch(pitch+0.5) 
+			Goto Flash		
+
+// ------------------------------------------------------------------------------------
+//
+// Flash States, Here lies new animations under kicks, taunt and throw grenade
+//
+// ------------------------------------------------------------------------------------
+
+	PunchFlash:
+		RPRS ECA 1
+		Goto Flash
+		
+	KickFlash:
+		RPRS EDCB 1
+		RPRS A 8
+		RPRS BCDE 1
+		Goto Flash
+
+	AirKickFlash:
+		RPRS EDCB 1
+		RPRS A 10
+		RPRS BCDE 1
+		Goto Flash
+		
+	SlideKickStartFlash:
+		RPRS EDCB 1
+		RPRS A 17
+	SlideKickEndFlash:
+		RPRS A 5
+		RPRS BCDE 1
+		Goto Flash
+
+	TauntFlash:
+		RPRS EDCB 1
+		RPRS A 35
+		RPRS BCDE 1
+		Goto Flash
+		
+	GrenadeFlash:
+		RPRS EDCBA 1
+		Goto Flash
+	}
+}
+
+Actor ReaperAltMode : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+Actor ReaperExplosiveOn : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+
+Actor ReaperDummyAmmoSpender
+{
+	Projectile
+	Speed 10
+	RenderStyle None
+	States
+	{
+	Spawn:
+		TNT1 A 10
+		Stop
+	Death:
+		TNT1 A 10
+		Stop
+	}
+}
+
+//---------------------------------------------------------------
+// All variations of primary fire projectile
+
+
+//*****************
+// Normal projectile
+Actor ReaperPrimaryProjectile : FastProjectile
+{
+	Speed 55
+	Radius 2
+	Height 4
+	+BRIGHT
+	+FRIENDLY
+	-BLOODSPLATTER
+	+SEEKERMISSILE
+	+FORCEXYBILLBOARD
+	alpha 0.9
+	scale 0.25
+	Damage (5*random(2,8)) 
+	RenderStyle Add
+	MaxTargetRange 2
+	Decal "ReaperPrimaryNormal"
+	Translation "0:255=%[0,0,0]:[1.5,0.7,0.0]"
+	SeeSound "Reaper/Fire"
+	States
+	{
+	Spawn:
+		TRAC A 0 
+		TRAC A 0 ThrustThingZ(0,random(5,-5),0,1)
+		Goto Idle
+	Idle:
+		X029 ABCDEFGHIJK 1 A_SpawnItemEx("ReaperProjectileTrail", 0,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION,128)
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx("ReaperProjectileSparks", 0,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SetScale(0.11)
+		R031 PQRSTUVWXYZ 2 Bright A_FadeOut(0.034)
+		Stop
+	}
+}
+Actor ReaperProjectileSparks
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 0.2
+	Translation "0:255=%[0,0,0]:[2,0.9,0.3]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Jump(255,"Type1","Type2")
+	Type1:
+		FX57 ABCDE 1 Bright
+		FX57 FGHIJ 2 Bright
+		Stop
+	Type2:
+		FX57 KLMNO 1 Bright
+		FX57 PQRST 2 Bright
+		Stop
+	}
+}
+
+
+//*****************
+// Explosive projectile
+Actor ReaperPrimaryProjectileExplo : ReaperPrimaryProjectile
+{
+	+EXTREMEDEATH
+	+FORCERADIUSDMG
+	Damage 3 //a bit of extra damage through direct shot
+	Decal "ReaperPrimaryExplosive"
+	States
+	{
+	Death:
+		TNT1 A 0 A_Explode(5*random(2,8),32,0,0,16) //does the same as regular shot, but in explosion, while dealing a bit more through direct hit
+		TNT1 A 0 A_SetScale(0.11)
+		TNT1 A 0 A_SpawnItemEx("ReaperPrimaryExplosionFX", -2,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		R031 PQRSTUVWXYZ 2 Bright A_FadeOut(0.034)
+		Stop
+	}
+}
+Actor ReaperPrimaryExplosionFX
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 0.25
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		DB53 ABCDEFGHIJKLM 2 Bright A_FadeOut(0.015)
+		Stop
+	}
+}
+
+
+//*****************
+// DM Projectile
+Actor ReaperPrimaryProjectileDM : ReaperPrimaryProjectile
+{
+	Damage 0 //all dealt in the explosion
+	Obituary "%o was sowed by %k."
+	Decal "ReaperPrimaryExplosive"
+	States
+	{
+	Death:
+		TNT1 A 0 A_ChangeFlag("NOINTERACTION",1)
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256)
+		TNT1 A 0 A_SpawnItemEx("ReaperSoulReapFX", -2,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Explode(20,20,0,9,10)
+		TNT1 A 0 A_SetScale(0.11)
+		TNT1 A 0 A_SpawnItemEx("ReaperPrimaryExplosionFX", -2,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		R031 PQRSTUVWXYZ 2 Bright A_FadeOut(0.034)
+		Stop
+	}
+}
+
+Actor ReaperSoulReapFX
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Alpha 0.001
+	Scale 1.4
+	Translation "0:255=%[0,0,0]:[2.0,1.0,0.3]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,"T1","T2","T3","T4","T5","T6","T7","T8")
+		T1: X153 E 0
+			Goto DoAnimation
+		T2: X153 F 0
+			Goto DoAnimation
+		T3: X153 G 0
+			Goto DoAnimation
+		T4: X153 H 0
+			Goto DoAnimation
+		T5: X153 I 0
+			Goto DoAnimation
+		T6: X153 J 0
+			Goto DoAnimation
+		T7: X153 K 0
+			Goto DoAnimation
+		T8: X153 L 0
+			Goto DoAnimation
+	DoAnimation:
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.0823)		"####" "#" 1 Bright 
+		Stop
+	Ender:
+		TNT1 A 5
+		Stop
+	}
+}
+
+
+//------------
+//Primary fire generic FX
+Actor ReaperProjectileTrail
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 0.09
+	Translation "0:255=%[0,0,0]:[1.5,0.7,0.0]"
+	States
+	{
+	Spawn:
+		PROJ D 0 NODELAY A_Jump(230,2,4,6,8,10,12,14,16)
+		PROJ DDDDEEEEFFFFGGGGHHHHIIII 1 Bright A_FadeOut(0.033)
+		Stop
+	}
+}
+
+
+
+//---------------------------------------------------------------
+// All variations of secondary fire projectile
+
+//*****************
+// Normal projectile
+Actor ReaperSecondaryProjectile : FastProjectile
+{
+	Speed 220
+	Radius 2
+	Height 4
+	+BRIGHT
+	+FRIENDLY
+	-BLOODSPLATTER
+	+SEEKERMISSILE
+	+FORCEXYBILLBOARD
+	scale 0.35
+	Damage (30*random(3,9))
+	RenderStyle Add
+	Translation "0:255=%[0,0,0]:[1.5,0.7,0.0]"
+	SeeSound "Reaper/Fire"
+	Decal "ReaperSecondaryNormal"
+	States
+	{
+	Spawn:
+		TRAC A 0
+		Goto Idle
+	Idle:
+		DB50 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 A_SpawnItemEx("ReaperAltProjectileTrail", 0,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		Loop
+	Death:
+		TNT1 AAAAA 0 A_SpawnItemEx("ReaperAltfirePuffParticle",3,0,0,frandom(0.3,4.5),frandom(-4.5,4.5),frandom(1.5,6),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("ReaperAltfirePuffVFX2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SetScale(0.4)
+		R031 PQRSTUVWXYZ 2 Bright A_FadeOut(0.034)
+		Stop
+	}
+}
+Actor ReaperAltfirePuffParticle
+{
+	Projectile
+	Speed 10
+	-NOGRAVITY
+	+THRUACTORS
+	+PAINLESS
+	+DOOMBOUNCE
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	Radius 2
+	Height 5
+	Gravity 0.4
+	BounceFactor 0.2
+	WallBounceFactor 0.5
+	RenderStyle Add
+	Translation "0:255=%[0,0,0]:[1.5,0.7,0.0]"
+	Scale 0.075
+	states
+	{
+	Spawn:
+		FX01 A 20 Bright
+		FX01 A 1 Bright A_FadeOut(0.14)
+		Wait
+	}
+}
+
+Actor ReaperAltfirePuffVFX2
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Translation "0:255=%[0,0,0]:[1.5,0.7,0.0]"
+	Scale 0.6
+	States
+	{
+	Spawn:
+		DB59 ABCDEFGHIJKLMNOPQRS 1 Bright
+		Stop
+	}
+}
+
+
+//*****************
+// Explosive projectile
+Actor ReaperSecondaryProjectileExplo : ReaperSecondaryProjectile
+{
+	Damage 8 //a bit of extra damage through direct shot
+	Decal "ReaperSecondaryExplosive"
+	States
+	{
+	Death:
+		TNT1 A 0 A_Explode((30*random(3,9)),100,0)
+		TNT1 A 0 A_SpawnItemEx("ReaperSecondaryExplosionFX", -2,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		TNT1 AA 0 A_SpawnItemEx("ReaperSecondaryExplosionFX", -2,0,0, frandom(-0.3,-1.1),frandom(1.5,-1.5),frandom(1.5,-1.5), 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SetScale(0.5)
+		R031 PQRSTUVWXYZ 2 Bright A_FadeOut(0.034)
+		Stop
+	}
+}
+Actor ReaperSecondaryExplosionFX
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 0.75
+	States
+	{
+	Spawn:
+		DB54 ABCDEFGH 1 Bright 
+		DB54 IJKLMNOPQR 2 Bright 
+		Stop
+	}
+}
+
+
+//*****************
+// DM projectile
+Actor ReaperSecondaryProjectileDM : ReaperSecondaryProjectile
+{
+	Damage (30)
+	RenderStyle Add
+	Obituary "%o was sowed by %k."
+	Decal "ReaperSecondaryExplosive"
+	States
+	{
+	Death:
+		TNT1 A 0 A_ChangeFlag("NOBLOCKMAP",0)
+		TNT1 A 0 A_ChangeFlag("NOINTERACTION",1)
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256)
+		TNT1 A 0 A_SpawnItemEx("ReaperSoulReapFXForSecondary", -2,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("ReaperSecondaryExplosionFX", -2,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SetScale(0.5)
+		TNT1 A 0 A_Explode(30,128,0,0,32) 
+		R031 PQRSTUVWXYZ 2 Bright A_FadeOut(0.034)
+		Stop
+	}
+}
+
+Actor ReaperSoulReapFXForSecondary
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Alpha 0.03
+	Scale 3.3
+	Translation "0:255=%[0,0,0]:[2.0,1.0,0.3]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,"T1","T2","T3","T4","T5","T6","T7","T8")
+		T1: X153 E 0
+			Goto DoAnimation
+		T2: X153 F 0
+			Goto DoAnimation
+		T3: X153 G 0
+			Goto DoAnimation
+		T4: X153 H 0
+			Goto DoAnimation
+		T5: X153 I 0
+			Goto DoAnimation
+		T6: X153 J 0
+			Goto DoAnimation
+		T7: X153 K 0
+			Goto DoAnimation
+		T8: X153 L 0
+			Goto DoAnimation
+	DoAnimation:
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright A_FadeIn(0.19)
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		"####" "#" 0 A_SetScale(scalex-0.1941)		"####" "#" 1 Bright 
+		Stop
+	Ender:
+		TNT1 A 5
+		Stop
+	}
+}
+
+//------------
+// Alt fire generic FX
+Actor ReaperAltProjectileTrail
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 0.25
+	Translation "0:255=%[0,0,0]:[1.5,0.7,0.0]"
+	States
+	{
+	Spawn:
+		PROJ D 0 NODELAY A_Jump(230,2,4,6,8,10,12,14,16)
+		PROJ DDDDEEEEFFFFGGGGHHHHIIII 1 Bright A_FadeOut(0.033)
+		Stop
+	}
+}

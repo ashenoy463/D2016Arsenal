@@ -1,0 +1,102 @@
+#library "D4Equipment"
+#include "zcommon.acs"
+
+#define TIDBASE 28701
+#define TIDOFFSET_TELEPORTER (-65)
+
+// Switch Grenade Type
+Script "D4SwitchEquipment" (VOID) NET
+{
+	GiveInventory("SwitchEquipment",1);
+}
+
+script "HologramGetPlayerTranslation" (void)
+{
+	int formerTid = ActivatorTID();
+	int tempTid = UniqueTID();
+	
+	Thing_ChangeTID(0,tempTid);
+	
+	SetActivatorToTarget(0);
+	Thing_SetTranslation(tempTid, -1);
+	
+	Thing_ChangeTID(tempTid, formerTid);
+}
+
+script "PersonalTeleportScript" (void)
+{
+	delay(15);
+	if(CheckInventory("TeleporterThrownToken") && (GetActorProperty(0, APROP_Health) > 0))
+	{
+		TakeInventory("TeleporterThrownToken",1);
+		int angle = GetActorAngle(0);
+		GiveInventory("Teleport1",1);
+		
+		SetHUDSize(400,300,1);
+		SetFont("SMALLFONT");
+		HudMessage(s:"Personal Teleporter Engaged";HUDMSG_FADEOUT,100,CR_GREEN,200.0,260.0,0.1,1.4);
+		delay(1);
+		SetActorAngle(0,angle);
+	}
+}
+
+script "TeleporterThrown" (void)
+{
+	int temptid = TIDBASE + TIDOFFSET_TELEPORTER - PlayerNumber(); // playerNumber() returns -1 on non-player
+	Thing_ChangeTID(0, temptid);
+	SetActivatorToTarget(0);
+	int player = PlayerNumber();
+	SetActivator(temptid);
+	int tid = TIDBASE + TIDOFFSET_TELEPORTER - player; 
+	Thing_Remove(tid);
+	Thing_ChangeTID(0, tid);
+}
+
+script "TeleporterUsed" (void)
+{
+	int tid = TIDBASE + TIDOFFSET_TELEPORTER - PlayerNumber();
+	Teleport_NoStop(tid, 0, 0);
+	Thing_Remove(tid);
+}
+
+script "KineticMineDMIFF" (void)
+{
+	if(IsPointerEqual(AAPTR_TARGET, AAPTR_MASTER))
+		SetActorState(0,"DMReady");
+}
+
+#define MINE_OFFSET (-128)
+
+script "SingletonKineticMineInDM" (void)
+{
+	if(GameType() < GAME_NET_DEATHMATCH) terminate;
+	
+	int tid = GetActorProperty(0, APROP_TargetTid) + MINE_OFFSET;
+	Thing_Remove(tid);
+	delay(1);
+	Thing_ChangeTid(0, tid);
+}
+
+// Backpack
+#define STEP_BULLETS	10
+#define STEP_SHELLS		 5
+#define STEP_CELLS		10
+#define STEP_ROCKETS	 5
+#define STEP_SLUGS		 5
+
+#define BASE_BULLETS	300
+#define BASE_SHELLS		 60
+#define BASE_CELLS		300
+#define BASE_ROCKETS	 55
+#define BASE_SLUGS		 35
+
+script "BackPackGiver" (void)
+{
+	if(GameType() >= GAME_NET_DEATHMATCH) terminate;
+	int level = CheckInventory("BackpackLevel");
+	SetAmmoCapacity("D4Bullets",BASE_BULLETS + STEP_BULLETS	* level);
+	SetAmmoCapacity("D4Shells",	BASE_SHELLS	 + STEP_SHELLS	* level);
+	SetAmmoCapacity("D4Cells",	BASE_CELLS	 + STEP_CELLS	* level);
+	SetAmmoCapacity("D4Rockets",BASE_ROCKETS + STEP_ROCKETS	* level);
+	SetAmmoCapacity("D4Slugs",	BASE_SLUGS	 + STEP_SLUGS	* level);
+}

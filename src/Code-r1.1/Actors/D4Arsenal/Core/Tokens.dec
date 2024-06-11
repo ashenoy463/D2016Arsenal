@@ -1,0 +1,41 @@
+// Tokens
+Actor BaseToken : Inventory {inventory.maxamount 1}
+Actor ChecksIsFiringTheRightGun : BaseToken {}
+Actor CoopGame : BaseToken {}
+Actor DashCheck : Inventory {inventory.amount 0 inventory.maxamount 2 +IGNORESKILL}
+actor DashHold : Inventory {inventory.amount 0 inventory.maxamount 1 +IGNORESKILL}
+Actor DemonVision : BaseToken {}
+Actor Fistting : BaseToken {}
+Actor IsActivatedMobileTurret : BaseToken {}
+Actor IsDemonPlayer : BaseToken {}
+Actor IsDualWeapon : BaseToken {}
+Actor IsDuringHelmetAnimation : BaseToken {}
+Actor IsFiringPrimary : BaseToken {}
+Actor IsPlayingD4Arsenal : BaseToken {}
+Actor IsPlayingAsDM : BaseToken {}
+Actor IsPlayingAsCoop : BaseToken {}
+Actor IsPlayerSwimming : BaseToken {+INVENTORY.UNDROPPABLE}
+Actor IsTankPlayer : BaseToken {+INVENTORY.UNDROPPABLE}
+Actor IsUpgradingWeapons : BaseToken {}
+Actor IsVehiclePlayer : BaseToken {+INVENTORY.UNDROPPABLE}
+Actor MorphedToken : BaseToken {}
+Actor NightVisionTank : BaseToken {}
+ACTOR SlideKicking : Inventory { Inventory.MaxAmount 15 +INVENTORY.UNDROPPABLE}
+Actor WeaponUnFlashEnabled : BaseToken {}
+
+// Basic Pinata Actor
+Actor PinataBase
+{
+	+NOINTERACTION
+	RenderStyle None
+}
+// Fix for the log file
+Actor PlayerBaronTrample : Flare_General
+{
+States
+	{
+	Spawn:
+		TNT1 A 1
+		Stop
+	}
+}

@@ -1,0 +1,8 @@
+Actor DisableParkour : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+Actor DisableDJump : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+Actor DisableSDash : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+Actor DisablePainEffects : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+Actor DisableHelmetAnimation : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+Actor GKFatalityMode : Inventory { inventory.maxamount 1 +UNDROPPABLE}
+Actor DisabledGloryKill : Inventory { inventory.maxamount 1 +UNDROPPABLE}
+Actor DisableMPWeapons : Inventory { inventory.maxamount 1 +UNDROPPABLE}

@@ -1,0 +1,595 @@
+// Pickup Base
+Actor D4WeaponPickup : CustomInventory
+{
+	Scale 0.8
+	Radius 24
+	Height 24
+	Mass 1
+	Inventory.PickupSound "CLIPIN"
+	Inventory.PickupMessage "You got a weapon!"
+}
+
+// Chainsaw
+ACTOR D4ChainsawSpawner : D4WeaponPickup
+{
+	Scale 0.7
+	inventory.pickupsound "Chainsaw/Zip"
+	Inventory.PickupMessage "Picked up a Chainsaw. Shred and tear!"
+    States
+    {
+	 Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx("EvidenceCheckerChainsaw", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		CSAW A -1
+		Stop
+
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,"DM") // Checks is playing as DM
+		TNT1 A 0 A_JumpIfInventory("D4Chainsaw",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4Chainsaw", 1)
+		Goto GiveAmmo
+
+	DM:
+		TNT1 A 0 A_Giveinventory("D4ChainsawDM",1)
+		TNT1 A 0 A_Takeinventory("D4Chainsaw",1)
+		Stop
+		
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Fuel", 2)
+		Stop
+    }
+}
+
+Actor D4ChainsawSpawnerDM : D4ChainsawSpawner
+{
+	Inventory.PickupMessage "Picked up a Chainsaw. Instagib!"
+	States
+	{
+	Spawn:
+		CSAW A -1
+		Stop
+
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4ChainsawDM",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4ChainsawDM", 1)
+		Goto GiveAmmo
+		
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4FuelDM", 100)
+		Stop
+	}
+}
+
+// Pistol
+ACTOR D4PistolSpawner : D4WeaponPickup
+{
+	Inventory.PickupSound "Pistol/Select"
+	Inventory.PickupMessage "You got the EMG Sidearm!"
+    States
+    {
+	Spawn:
+		D4W1 A -1
+		Stop
+
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("PistolDualWieldEnabler", 1, "PlasmaAmmo")
+		TNT1 A 0 A_JumpIfInventory("D4Pistol", 1, "DualPistol")
+		TNT1 A 0 A_GiveInventory("D4Pistol", 1)
+		Stop
+
+	DualPistol:
+		TNT1 A 0 A_GiveInventory("PistolDualWieldEnabler", 1)
+		Stop
+
+	PlasmaAmmo:	
+		TNT1 A 0 A_GiveInventory("D4Cells", 2)
+		Stop
+    }
+}
+
+ACTOR D4PistolDroped : D4PistolSpawner
+{
+    States
+    {
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4Pistol", 1, "DualPistol")
+		TNT1 A 0 A_GiveInventory("D4Pistol", 1)
+		Stop
+    }
+}
+
+// Repeater
+ACTOR D4RepeaterSpawner: D4WeaponPickup
+{
+	Scale 0.8
+	Inventory.PickupMessage "You got the Burst Rifle!"
+    States
+    {
+	Spawn:
+		D4W2 B 1
+		TNT1 A 0 A_JumpIfInventory("DisableMPWeapons",1,"NoMP",AAPTR_PLAYER1) // Checks if are disabled Multiplayer Weapons
+		D4W2 B -1
+		Stop
+		
+	NoMP:
+		TNT1 A 0 A_SpawnItem("D4BulletsSmall")
+		Stop
+		
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RepeaterDualWieldEnabler", 1, "GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("D4Repeater", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4Repeater", 1)
+		Goto GiveAmmo
+
+	DualWield:
+		TNT1 A 0
+		TNT1 A 0 A_GiveInventory("RepeaterDualWieldEnabler", 1)
+		Goto GiveAmmo
+		
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Bullets", 10)
+		Stop
+    }
+}
+
+ACTOR D4RepeaterSpawnerNoAmmo: D4RepeaterSpawner
+{
+    States
+    {
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4Repeater", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4Repeater", 1)
+	GiveAmmo:
+		Stop	
+    }
+}
+
+// Shotgun
+ACTOR D4ShotgunSpawner : D4WeaponPickup Replaces ShotgunSpawner
+{
+	Inventory.PickupSound "weapons/sgpump"
+	Inventory.PickupMessage "You got the Combat Shotgun!"
+    States
+    {
+	 Spawn:
+		D4W3 A -1
+		Stop
+
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4Shotgun",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4Shotgun", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Shells", 8)
+		Stop
+    }
+}
+
+ACTOR D4ShotgunSpawnerDroped : D4ShotgunSpawner replaces ShotgunSpawnerDroped
+{
+    States
+    {
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Shells", 2)
+		Stop
+    }
+}
+
+// Reaper
+ACTOR D4ReaperSpawner : D4WeaponPickup
+{
+	Scale 0.6
+    Inventory.PickupSound "CLIPINSS"
+	Inventory.PickupMessage "Reaper. Go reap what you sowed!"
+    States
+    {
+	Spawn:
+		D4W3 C -1
+		Stop
+		
+	Pickup:	
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4Reaper",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4Reaper", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Shells", 10)
+		Stop
+    }
+}
+
+// Super Shotgun
+ACTOR D4SSGSpawner : D4WeaponPickup Replaces SSGSpawner
+{
+	Inventory.PickupSound "CLIPINSS"
+	Inventory.PickupMessage "You got the Super Shotgun!"
+    States
+    {
+	 Spawn:
+		D4W3 B -1
+		Stop
+
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("SSGDualWieldEnabler", 1, "GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("D4SSG", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4SSG", 1)
+		TNT1 A 0 A_GiveInventory("D4SSGAmmo", 2)
+		TNT1 A 0 A_GiveInventory("DualSSGAmmo", 2)
+		Goto GiveAmmo
+
+	DualWield:
+		TNT1 A 0 A_GiveInventory("SSGDualWieldEnabler", 1)
+		TNT1 A 0 A_GiveInventory("D4SSGAmmo2", 2)
+		TNT1 A 0 A_GiveInventory("DualSSGAmmo", 2)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Shells", 4)
+		Stop
+    }
+}
+
+ACTOR D4SSGSpawnerNoAmmo : D4SSGSpawner
+{
+    States
+    {
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4SSG", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4SSG", 1)
+		Stop
+
+	DualWield:
+		TNT1 A 0 A_GiveInventory("SSGDualWieldEnabler", 1)
+		Stop	
+    }
+}
+
+// H.A.R = Heavy Assault Rifle
+ACTOR D4HARSpawner : D4WeaponPickup replaces MachinegunSpawner
+{
+	Scale 0.6
+	Inventory.PickupSound "CBOXPKUP"
+	Inventory.PickupMessage "You got the Heavy Assault Rifle!"
+    States
+    {
+	Spawn:
+		D4W4 A -1
+		Stop
+		
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("HARDualWieldEnabler", 1, "GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("D4HAR", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4HAR", 1)
+		Goto GiveAmmo
+	DualWield:
+		TNT1 A 0 A_GiveInventory("HARDualWieldEnabler", 1)
+		Goto GiveAmmo
+	
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Bullets", 20)
+		Stop
+    }
+}
+
+ACTOR D4HARSpawnerNoAmmo : D4HARSpawner
+{
+    States
+    {
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4HAR", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4HAR", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0
+		Stop
+    }
+}
+
+// Chaingun
+ACTOR D4ChaingunSpawner : D4WeaponPickup replaces ChaingunSpawner
+{
+	Scale 0.6
+	Inventory.PickupSound "CBOXPKUP"
+	Inventory.PickupMessage "Picked up UAC Heavy Weaponry: .50 Chaingun."
+    States
+    {
+	Spawn:
+		D4W4 B -1
+		Stop
+		
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4Chaingun",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4Chaingun", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Bullets", 30)
+		Stop
+    }
+}
+
+ACTOR D4DropedChaingunSpawner : D4ChaingunSpawner replaces DropedChaingunSpawner
+{
+    States
+    {
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Bullets", 10)
+		Stop
+    }
+}
+
+// Rocket Launcher
+ACTOR D4RocketLauncherSpawner : D4WeaponPickup replaces RocketLauncherSpawner
+{
+ Inventory.PickupSound "RLANDRAW"
+ Inventory.PickupMessage "You got the Rocket Launcher!"
+    States
+    {
+	Spawn:
+		D4W5 A -1
+		Stop
+
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RocketLauncherDualWieldEnabler", 1, "GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("D4RocketLauncher", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4RocketLauncher", 1)
+		TNT1 A 0 A_GiveInventory("RocketRound", 1)
+		Goto GiveAmmo
+
+	DualWield:
+		TNT1 A 0
+		TNT1 A 0 A_GiveInventory("RocketLauncherDualWieldEnabler", 1)
+		TNT1 A 0 A_GiveInventory("RocketRound2", 1)
+		Goto GiveAmmo
+	
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Rockets", 2)
+		Stop
+    }
+}
+
+ACTOR D4RocketLauncherSpawnerNoAmmo : D4RocketLauncherSpawner
+{
+    States
+    {
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4RocketLauncher", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4RocketLauncher", 1)
+		Stop
+
+	DualWield:
+		TNT1 A 0
+		TNT1 A 0 A_GiveInventory("RocketLauncherDualWieldEnabler", 1)
+		Stop
+    }
+}
+
+// Grenade Launcher
+ACTOR D4GrenadeLauncherSpawner : D4WeaponPickup replaces GrenadeLauncherSpawner
+{
+	Scale 0.45
+	Inventory.PickupSound "ROCKPKUP"
+	Inventory.PickupMessage "Picked up a Grenade Launcher. From UAC Explosive Division with love."
+    States
+    {
+	Spawn:
+		D4W5 B -1
+		Stop
+		
+	Pickup:	
+		TNT1 A 0 A_JumpIfInventory("D4GrenadeLauncher",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4GrenadeLauncher", 1)
+		TNT1 A 0 A_GiveInventory("VirtualGrenade", 2)
+		Goto GiveAmmo
+	
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Rockets", 4)
+		Stop
+    }
+}
+
+// Plasma Rifle
+ACTOR D4PlasmaRifleSpawner : D4WeaponPickup replaces PlasmagunSpawner
+{
+	Inventory.PickupSound "PLSDRAW"
+	Inventory.PickupMessage "You got the Plasma Rifle!"
+    States
+    {
+	Spawn:
+		D4W6 A -1
+		Stop
+		
+	Pickup:
+	    TNT1 A 0
+		// A_JumpIfInventory("PlasmaRifleDualWieldEnabler", 1, "GiveAmmo")
+		TNT1 A 0 A_JumpIfInventory("D4PlasmaRifle", 1, "GiveAmmo")
+		//TNT1 A 0 A_JumpIfInventory("D4PlasmaRifle", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4PlasmaRifle", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Cells", 50)
+		Stop
+
+	//DualWield:
+		//TNT1 A 0
+		//TNT1 A 0 A_GiveInventory("PlasmaRifleDualWieldEnabler", 1)
+		//Goto GiveAmmo
+    }
+}
+
+/*ACTOR D4PlasmaRifleDroped : D4PlasmaRifleSpawner replaces DropedPlasmaGun
+{
+    States
+    {
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4PlasmaRifle", 1, "DualWield")
+		TNT1 A 0 A_GiveInventory("D4PlasmaRifle", 1)
+	GiveAmmo:
+		Stop
+    }
+}*/
+
+// Lightning Gun
+ACTOR D4LightningGunSpawner : D4WeaponPickup
+{
+	Scale 0.6
+	Inventory.PickupSound "PLSDRAW"
+	Inventory.PickupMessage "Picked up a Lightning Gun! The firepower is shocking!"
+    States
+    {
+	Spawn:
+		D4W6 C -1
+		Stop
+
+	Pickup:	
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4LightningGun",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4LightningGun", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Cells", 40)
+		Stop
+    }
+}
+
+// HellShot
+Actor D4HellshotSpawner : D4WeaponPickup replaces UnmakerSpawner
+{
+	Scale 0.6
+	Inventory.PickupSound "BFGREADY"
+	Inventory.PickupMessage "You got the Hellshot!"
+    States
+    {
+	Spawn:
+		D4W7 C -1
+		Stop
+		
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4Hellshot",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4Hellshot", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+        TNT1 A 0 A_GiveInventory("ArgentEnergy",5)
+		Stop
+    }
+}
+
+// Vortex Rifle
+ACTOR D4VortexRifleSpawner : D4WeaponPickup replaces RailgunSpawner
+{
+	Inventory.PickupSound "PLSDRAW"
+	Inventory.PickupMessage "Picked up a Vortex Rifle! A sniper's delight!"
+    States
+    {
+	Spawn:
+		D4W6 B -1
+		Stop
+
+	Pickup:	
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4VortexRifle", 1, "GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4VortexRifle", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Slugs", 8)
+		Stop
+    }
+}
+
+// Static Rifle
+ACTOR D4StaticRifleSpawner : D4WeaponPickup
+{
+	Scale 0.6
+    Inventory.PickupSound "PLSDRAW"
+	Inventory.PickupMessage "Picked up a Static Rifle, move to charge!"
+    States
+    {
+	Spawn:
+		D4W5 C -1
+		Stop
+
+	Pickup:	
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4StaticRifle",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4StaticRifle", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Slugs", 6)
+		Stop
+    }
+}
+
+// Gauss Cannon
+Actor D4GaussCannonSpawner : D4WeaponPickup replaces BFG10KSpawner
+{
+	Scale 0.9
+	Inventory.PickupSound "Gauss/Select"
+	Inventory.PickupMessage "You got the Gauss Cannon!"
+    States
+    {
+	Spawn:
+		D4W7 B -1
+		Stop
+		
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4GaussCannon",1,"GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4GaussCannon", 1)
+		Goto GiveAmmo
+
+	GiveAmmo:
+		TNT1 A 0 A_GiveInventory("D4Slugs", 6)
+		Stop
+    }
+}
+
+// BFG
+ACTOR D4BFG9000Spawner : D4WeaponPickup replaces BFG9000
+{
+	Scale 1.0
+	Inventory.PickupSound "BFG/Select"
+	Inventory.PickupMessage "Picked up the legendary Power Weapon! Hell YES!"
+    States
+    {
+	Spawn:
+		D4W7 A -1
+		Stop
+
+	Pickup:
+	    TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("D4BFG", 1, "GiveAmmo")
+		TNT1 A 0 A_GiveInventory("D4BFG", 1)
+		Goto GiveAmmo
+		
+	GiveAmmo:
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsDM",1,2) // Checks is playing as DM
+		TNT1 A 0 A_GiveInventory("D4BFGAmmo", 1)
+		Stop
+		TNT1 A 0 A_GiveInventory("D4BFGAmmo", 3)
+		Stop
+    }
+}

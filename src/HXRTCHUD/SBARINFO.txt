@@ -1,0 +1,329 @@
+/////////////////////////////////////////////////////
+// HXRTC HUD (Brutal DOOM v21 - DOOM 2016 Arsenal) //
+/////////////////////////////////////////////////////
+
+// HUD BASIC CONFIGURATION
+
+Base Doom;
+Height 0;
+Resolution 300, 200;
+
+StatusBar Fullscreen, FullscreenOffsets
+
+{
+
+// DOOMGUY'S MUGSHOT
+
+ininventory not "IsTacticalClass"
+{
+	DrawSwitchableImage "PowerInvulnerable", "HXMGSHT1", "HXMGSHT2", 2, -85;
+
+	InInventory GenderMale { drawmugshot "STM", 5, 8, -79; }		
+	else InInventory GenderFemale { drawmugshot "GAL", 5, 8, -79; }
+	else { DrawMugShot "STF", 5, 8, -79; }
+}
+else
+{
+DrawSwitchableImage "PowerInvulnerable", "HXMGSHT1", "HXMGSHT2", 2, -92;
+
+	InInventory GenderMale { drawmugshot "STM", 5, 8, -86; }		
+	else InInventory GenderFemale { drawmugshot "GAL", 5, 8, -86; }
+	else { DrawMugShot "STF", 5, 8, -86; }
+}
+
+// HEALTH, ARMOR, RAGEMETER & ARMORSAVE % PANEL
+
+ininventory not "IsTacticalClass"
+{
+	DrawImage "HXHPAP1", 2, -40;
+	
+	DrawBar "HXHABROK", "HXHABRNO", health, horizontal, interpolate(64), 46, -34;
+	DrawBar "HXHABROK", "HXHABRNO", armor, horizontal, interpolate(64), 46, -27;
+	DrawBar "HXAIBROK", "HXRMBRNO", airtime, horizontal, interpolate(64), 46, -20;
+	DrawBar "HXSPBROK", "HXSPBRNO", savepercent, horizontal, interpolate(64), 46, -13;
+	
+	DrawNumber 4, CONFONT, yellow, health, interpolate(128), 122, -36, 0, red, 24, green, 51;
+	DrawNumber 4, CONFONT, yellow, armor, interpolate(128), 122, -29, 0, red, 24, green, 51;
+	DrawNumber 3, CONFONT, cyan, airtime, interpolate(128), 122, -22;
+	DrawNumber 3, CONFONT, blue, savepercent, interpolate(128), 122, -15;	
+}
+else
+{	
+	DrawImage "HXHPAP", 2, -47;
+
+	DrawBar "HXHABROK", "HXHABRNO", health, horizontal, interpolate(64), 46, -41;
+	DrawBar "HXHABROK", "HXHABRNO", armor, horizontal, interpolate(64), 46, -34;
+	DrawBar "HXSTBROK", "HXRMBRNO", Ammo("UsedStamina"), horizontal, interpolate(64), 46, -27;
+	DrawBar "HXAIBROK", "HXRMBRNO", airtime, horizontal, interpolate(64), 46, -20;
+	DrawBar "HXSPBROK", "HXSPBRNO", savepercent, horizontal, interpolate(64), 46, -13;
+
+	DrawNumber 4, CONFONT, yellow, health, interpolate(128), 122, -43, 0, red, 24, green, 51;
+	DrawNumber 4, CONFONT, yellow, armor, interpolate(128), 122, -36, 0, red, 24, green, 51;
+	DrawNumber 3, CONFONT, red, Ammo("UsedStamina"), interpolate(128), 122, -29;
+	DrawNumber 3, CONFONT, cyan, airtime, interpolate(128), 122, -22;
+	DrawNumber 3, CONFONT, blue, savepercent, interpolate(128), 122, -15;
+}
+
+// ITEM PANELS (BERSERK, ARMORTYPE & BACKPACK)
+
+Ininventory not "IsTacticalClass"
+{
+	InInventory "PowerStrength" { DrawImage "HXBERSRK", 48, -63; }
+	Else { DrawImage "HXHEALTH", 48, -63; }
+
+	DrawImage "HXARMTYP", 72, -63;
+	DrawImage armoricon, 84, -51, center, 18, 15;
+
+	DrawSwitchableImage "D4BackpackItem", "HXBCKPNO", "HXBCKPOK", 96, -63;
+}
+else
+{
+	InInventory "PowerStrength" { DrawImage "HXBERSRK", 48, -70; }
+	Else { DrawImage "HXHEALTH", 48, -70; }
+
+	DrawImage "HXARMTYP", 72, -70;
+	DrawImage armoricon, 84, -58, center, 18, 15;
+
+	DrawSwitchableImage "D4BackpackItem", "HXBCKPNO", "HXBCKPOK", 96, -70; 
+}
+
+
+// AMMO TALLIES PANEL
+
+DrawImage "HXAMMOS", -78, -65;
+
+Ininventory not "IsPlayingAsDM" {DrawBar "HXAMMON", "HXAMMOFF", ammo D4Fuel, horizontal, interpolate(64), -56, -60;}
+Else {DrawBar "HXAMMON", "HXAMMOFF", ammo D4FuelDM, horizontal, interpolate(64), -56, -60;}
+DrawBar "HXAMMON", "HXAMMOFF", ammo D4Bullets, horizontal, interpolate(64), -56, -54;
+DrawBar "HXAMMON", "HXAMMOFF", ammo D4Shells, horizontal, interpolate(64), -56, -48;
+DrawBar "HXAMMON", "HXAMMOFF", ammo D4Rockets, horizontal, interpolate(64), -56, -42;
+DrawBar "HXAMMON", "HXAMMOFF", ammo D4Cells, horizontal, interpolate(64), -56, -36;
+DrawBar "HXAMMON", "HXAMMOFF", ammo D4Slugs, horizontal, interpolate(64), -56, -30;
+DrawBar "HXAMMON", "HXAMMOFF", ammo Gas, horizontal, interpolate(64), -56, -24;
+DrawBar "HXAMMON", "HXAMMOFF", ammo GrenadeAmmo, horizontal, interpolate(64), -56, -18;
+DrawBar "HXAMMON", "HXAMMOFF", ammo MiniHellRocketAmmo, horizontal, interpolate(64), -56, -12;
+
+Ininventory not "IsPlayingAsDM" {DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo D4Fuel,interpolate(128), -6, -60;}
+Else {DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo D4FuelDM,interpolate(128), -6, -60;}
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo D4Bullets,interpolate(128), -6, -54;
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo D4Shells, interpolate(128), -6, -48;
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo D4Rockets, interpolate(128), -6, -42;
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo D4Cells, interpolate(128), -6, -36;
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo D4Slugs, interpolate(128), -6, -30;
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo Gas, interpolate(128), -6, -24;
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo GrenadeAmmo, interpolate(128), -6, -18;
+DrawNumber 4, INDEXFONTY, HXRTCDarkGrey, ammo MiniHellRocketAmmo, interpolate(128), -6, -12;
+
+Ininventory not "IsPlayingAsDM" {WeaponAmmo D4Fuel { DrawImage "HX-Fuel", -73, -60; DrawNumber 4, INDEXFONTY, untranslated, ammo D4Fuel, interpolate(128), -6, -60; }}
+Else { WeaponAmmo D4FuelDM {DrawImage "HX-Fuel", -73, -60; DrawNumber 4, INDEXFONTY, untranslated, ammo D4FuelDM, interpolate(128), -6, -60; }}
+WeaponAmmo D4Bullets { DrawImage "HX-CLIP", -73, -54; DrawNumber 4, INDEXFONTY, untranslated, ammo D4Bullets, interpolate(128), -6, -54; }
+WeaponAmmo D4Shells { DrawImage "HX-SHEL", -73, -48; DrawNumber 4, INDEXFONTY, untranslated, ammo D4Shells, interpolate(128), -6, -48; }
+WeaponAmmo D4Rockets { DrawImage "HX-ROCK", -73, -42; DrawNumber 4, INDEXFONTY, untranslated, ammo D4Rockets, interpolate(128), -6, -42; }
+WeaponAmmo D4Cells { DrawImage "HX-CELL", -73, -36; DrawNumber 4, INDEXFONTY, untranslated, ammo D4Cells, interpolate(128), -6, -36; }
+WeaponAmmo D4Slugs { DrawImage "HX-SLUG", -73, -30; DrawNumber 4, INDEXFONTY, untranslated, ammo D4Slugs, interpolate(128), -6, -30; }
+WeaponAmmo Gas { DrawImage "HX-FLAM", -73, -24; DrawNumber 4, INDEXFONTY, untranslated, ammo Gas, interpolate(128), -6, -24; }
+WeaponAmmo GrenadeAmmo { DrawImage "HX-GREN", -73, -18; DrawNumber 4, INDEXFONTY, untranslated, ammo GrenadeAmmo, interpolate(128), -6, -18; }
+WeaponAmmo MiniHellRocketAmmo { DrawImage "HX-HELL", -73, -12; DrawNumber 4, INDEXFONTY, untranslated, ammo MiniHellRocketAmmo, interpolate(128), -6, -12; }
+
+// CURRENT WEAPON PANEL
+
+DrawImage "HXWEAPON", -122, -53;
+isselected "Melee_Attacks" { DrawImage "PUNSF0", -100, -43, center, 36, 12, forcescale; }
+// Meat Shield Weapon Images
+else isselected "D4MeatShield" { DrawImage "HXCLIPSH", -134, -33;
+InInventory MeatShieldZombieMan , 1 { DrawImage "HXZMSH", -100, -43, center, 36, 12;}
+else InInventory MeatShieldImp , 1 { DrawImage "HXIMPSH", -100, -43, center, 36, 12;}
+else InInventory MeatShieldSergeant , 1 { DrawImage "HXSGSH", -100, -43, center, 36, 12;}
+else InInventory MeatShieldCommando , 1 { DrawImage "HXCGSH", -100, -43, center, 36, 12;}
+else InInventory MeatShieldLabGuy , 1 { DrawImage "HXZCSH", -100, -43, center, 36, 12;}
+else InInventory MeatShieldNazi , 1 { DrawImage "HXNZSH", -100, -43, center, 36, 12;}
+else InInventory MeatShieldMarine , 1 { DrawImage "HXEMSH", -100, -43, center, 36, 12;}}
+// Null Image for Vehicles
+else isselected "TankGun"{}else isselected "ArtilleryTankGun"{}else isselected "AttackHelicopterGun"{}else isselected "MechGun"{}
+// Patch for Demon Runes
+else isselected "NewBaronHUD"{}else isselected "NewRevenantHUD"{} 
+// Weapon Image for non-adapted weapons
+else { DrawImage weaponicon, -100, -43, center, 36, 12, forcescale; }
+
+// CURRENT AMMO PANEL
+
+usesammo
+    {
+        //secondary ammo and inventory
+        usessecondaryammo
+        {
+			// Freezer Rifle from Enhanced Weapons Mutator
+			/*else isselected "FreezerRifle"
+			{
+				DrawImage "HXDAMMO", -142, -33;
+				DrawBar "HXDUCLOK", "HXDUCLNO", FreezerAmmo, vertical, interpolate(64), -136, -22;
+				DrawBar "HXDUCLOK", "HXDUCLNO", BDPistolAmmo, vertical, interpolate(64), -87, -22;
+				DrawImage "HX-PIST", -73, -60;  DrawNumber 4, INDEXFONTY, untranslated, ammo Clip1, interpolate(128), -6, -60;
+				DrawNumber 3, CONFONT, white, FreezerAmmo, interpolate(128), -110, -30;
+				DrawNumber 2, CONFONT, white, BDPistolAmmo, interpolate(128), -86, -30;
+			}	*/
+			IsSelected "D4SSG"
+			{ 		
+				InInventory SSGDualWield , 1
+				{
+					DrawImage "HXDCLIPS", -134, -33;
+					DrawNumber 2, CONFONT, white, ammo D4SSGAmmo2, -110, -30;
+					DrawNumber 2, CONFONT, white, ammo D4SSGAmmo, -86, -30;
+					DrawBar "HXDUCLOK", "HXDUCLNO", ammo D4SSGAmmo2, vertical, -128, -22;
+					DrawBar "HXDUCLOK", "HXDUCLNO", ammo D4SSGAmmo, vertical, -87, -22;
+				}
+				Else
+				{
+				DrawImage "HXCLIP", -134, -33; 
+				DrawNumber 4, STATUSFONTY, untranslated, ammo2, interpolate(128), -82, -29;
+				DrawBar "HXAMCLOK", "HXAMCLNO", ammo2, vertical, interpolate(64), -128, -28; 
+				}
+			}
+			else isselected "D4MP40"
+			{
+				DrawImage "HXDCLIPS", -134, -33;
+				InInventory MP40DualWield , 1
+				{
+					DrawNumber 2, CONFONT, white, ammo D4MP40AmmoDual, -110, -30;
+					DrawNumber 2, CONFONT, white, ammo Clip1, -86, -30;
+					DrawBar "HXDUCLOK", "HXDUCLNO", ammo D4MP40AmmoDual, vertical, -128, -22;
+					DrawBar "HXDUCLOK", "HXDUCLNO", ammo Clip1, vertical, -87, -22;
+				}
+				Else
+				{
+					DrawNumber 2, CONFONT, white, ammo D4MP40Ammo, -110, -30;
+					DrawNumber 2, CONFONT, white, ammo Clip1, -86, -30;
+					DrawBar "HXDUCLOK", "HXDUCLNO", ammo D4MP40Ammo, vertical, -128, -22;
+					DrawBar "HXDUCLOK", "HXDUCLNO", ammo Clip1, vertical, -87, -22;
+				}
+			}
+			else isselected "TankGun"
+			{
+				DrawImage "HXDAMMO", -142, -33;
+				DrawBar "HXDUCLOK", "HXDUCLNO", ammo1, vertical, interpolate(64), -136, -22;
+				DrawBar "HXDUCLOK", "HXDUCLNO", ammo2, vertical, interpolate(64), -87, -22;
+				DrawNumber 3, CONFONT, white, Ammo1, interpolate(128), -110, -30;
+				DrawNumber 2, CONFONT, white, Ammo2, interpolate(128), -86, -30;			
+			}
+			else isselected "attackhelicopterGun"
+			{
+				DrawImage "HXDAMMO", -142, -33;
+				DrawBar "HXDUCLOK", "HXDUCLNO", ammo1, vertical, interpolate(64), -136, -22;
+				DrawBar "HXDUCLOK", "HXDUCLNO", ammo2, vertical, interpolate(64), -87, -22;
+				DrawNumber 3, CONFONT, white, Ammo1, interpolate(128), -110, -30;
+				DrawNumber 2, CONFONT, white, Ammo2, interpolate(128), -86, -30;			
+			}
+			else weaponammo "meatammo"
+			{
+				DrawImage "HXDMGAMM", -142, -33;
+				DrawBar "HXDUCLOK", "HXDUCLNO", ammo2, vertical, interpolate(64), -136, -22;
+				DrawBar "HXDUCLOK", "HXDUCLNO", ammo1, vertical, interpolate(64), -87, -22;
+				DrawNumber 3, CONFONT, white, Ammo2, interpolate(128), -110, -30;
+				DrawNumber 2, CONFONT, white, Ammo1, interpolate(128), -86, -30;
+			}
+			else isselected "D4BaronHUD"{}else isselected "D4RevenantHUD"{}else isselected "NewBaronHUD"{}else isselected "NewRevenantHUD"{} 
+			else 
+			{
+				DrawImage "HXCLIP", -134, -33; 
+				DrawNumber 4, STATUSFONTY, untranslated, ammo2, interpolate(128), -82, -29;
+				DrawBar "HXAMCLOK", "HXAMCLNO", ammo2, vertical, interpolate(64), -128, -28; 
+			}
+		} 
+        //no secondary ammo
+        else
+        {
+           DrawImage "HXAMMO", -134, -33; 
+		   DrawNumber 4, STATUSFONTY, untranslated, ammo1, interpolate(128), -82, -29;
+		   DrawBar "HXAMCLOK", "HXAMCLNO", ammo1, vertical, interpolate(64), -128, -28;
+        }
+    }    
+    // no ammo but inventory
+else
+{
+	DrawImage "HXNOAVAI", -134, -33;
+}
+
+// KEYS BAR
+
+DrawImage "HXKEYS", -90, -90;
+
+InInventory "BlueCard", 1 {DrawImage "HXKEYS0", -58, -87;}
+InInventory "YellowCard", 1 {DrawImage "HXKEYS1", -49, -87;}
+InInventory "RedCard", 1 {DrawImage "HXKEYS2", -40, -87;}
+InInventory "BlueSkull", 1 {DrawImage "HXKEYS3", -31, -87;}
+InInventory "YellowSkull", 1 {DrawImage "HXKEYS4", -22, -87;}
+InInventory "RedSkull", 1 {DrawImage "HXKEYS5", -13, -87;}
+
+// ARMS BAR
+//DrawImage "HXSLOT1", -122, -64;
+
+DrawImage "HXARMS", -96, -77;
+
+DrawSwitchableImage weaponslot 1, "HXGNUM1", "HXYSNUM1", -65, -73;
+DrawSwitchableImage weaponslot 2, "HXGNUM2", "HXYSNUM2", -59, -73;
+DrawSwitchableImage weaponslot 3, "HXGNUM3", "HXYSNUM3", -53, -73;
+DrawSwitchableImage weaponslot 4, "HXGNUM4", "HXYSNUM4", -47, -73;
+DrawSwitchableImage weaponslot 5, "HXGNUM5", "HXYSNUM5", -41, -73;
+DrawSwitchableImage weaponslot 6, "HXGNUM6", "HXYSNUM6", -35, -73;
+DrawSwitchableImage weaponslot 7, "HXGNUM7", "HXYSNUM7", -29, -73;
+DrawSwitchableImage weaponslot 8, "HXGNUM8", "HXYSNUM8", -23, -73;
+DrawSwitchableImage weaponslot 9, "HXGNUM9", "HXYSNUM9", -17, -73;
+DrawSwitchableImage weaponslot 0, "HXGNUM0", "HXYSNUM0", -11, -73;
+
+// LEVEL STATES (TIME, KILLS, ITEMS & SECRETS)
+
+	InInventory EnableStats, 1
+	{
+	DrawImage "HXPT+KIS", 2, 2;
+
+	DrawString CONFONT, white, time, 9, 6;
+
+	DrawNumber 4, INDEXFONTY, HXRTCLightWhite, kills, 49, 20;
+	DrawNumber 4, INDEXFONTY, HXRTCLightWhite, items, 49, 26;
+	DrawNumber 3, INDEXFONTY, HXRTCLightWhite, secrets, 54, 32;
+
+	DrawNumber 4, INDEXFONTY, HXRTCLightWhite, monsters, 74, 20;
+	DrawNumber 4, INDEXFONTY, HXRTCLightWhite, totalitems, 74, 26;
+	DrawNumber 3, INDEXFONTY, HXRTCLightWhite, totalsecrets, 74, 32;
+	}
+
+
+// POWERUP PANELS & TIMEBAR INDICATOR
+
+// Brutal DOOM v21
+DrawSwitchableImage "PowerInvulnerable", "HXINVUNO", "HXINVUOK", -98, 2;
+DrawSwitchableImage "PowerInvisibility", "HXBLURNO", "HXBLUROK", -74, 2;
+DrawSwitchableImage "PowerIronfeet", "HXRADSNO", "HXRADSOK", -50, 2;
+DrawSwitchableImage "HasInfrared", "HXLGHTNO", "HXLGHTOK", -26, 2;
+
+// DOOM 2016 Arsenal PowerUps
+DrawSwitchableImage "PowerD4QuadDamage", "HXQUADNO", "HXQUADOK", -98, 25;
+DrawSwitchableImage "PowerD4Haste", "HXHASTNO", "HXHASTOK", -74, 25;
+DrawSwitchableImage "PowerRegeneration", "HXRGNPNO", "HXRGNPOK", -50, 25;
+Ininventory not "IsDemonPlayer" {DrawImage "HXDEMONO", -26, 25;} Else {DrawImage "HXDEMOOK", -26, 25;}
+
+DrawImage "HXPOWBAR", -97, 48;
+
+// Brutal DOOM v21 PowerUps
+InInventory "PowerInvulnerable" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime InvulnerabilitySphere, horizontal, -94, 51; }
+InInventory "PowerInvisibility" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime BlurSphere, horizontal, -94, 51; }
+InInventory "PowerIronfeet" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime RadSuit, horizontal, -94, 51; }
+InInventory "HasInfrared" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime NightVisionGiver, horizontal, -94, 51; }
+
+// DOOM 2016 Arsenal PowerUps
+InInventory "PowerD4QuadDamage" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime D4QuadDamageGiver, horizontal, -94, 51; }
+InInventory "PowerD4Haste" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime D4HasteGiver, horizontal, -94, 51; }
+InInventory "PowerRegeneration" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime D4RegenGiver, horizontal, -94, 51; }
+InInventory "PowerMorphD4Baron" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime RuneBaron, horizontal, -94, 51; }
+InInventory "PowerMorphD4Revenant" { DrawBar "HXPBLON", "HXPBLOFF", poweruptime RuneRevenant, horizontal, -94, 51; }
+}
+
+// HUD DISABLED FOR STATUSBAR AND AUTOMAP
+
+StatusBar normal 
+{
+	DrawString DBIGFONT, red, "Press the '=' key (default) to switch to the HUD,", 300, 254, 0, Alignment(Center);
+    DrawString DBIGFONT, red, "while making sure the alternative HUD is disabled.", 300, 274, 0, Alignment(Center);
+}
+
+StatusBar automap {}

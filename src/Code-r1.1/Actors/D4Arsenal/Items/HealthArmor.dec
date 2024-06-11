@@ -1,0 +1,197 @@
+Actor D4Stimpack : Health replaces Stimpack 
+{
+	Inventory.PickupMessage "$GOTSTIM"
+	Inventory.Amount 10
+	Inventory.PickUpSound "Items/HealthMedium"
+	Inventory.RespawnTics 1225 // 35sec
+	Scale 0.75
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		D4HS A 0 A_Jump(240,2,3,4,5,6,7,8,9)
+		D4HS ABCDEEEDCBAA 3 Bright
+		Goto Spawn+1
+	}
+}
+
+Actor D4Medikit : Health replaces Medikit 
+{
+	Inventory.PickupMessage "$GOTMEDIKIT"
+	Inventory.PickUpSound "Items/HealthBig"
+	Inventory.RespawnTics 1225 // 35sec
+	Inventory.Amount 30
+	Scale 0.8
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Jump(4,"Regen")
+		D4HB A 0 A_Jump(240,2,3,4,5,6,7,8,9)
+		D4HB ABCDEEEDCBAA 3 Bright
+		Goto Spawn+2
+	Regen:
+		D4HB A 5 A_SpawnItemEx("D4RegenSphere", 0,0,0, 0,0,0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+Actor D4HealthBonus : HealthBonus replaces HealthPlus
+{
+	Inventory.PickUpSound "Items/HealthBonus"
+	Inventory.RespawnTics 1225 // 35sec
+	Scale 0.65
+	Inventory.Amount 3
+	+RANDOMIZE
+	+INVENTORY.IGNORESKILL
+	States
+	{
+	Stand:
+	Spawn:
+		D4HM A 0 A_Jump(240,2,3,4,5,6,7,8,9)
+		D4HM ABCDEEEDCBAA 3 Bright
+		Goto Spawn+1
+	}
+}
+
+actor D4SoulReaped : D4HealthBonus 
+{
+	Inventory.PickUpSound "Reaper/PickSoul"
+	Inventory.PickupMessage "Picked up a soul."
+	Scale 0.3
+	Inventory.Amount 3
+	+RANDOMIZE
+	+INVENTORY.IGNORESKILL
+	+FLOATBOB
+	+FORCEXYBILLBOARD
+	-COUNTITEM
+	RenderStyle Add
+	Alpha 0.99
+	States
+	{
+	Spawn:
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	//36 tics each line
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	
+		SLRP ABCDEFABCDEFABCDEF 2 Bright	//a bit over 15 seconds at this point
+		SLRP ABCDEFABCDEFABCDEF 2 Bright A_Fadeout(0.07)
+		Stop
+	}
+}
+
+//Armor
+Actor D4LightArmor : BasicArmorBonus replaces GreenArmor
+{
+	Radius 20
+	Height 16
+	Inventory.Pickupmessage "Picked up the Light armor"
+	Inventory.Icon "ARMOR"
+	Armor.Savepercent 100
+	Armor.Saveamount 50
+	Armor.Maxsaveamount 175
+	+COUNTITEM
+	-INVENTORY.ALWAYSPICKUP
+	Inventory.PickUpSound "Items/ArmorMedium"
+	Inventory.RespawnTics 875 // 25sec
+	Scale 0.9
+	States
+	{
+	Spawn:
+		D4AS ABCDEEEDCBAA 3 Bright
+		Loop
+	}
+}
+
+Actor D4MediumArmor : BasicArmorBonus
+{
+	Radius 20
+	Height 16
+	Inventory.Pickupmessage "Picked up the Medium Combat Armor"
+	Inventory.Icon "ARMOR"
+	Armor.Savepercent 100
+	Armor.Saveamount 100
+	Armor.Maxsaveamount 175
+	+COUNTITEM
+	-INVENTORY.ALWAYSPICKUP
+	Inventory.PickUpSound "Items/ArmorBig"
+	Inventory.RespawnTics 875 // 25sec
+	Scale 0.92
+	States
+	{
+	Spawn:
+		D4AR ABCDEEEDCBAA 3 Bright
+		Loop
+	}
+}
+
+Actor D4HeavyArmor : BasicArmorBonus
+{
+	Radius 20
+	Height 16
+	Inventory.Pickupmessage "Picked up the Heavy Combat armor"
+	Inventory.Icon "ARMOR"
+	Armor.Savepercent 100
+	Armor.Saveamount 150
+	Armor.Maxsaveamount 175
+	+COUNTITEM
+	-INVENTORY.ALWAYSPICKUP
+	Inventory.PickUpSound "Items/ArmorBig"
+	Inventory.RespawnTics 875 // 25sec
+	Scale 0.92
+	States
+	{
+	Spawn:
+		D4AR FGHIJJJIHGFF 3 Bright
+		Loop
+	}
+}
+
+Actor D4BlueArmor : CustomInventory Replaces HeavyArmor
+{
+    States
+    {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump(64, "Spawn2") // Heavy Armor
+		TNT1 A 0 A_SpawnItemEx ("D4MediumArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	
+	 Spawn2:
+		TNT1 A 0 A_SpawnItemEx ("D4HeavyArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+    }
+}
+
+Actor D4ArmorBonus : BasicArmorBonus replaces ArmorShard
+{
+	Radius 20
+	Height 16
+	Inventory.Pickupmessage "$GOTARMBONUS"
+	Inventory.Icon "ARMOR"
+	Armor.Savepercent 100
+	Armor.Saveamount 3
+	Armor.Maxsaveamount 200
+	+COUNTITEM
+	+INVENTORY.ALWAYSPICKUP
+	+RANDOMIZE
+	+INVENTORY.IGNORESKILL
+	Inventory.PickUpSound "Items/ArmorShard"
+	Scale 0.75
+	States
+	{
+	Spawn:
+		D4AM ABCDEEEDCBAA 3 Bright
+		Loop
+	}
+}

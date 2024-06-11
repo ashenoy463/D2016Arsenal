@@ -1,0 +1,408 @@
+Actor D4Mummy : BDMummy replaces BDMummy
+{
+	Tag "Mummy"
+	var int user_healto;
+	var int user_staggercount;
+	PainChance "Stun", 255
+	PainChance "GloryKill", 255
+	PainChance "ChainsawPinata", 255
+	WoundHealth 60
+	States
+	{
+	Pain.Stun:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag(NOPAIN,1)
+		TNT1 A 0 A_Pain
+		MUMA LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 5 A_GiveInventory(StunFXSpawner) // 5 Seconds
+		TNT1 A 0 A_ChangeFlag(NOPAIN,0)
+		Goto See
+	
+	Death.Stun:
+		TNT1 A 0
+		Goto Death.Plasma
+
+	Wound:
+		MUMA Z 0 A_SetUserVar(user_healto,60)
+		MUMA Z 0
+		Goto Wounded
+
+	Wounded:
+		"####" "#" 0 A_JumpIfInventory("DisabledGloryKill",1,"See",AAPTR_PLAYER1) // Checks if are disabled the Glory Kill System
+		"####" "#" 0 A_GiveInventory("GloryKillable",1)
+		"####" "#" 0 Thing_SetTranslation(0,1)
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 Thing_SetTranslation(0,2)
+		"####" "#" 0 A_TakeInventory("GloryKillable",32767)
+		"####" "#" 0 A_SetUserVar(user_staggercount,user_staggercount+1)	//to keep track how many times has been staggered
+		"####" "#" 0 A_JumpIf(user_staggercount>=3,"DeathByStagger")	//if has been staggered 3 times, when the 3rd ends, it means death
+		"####" "#" 0 ACS_NamedExecuteAlways("HealMonAfterStagger",0,user_healto,0,0) //second numeric value is how much it will heal
+		Goto See
+		
+	DeathByStagger:
+		"####" "#" 0 A_Die
+		Goto Death
+
+	Death.ChainsawPinata:	
+		MUMA "#" 0
+		Goto ChainsawKill
+		
+	ChainsawKill:
+		"####" A 0 A_GiveToTarget("ConfirmedGKill",1)
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 A_Stop
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) 
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE ) 
+		"####" AAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" LLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" LLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Scream
+		"####" A 0 A_GiveToTarget("SuccessfulExecutionToken",1)
+		"####" A 0 A_SpawnItemEx("ChainsawExecutionPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+
+	Death.GloryKill:
+		MUMA "#" 0
+		Goto GloryKillGeneric
+
+	GloryKillGeneric:
+		"####" "#" 0 A_GiveToTarget("ConfirmedGKill",1)
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 Thing_SetTranslation(0,2)
+		"####" A 0 A_Stop
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION) 
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION ) 
+		"####" A 0 A_JumpIfInTargetInventory("InstantGloryKillToken",1,"GloryEnd")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill1Token",1,"GloryEnd1")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill2Token",1,"GloryEnd2")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill3Token",1,"GloryEnd3")
+	GloryEnd1:
+		"####" AAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" AAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION ) 
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",6,1,false,2.22)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+	GloryEnd2:
+		"####" AAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" AAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION ) 
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",6,1,false,2.22)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+	GloryEnd3:
+		"####" AAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" A 0 A_ChangeVelocity(-8,0,10,CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+		
+	GloryEnd:	//depending on the monster, is what and how much will spawn
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerStrength",1,"BerserkBonus") // Bonus for Berserk Executors
+		TNT1 A 1 A_SpawnItemEx("GloryKillPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+
+	BerserkBonus:
+		TNT1 A 1 A_SpawnItemEx("GloryKillBerserkPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+	}
+}
+
+Actor D4Experiment : Experiment replaces Experiment
+{
+	var int user_healto;
+	var int user_staggercount;
+	PainChance "Stun", 255
+	PainChance "GloryKill", 255
+	WoundHealth 30
+	Tag "Experiment"
+	States
+	{
+	Pain.Stun:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag(NOPAIN,1)
+		TNT1 A 0 A_Pain
+		ZKEL LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 5 A_GiveInventory(StunFXSpawner) // 5 Seconds
+		TNT1 A 0 A_ChangeFlag(NOPAIN,0)
+		Goto See
+	
+	Death.Stun:
+		TNT1 A 0
+		Goto Death.Plasma
+		
+	Wound:
+		ZKEL Z 0 A_SetUserVar(user_healto,30)
+		ZKEL Z 0
+		Goto Wounded
+
+	Wounded:
+		"####" "#" 0 A_JumpIfInventory("DisabledGloryKill",1,"See",AAPTR_PLAYER1) // Checks if are disabled the Glory Kill System
+		"####" "#" 0 A_GiveInventory("GloryKillable",1)
+		"####" "#" 0 Thing_SetTranslation(0,1)
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 Thing_SetTranslation(0,2)
+		"####" "#" 0 A_TakeInventory("GloryKillable",32767)
+		"####" "#" 0 A_SetUserVar(user_staggercount,user_staggercount+1)	//to keep track how many times has been staggered
+		"####" "#" 0 A_JumpIf(user_staggercount>=3,"DeathByStagger")	//if has been staggered 3 times, when the 3rd ends, it means death
+		"####" "#" 0 ACS_NamedExecuteAlways("HealMonAfterStagger",0,user_healto,0,0) //second numeric value is how much it will heal
+		Goto See
+		
+	DeathByStagger:
+		"####" "#" 0 A_Die
+		Goto Death
+
+	Death.ChainsawPinata:	
+		ZKEL "#" 0
+		Goto ChainsawKill
+		
+	ChainsawKill:
+		"####" A 0 A_GiveToTarget("ConfirmedGKill",1)
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 A_Stop
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) 
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE ) 
+		"####" AAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" LLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" LLLLL 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Scream
+		"####" A 0 A_GiveToTarget("SuccessfulExecutionToken",1)
+		"####" A 0 A_SpawnItemEx("ChainsawExecutionPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+
+	Death.GloryKill:
+		ZKEL "#" 0
+		Goto GloryKillGeneric
+
+	GloryKillGeneric:
+		"####" "#" 0 A_GiveToTarget("ConfirmedGKill",1)
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 Thing_SetTranslation(0,2)
+		"####" A 0 A_Stop
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION) 
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION ) 
+		"####" A 0 A_JumpIfInTargetInventory("InstantGloryKillToken",1,"GloryEnd")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill1Token",1,"GloryEnd1")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill2Token",1,"GloryEnd2")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill3Token",1,"GloryEnd3")
+	GloryEnd1:
+		"####" AAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" AAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION ) 
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",6,1,false,2.22)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+	GloryEnd2:
+		"####" AAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" LLLLLL 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" AAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION ) 
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",6,1,false,2.22)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+	GloryEnd3:
+		"####" AAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" A 0 A_ChangeVelocity(-8,0,10,CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+		
+	GloryEnd:	//depending on the monster, is what and how much will spawn
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerStrength",1,"BerserkBonus") // Bonus for Berserk Executors
+		TNT1 A 1 A_SpawnItemEx("GloryKillPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+
+	BerserkBonus:
+		TNT1 A 1 A_SpawnItemEx("GloryKillBerserkPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+	}
+}
+
+Actor E2Alien : Epic2Alien replaces Epic2Alien
+{
+	Tag "Alien"
+	var int user_healto;
+	var int user_staggercount;
+	PainChance "Stun", 255
+	PainChance "GloryKill", 255
+	WoundHealth 20
+	States
+	{
+	Pain.Stun:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag(NOPAIN,1)
+		TNT1 A 0 A_Pain
+		SSWV HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH 5 A_GiveInventory(StunFXSpawner) // 5 Seconds
+		TNT1 A 0 A_ChangeFlag(NOPAIN,0)
+		Goto See
+	
+	Death.Stun:
+		TNT1 A 0
+		Goto XDeath
+		
+	Wound:
+		SSWV H 0 A_SetUserVar(user_healto,20)
+		SSWV H 0
+		Goto Wounded
+
+	Wounded:
+		"####" "#" 0 A_JumpIfInventory("DisabledGloryKill",1,"See",AAPTR_PLAYER1) // Checks if are disabled the Glory Kill System
+		"####" "#" 0 A_GiveInventory("GloryKillable",1)
+		"####" "#" 0 Thing_SetTranslation(0,1)
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 A_Pain
+		"####" "#######" 5 Bright
+		"####" "#" 0 Thing_SetTranslation(0,2)
+		"####" "#" 0 A_TakeInventory("GloryKillable",32767)
+		"####" "#" 0 A_SetUserVar(user_staggercount,user_staggercount+1)	//to keep track how many times has been staggered
+		"####" "#" 0 A_JumpIf(user_staggercount>=3,"DeathByStagger")	//if has been staggered 3 times, when the 3rd ends, it means death
+		"####" "#" 0 ACS_NamedExecuteAlways("HealMonAfterStagger",0,user_healto,0,0) //second numeric value is how much it will heal
+		Goto See
+		
+	DeathByStagger:
+		"####" "#" 0 A_Die
+		Goto Death
+
+	Death.ChainsawPinata:	
+		SSWV "#" 0
+		Goto ChainsawKill
+		
+	ChainsawKill:
+		"####" A 0 A_GiveToTarget("ConfirmedGKill",1)
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 A_Stop
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) 
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE ) 
+		"####" AAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" HHHHHH 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" HHHHHH 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" HHHHH 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" HHHHH 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Pain
+		"####" HHHHH 1 A_Warp(AAPTR_TARGET,-50,random(-1,1),random(-1,1),180,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "##" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" "#" 0 A_Scream
+		"####" A 0 A_GiveToTarget("SuccessfulExecutionToken",1)
+		"####" A 0 A_SpawnItemEx("ChainsawExecutionPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+
+	Death.GloryKill:
+		SSWV "#" 0
+		Goto GloryKillGeneric
+
+	GloryKillGeneric:
+		"####" "#" 0 A_GiveToTarget("ConfirmedGKill",1)
+		"####" A 0 A_ChangeFlag("Solid",0)
+		"####" A 0 Thing_SetTranslation(0,2)
+		"####" A 0 A_Stop
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION) 
+		"####" A 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION ) 
+		"####" A 0 A_JumpIfInTargetInventory("InstantGloryKillToken",1,"GloryEnd")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill1Token",1,"GloryEnd1")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill2Token",1,"GloryEnd2")
+		"####" A 0 A_JumpIfInTargetInventory("GloryKill3Token",1,"GloryEnd3")
+	GloryEnd1:
+		"####" AAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" HHHHHH 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" AAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION ) 
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",6,1,false,2.22)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+	GloryEnd2:
+		"####" AAAAAAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" A 0 A_Pain
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" "#" 0 A_SpawnItem("MuchBlood", 0, 40)
+		"####" HHHHHH 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" AAAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION ) 
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",6,1,false,2.22)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+	GloryEnd3:
+		"####" AAAA 1 A_Warp(AAPTR_TARGET,-50,0,0,180,WARPF_NOCHECKPOSITION|WARPF_WARPINTERPOLATION )
+		"####" "#" 0 A_PlaySound("GloryKill/BoneSnap",7,1,false,2.22)
+		"####" A 0 A_ChangeVelocity(-8,0,10,CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,"GloryEnd")
+		"####" "#" 1
+		Goto GloryEnd
+		
+	GloryEnd:	//depending on the monster, is what and how much will spawn
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerStrength",1,"BerserkBonus") // Bonus for Berserk Executors
+		TNT1 A 1 A_SpawnItemEx("GloryKillPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+
+	BerserkBonus:
+		TNT1 A 1 A_SpawnItemEx("GloryKillBerserkPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		Goto XDeath
+	}
+}

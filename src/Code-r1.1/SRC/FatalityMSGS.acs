@@ -1,0 +1,50 @@
+#library "FatalityMSGS"
+#include "zcommon.acs"
+
+script "FatalityMessages" (void) NET
+{
+	str FatalityMSG;
+	If((CheckInventory("ZombieManFatality") == 1)||(CheckInventory("ZombieManFatality2") == 1)||(CheckInventory("ZombieManFatality3") == 1)||(CheckInventory("ZombieManFatality4") == 1)||(CheckInventory("ZombieManFatality5") == 1)||(CheckInventory("PistolZombiemanFatality1") == 1))
+		FatalityMSG = "Trooper Fatality!\n  Health +5\n  Armor +20";
+	Else If((CheckInventory("LabGuyToken1") == 1)||(CheckInventory("LabGuyToken2") == 1)||(CheckInventory("LabGuyToken3") == 1)||(CheckInventory("ChainsawZombieFatality") == 1))
+		FatalityMSG = "Scientist Fatality!\n  Health +5\n  Armor +20";
+	Else If((CheckInventory("SergeantFatality") == 1)||(CheckInventory("SergeantFatality2") == 1)||(CheckInventory("SergeantFatality3") == 1)||(CheckInventory("SergeantFatality4") == 1)||(CheckInventory("RiotSergeantFatality1") == 1))
+		FatalityMSG = " Sergeant Fatality!\n  Health +20";
+	Else If((CheckInventory("ImpFatality") == 1)||(CheckInventory("ImpFatality2") == 1)||(CheckInventory("ImpFatality3") == 1)||(CheckInventory("ImpFatality4") == 1))
+		FatalityMSG = " Imp Fatality!\n  Health +10\n  Armor +10";
+	Else If((CheckInventory("ComandoFatality") == 1)||(CheckInventory("ComandoFatality2") == 1))
+		FatalityMSG = " Commando Fatality!\n  Health +20\n  Armor +20";
+	Else If((CheckInventory("DemonFatality") == 1)||(CheckInventory("DemonFatality2") == 1)||(CheckInventory("DemonFatality3") == 1))
+		FatalityMSG = " Bull Demon Fatality!\n  Health +20\n  Armor +20";
+	Else if((CheckInventory("HKFatality") == 1)||(CheckInventory("HKFatality3") == 1))
+		FatalityMSG = " Hell Knight Fatality!\n  Health +50\n  Armor +50";
+	Else if(CheckInventory("PVPFatality") == 1)
+		FatalityMSG = " Marine Fatality!\n  Health +50\n  Armor +50";
+	Else If(checkinventory("BaronFatality") == 1)
+		FatalityMSG = " Baron of Hell Fatality!\n  Health +60\n  Armor +100";
+	Else If(CheckInventory("PEFatality") == 1)
+		FatalityMSG = " Pain Elemental Fatality!\n  Health +30\n  Armor +30";
+	Else if((CheckInventory("ArachnotronFatality") == 1)||(CheckInventory("ArachnotronFatality2") == 1))
+		FatalityMSG = " Arachnotron Fatality!\n  Health +30\n  Armor +40";
+	Else If((CheckInventory("Arachnotron2FatalityA") == 1)||(CheckInventory("Arachnotron2FatalityB") == 1))
+		FatalityMSG = " Ancient Arachnotron Fatality!\n  Health +60\n  Armor +60";
+	Else If(CheckInventory("AracnorbFatality") == 1)
+		FatalityMSG = " Aracnorb Fatality!\n  Health +30\n  Armor +20";
+	Else If((CheckInventory("CacoDemonFatality") == 1)||(CheckInventory("CacoDemonFatality2") == 1))
+		FatalityMSG = " Cacodemon Fatality!\n  Health +30\n  Armor +30";
+	Else If((CheckInventory("RevenantFatality") == 1)||(CheckInventory("RevenantFatality2") == 1))
+		FatalityMSG = " Revenant Fatality!\n  Health +40\n  Armor +40";
+	Else If(CheckInventory("FatsoFatality") == 1)
+		FatalityMSG = " Mancubus Fatality!\n  Health +50\n  Armor +50";
+	Else If((CheckInventory("ArchVileFatality") == 1)||(CheckInventory("ArchVileFatality2") == 1))
+		FatalityMSG = " Arch-vile Fatality!\n  Health +75\n  Armor +100";
+	Else If((CheckInventory("VolcabusFatality") == 1)||(CheckInventory("VolcabusFatality2") == 1))
+		FatalityMSG = " Volcabus Fatality!\n  Health +75\n  Armor +50";
+	Else If(CheckInventory("MastermindFatality") == 1)
+		FatalityMSG = " Mastermind Fatality!\n  Health +120\n  Armor +80";
+	Else If(CheckInventory("CyberdemonFatality") == 1)
+		FatalityMSG = " CyberDemon Fatality!\n  Health +100\n  Armor +100";
+	Else FatalityMSG = "";
+	
+	HudMessage(s:FatalityMSG; HUDMSG_TYPEON, 0, CR_WHITE, 0, 0.74, 1.5, 0.02, 1.75);
+}

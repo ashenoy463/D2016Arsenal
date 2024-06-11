@@ -1,0 +1,522 @@
+Actor D4WeaponUpgrader : D4WeaponBase
+{
+	Inventory.PickupMessage ""
+	Obituary ""
+	tag "Weapon Upgrader"
+	AttackSound "None"
+	Weapon.AmmoType1 ""
+	Weapon.AmmoType2 ""
+	Weapon.AmmoGive1 0
+	Weapon.AmmoGive2 0
+	Weapon.AmmoUse1 0
+	Weapon.AmmoUse2 0
+	+WEAPON.NOAUTOAIM
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.DONTBOB
+	+WEAPON.NOALERT
+	Weapon.SelectionOrder 99999
+	States
+		 {		 
+	Spawn:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItemEx("UpgradeBox", 0, 0, 0, velx, vely, velz, angle, SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY)
+		Stop
+
+	Select:
+		TNT1 A 1 A_Raise
+		TNT1 AAAAAAAAA 0 A_Raise
+		Goto Ready
+
+	Deselect:
+		TNT1 A 0 A_TakeInventory("UpgradePistol",1)
+		TNT1 A 0 A_TakeInventory("UpgradeRepeater",1)
+		TNT1 A 0 A_TakeInventory("UpgradeReaper",1)
+		TNT1 A 0 A_TakeInventory("UpgradeShotgun",1)
+		TNT1 A 0 A_TakeInventory("UpgradeSuperShotgun",1)
+		TNT1 A 0 A_TakeInventory("UpgradeHAR",1)
+		TNT1 A 0 A_TakeInventory("UpgradeChaingun",1)
+		TNT1 A 0 A_TakeInventory("UpgradeGrenadeLauncher",1)
+		TNT1 A 0 A_TakeInventory("UpgradeRocketLauncher",1)
+		TNT1 A 0 A_TakeInventory("UpgradeLightningGun",1)
+		TNT1 A 0 A_TakeInventory("UpgradePlasmaRifle",1)
+		TNT1 A 0 A_TakeInventory("UpgradeHellshot",1)
+		TNT1 A 0 A_TakeInventory("UpgradeVortexRifle",1)
+		TNT1 A 0 A_TakeInventory("UpgradeStaticRifle",1)
+		TNT1 A 0 A_TakeInventory("UpgradeGaussCannon",1)
+		TNT1 A 0 A_TakeInventory("UpgradeMissileBattery",1)
+		TNT1 A 0 A_TakeInventory("UpgradeMancubusArm",1)
+		// Take Basic Handlers to fix the Upgrader
+		TNT1 A 0 A_TakeInventory("IsUpgradeableWeapon",1)
+		TNT1 A 0 A_TakeInventory("StartUpgrader",1)
+		TNT1 A 0 A_TakeInventory("UpgraderActive",1)
+		// End and takes the upgrader from the player inventory
+		TNT1 A 0 A_TakeInventory("D4WeaponUpgrader",1)
+		TNT1 A 1
+		TNT1 A 0 A_Lower
+		Wait		
+		
+	Ready:
+		TNT1 A 0 ACS_NamedExecuteAlways("WeaponUpgrader")
+		TNT1 A 1 A_TakeInventory("StartUpgrader",1)		
+	WReady:
+	RealReady:
+		TNT1 A 1 A_WeaponReady
+		Loop
+		
+	Fire:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("UpgradePistol", 1, "UpgradePistol_Proto")
+		TNT1 A 0 A_JumpIfInventory("UpgradeRepeater", 1, "UpgradeRepeater_Damage")
+		TNT1 A 0 A_JumpIfInventory("UpgradeReaper", 1, "UpgradeReaper_Explosive")
+		TNT1 A 0 A_JumpIfInventory("UpgradeGrenadeLauncher", 1, "UpgradeGrenadeLauncher_Damage")
+		TNT1 A 0 A_JumpIfInventory("UpgradeLightningGun", 1, "UpgradeLightningGun_Damage")
+		TNT1 A 0 A_JumpIfInventory("UpgradeHellshot", 1, "UpgradeHellshot_Damage")
+		TNT1 A 0 A_JumpIfInventory("UpgradeVortexRifle", 1, "UpgradeVortexRifle_Damage")
+		TNT1 A 0 A_JumpIfInventory("UpgradeStaticRifle", 1, "UpgradeStaticRifle_Damage")
+		TNT1 A 0 A_JumpIfInventory("UpgradeMissileBattery", 1, "UpgradeMissileBattery_JetThruster")
+		TNT1 A 0 A_JumpIfInventory("UpgradeMancubusArm", 1, "UpgradeMancubusArm")
+		TNT1 A 0 A_JumpIfInventory("UpgradeShotgun", 1, "UpgradeShotgun_TriShot")
+		TNT1 A 0 A_JumpIfInventory("UpgradeSuperShotgun", 1, "UpgradeSuperShotgun_FastReload")
+		TNT1 A 0 A_JumpIfInventory("UpgradeHAR", 1, "UpgradeHAR_Scope")
+		TNT1 A 0 A_JumpIfInventory("UpgradeChaingun", 1, "UpgradeChaingun_Rotator")
+		TNT1 A 0 A_JumpIfInventory("UpgradeRocketLauncher", 1, "UpgradeRocketLauncher_Detonator")
+		TNT1 A 0 A_JumpIfInventory("UpgradePlasmaRifle", 1, "UpgradePlasmaRifle_StunBomb")
+		TNT1 A 0 A_JumpIfInventory("UpgradeGaussCannon", 1, "UpgradeGaussCannon_Precision")
+		Goto Ready
+	AltFire:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInventory("UpgradePistol", 1, "UpgradePistol_FastCharge")
+		TNT1 A 0 A_JumpIfInventory("UpgradeRepeater", 1, "UpgradeRepeater_Scope")
+		TNT1 A 0 A_JumpIfInventory("UpgradeReaper", 1, "UpgradeReaper_ChargedShot")
+		TNT1 A 0 A_JumpIfInventory("UpgradeGrenadeLauncher", 1, "UpgradeGrenadeLauncher_AltFire")
+		TNT1 A 0 A_JumpIfInventory("UpgradeLightningGun", 1, "UpgradeLightningGun_AltFire")
+		TNT1 A 0 A_JumpIfInventory("UpgradeHellshot", 1, "UpgradeHellshot_ArgentFlare")
+		TNT1 A 0 A_JumpIfInventory("UpgradeVortexRifle", 1, "UpgradeVortexRifle_Scope")
+		TNT1 A 0 A_JumpIfInventory("UpgradeStaticRifle", 1, "UpgradeStaticRifle_Charge")
+		TNT1 A 0 A_JumpIfInventory("UpgradeMissileBattery", 1, "UpgradeMissileBattery_GuidedMissileSys")
+		TNT1 A 0 A_JumpIfInventory("UpgradeMancubusArm", 1, "UpgradeMancubusArm")
+		TNT1 A 0 A_JumpIfInventory("UpgradeShotgun", 1, "UpgradeShotgun_Explosive")
+		TNT1 A 0 A_JumpIfInventory("UpgradeSuperShotgun", 1, "UpgradeSuperShotgun_DoubleTrouble")
+		TNT1 A 0 A_JumpIfInventory("UpgradeHAR", 1, "UpgradeHAR_Micro")
+		TNT1 A 0 A_JumpIfInventory("UpgradeChaingun", 1, "UpgradeChaingun_Turret")
+		TNT1 A 0 A_JumpIfInventory("UpgradeRocketLauncher", 1, "UpgradeRocketLauncher_LockBurst")
+		TNT1 A 0 A_JumpIfInventory("UpgradePlasmaRifle", 1, "UpgradePlasmaRifle_HeatBlast")
+		TNT1 A 0 A_JumpIfInventory("UpgradeGaussCannon", 1, "UpgradeGaussCannon_Siege")
+		Goto Ready
+		
+	// This part is for Normal Weapons
+	// -------------------------------
+	
+	// Pistol Upgrader		
+	UpgradePistol_Proto:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolProtoGenerator", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradePistolProtoGenerator",1)
+		TNT1 A 0 A_Print("Proto Generator Upgraded",2)
+		Goto FinishChecker
+		
+	UpgradePistol_FastCharge:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradePistolFastCharge", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradePistolFastCharge",1)
+		TNT1 A 0 A_Print("Fast Charge Modification Obtained",2)
+		Goto FinishChecker
+		
+	FinishPistol:
+		TNT1 A 0 A_TakeInventory("UpgradePistol",1)
+		TNT1 A 0 A_SelectWeapon("D4Pistol")
+		Goto RealReady	
+		
+	//Shotgun Upgrader		
+	UpgradeShotgun_TriShot:
+		TNT1 A 0 A_JumpIfInventory("ModHasTriShot", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasTriShot",1)
+		TNT1 A 0 A_Print("Burst Shot Module Obtained",2)
+		Goto FinishChecker
+		
+	UpgradeShotgun_Explosive:
+		TNT1 A 0 A_JumpIfInventory("ModHasExplosiveShot", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasExplosiveShot",1)
+		TNT1 A 0 A_Print("Explosive Module Obtained",2)
+		Goto FinishChecker
+		
+	FinishShotgun:
+		TNT1 A 0 A_TakeInventory("UpgradeShotgun",1)
+		TNT1 A 0 A_SelectWeapon("D4Shotgun")
+		Goto RealReady		
+		
+	//Super Shotgun Upgrader	
+	UpgradeSuperShotgun_FastReload:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeSuperShotgunFastReload", 2, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeSuperShotgunFastReload",1)
+		TNT1 A 0 A_Print("Exo-Arms (Fast Reload) Adquired",2)
+		Goto FinishChecker
+		
+	UpgradeSuperShotgun_DoubleTrouble:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeSuperShotgunDoubleTrouble", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeSuperShotgunDoubleTrouble",1)
+		TNT1 A 0 A_Print("Double Trouble (Dual-Wield Enabled) Adquired",2)
+		Goto FinishChecker
+
+	FinishSuperShotgun:
+		TNT1 A 0 A_TakeInventory("UpgradeSuperShotgun",1)
+		TNT1 A 0 A_SelectWeapon("D4SSG")
+		Goto RealReady		
+		
+	//HAR Upgrader		
+	UpgradeHAR_Scope:
+		TNT1 A 0 A_JumpIfInventory("ModHasTacticalScope", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasTacticalScope",1)
+		TNT1 A 0 A_Print("Tactical Scope Module Obtained",2)
+		Goto FinishChecker
+		
+	UpgradeHAR_Micro:
+		TNT1 A 0 A_JumpIfInventory("ModHasMicroMissile", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasMicroMissile",1)
+		TNT1 A 0 A_Print("Micro Missile Module Obtained",2)
+		Goto FinishChecker
+		
+	FinishHar:
+		TNT1 A 0 A_TakeInventory("UpgradeHAR",1)
+		TNT1 A 0 A_SelectWeapon("D4HAR")
+		Goto RealReady		
+		
+	//Chaingun Upgrader		
+	UpgradeChaingun_Rotator:
+		TNT1 A 0 A_JumpIfInventory("ModHasGatlingRotator", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasGatlingRotator",1)
+		TNT1 A 0 A_Print("Gatling Rotator Module Obtained",2)
+		Goto FinishChecker
+		
+	UpgradeChaingun_Turret:
+		TNT1 A 0 A_JumpIfInventory("ModHasMobileTurret", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasMobileTurret",1)
+		TNT1 A 0 A_Print("Mobile Turret Module Obtained",2)
+		Goto FinishChecker
+		
+	FinishChaingun:
+		TNT1 A 0 A_TakeInventory("UpgradeChaingun",1)
+		TNT1 A 0 A_SelectWeapon("D4Chaingun")
+		Goto RealReady		
+		
+	//Rocket Launcher Upgrader		
+	UpgradeRocketLauncher_Detonator:
+		TNT1 A 0 A_JumpIfInventory("ModHasDetonator", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasDetonator",1)
+		TNT1 A 0 A_Print("Remote Detonator Module Obtained",2)
+		Goto FinishChecker
+		
+	UpgradeRocketLauncher_LockBurst:
+		TNT1 A 0 A_JumpIfInventory("ModHasLockOn", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasLockOn",1)
+		TNT1 A 0 A_Print("Auto Lock Module Obtained",2)
+		Goto FinishChecker
+		
+	FinishRocketLauncher:
+		TNT1 A 0 A_TakeInventory("UpgradeRocketLauncher",1)
+		TNT1 A 0 A_SelectWeapon("D4RocketLauncher")
+		Goto RealReady		
+		
+	//Plasma Rifle Upgrader		
+	UpgradePlasmaRifle_StunBomb:
+		TNT1 A 0 A_JumpIfInventory("ModHasStunBomb", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasStunBomb",1)
+		TNT1 A 0 A_Print("Stun Bomb Module Obtained",2)
+		Goto FinishChecker
+		
+	UpgradePlasmaRifle_HeatBlast:
+		TNT1 A 0 A_JumpIfInventory("ModHasHeatWave", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasHeatWave",1)
+		TNT1 A 0 A_Print("Heat Blast Module Obtained",2)
+		Goto FinishChecker
+		
+	FinishPlasmaRifle:
+		TNT1 A 0 A_TakeInventory("UpgradePlasmaRifle",1)
+		TNT1 A 0 A_SelectWeapon("D4PlasmaRifle")
+		Goto RealReady		
+		
+	//Gauss Cannon Upgrader		
+	UpgradeGaussCannon_Precision:
+		TNT1 A 0 A_JumpIfInventory("ModHasPrecisionScope", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasPrecisionScope",1)
+		TNT1 A 0 A_Print("Precision Bolt Module Obtained",2)
+		Goto FinishChecker
+		
+	UpgradeGaussCannon_Siege:
+		TNT1 A 0 A_JumpIfInventory("ModHasSiegeMode", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("ModHasSiegeMode",1)
+		TNT1 A 0 A_Print("Siege Mode Module Obtained",2)
+		Goto FinishChecker
+		
+	FinishGaussCannon:
+		TNT1 A 0 A_TakeInventory("UpgradeGaussCannon",1)
+		TNT1 A 0 A_SelectWeapon("D4GaussCannon")
+		Goto RealReady
+		
+	// This part is for Multiplayer Weapons
+	// ------------------------------------
+		
+	//Repeater Upgrader		
+	UpgradeRepeater_Damage:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterDamage", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeRepeaterDamage",1)
+		TNT1 A 0 A_Print("Increase Damage Upgraded",2)
+		Goto FinishChecker
+		
+	UpgradeRepeater_Scope:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeRepeaterScope", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeRepeaterScope",1)
+		TNT1 A 0 A_Print("Advanced Targeting Scope Obtained",2)
+		Goto FinishChecker
+		
+	FinishRepeater:
+		TNT1 A 0 A_TakeInventory("UpgradeRepeater",1)
+		TNT1 A 0 A_SelectWeapon("D4Repeater")
+		Goto RealReady	
+		
+	//Grenade Launcher Upgrader		
+	UpgradeGrenadeLauncher_Damage:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeGrenadeLaucherDamage", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeGrenadeLaucherDamage",1)
+		TNT1 A 0 A_Print("Increase Damage Upgraded",2)
+		Goto FinishChecker
+		
+	UpgradeGrenadeLauncher_AltFire:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeGrenadeLaucherAltFire", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeGrenadeLaucherAltFire",1)
+		TNT1 A 0 A_Print("Poison Gas Grenades Obtained",2)
+		Goto FinishChecker
+		
+	FinishGrenadeLauncher:
+		TNT1 A 0 A_TakeInventory("UpgradeGrenadeLauncher",1)
+		TNT1 A 0 A_SelectWeapon("D4GrenadeLauncher")
+		Goto RealReady	
+		
+	//Lightning Gun Upgrader		
+	UpgradeLightningGun_Damage:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunDamage", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeLightningGunDamage",1)
+		TNT1 A 0 A_Print("Increase Damage Upgraded",2)
+		Goto FinishChecker
+		
+	UpgradeLightningGun_AltFire:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeLightningGunAltFire", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeLightningGunAltFire",1)
+		TNT1 A 0 A_Print("Voltaic Arc Obtained",2)
+		Goto FinishChecker
+		
+	FinishLightningGun:
+		TNT1 A 0 A_TakeInventory("UpgradeLightningGun",1)
+		TNT1 A 0 A_SelectWeapon("D4LightningGun")
+		Goto RealReady		
+		
+	//Hellshot Upgrader		
+	UpgradeHellshot_Damage:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeHellshotDamage", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeHellshotDamage",1)
+		TNT1 A 0 A_Print("Increase Damage Upgraded",2)
+		Goto FinishChecker
+	UpgradeHellshot_ArgentFlare:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeHellshotAltFire", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeHellshotAltFire",1)
+		TNT1 A 0 A_Print("Argent Flare Modification Obtained",2)
+		Goto FinishChecker
+		
+	FinishHellshot:
+		TNT1 A 0 A_TakeInventory("UpgradeHellshot",1)
+		TNT1 A 0 A_SelectWeapon("D4Hellshot")
+		Goto RealReady		
+		
+	//Vortex Rifle Upgrader	
+	UpgradeVortexRifle_Damage:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeVortexRifleDamage", 2, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeVortexRifleDamage",1)
+		TNT1 A 0 A_Print("Partial Damage Upgraded",2)
+		Goto FinishChecker
+		
+	UpgradeVortexRifle_Scope:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeVortexRifleScope", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeVortexRifleScope",1)
+		TNT1 A 0 A_Print("Enhanced Scope Attachment Obtained",2)
+		Goto FinishChecker
+
+	FinishVortexRifle:
+		TNT1 A 0 A_TakeInventory("UpgradeVortexRifle",1)
+		TNT1 A 0 A_SelectWeapon("D4VortexRifle")
+		Goto RealReady		
+		
+	//Static Rifle Upgrader	
+	UpgradeStaticRifle_Damage:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeStaticRifleDamage", 2, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeStaticRifleDamage",1)
+		TNT1 A 0 A_Print("Increase Damage Upgraded",2)
+		Goto FinishChecker
+		
+	UpgradeStaticRifle_Charge:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeStaticRifleCharge", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeStaticRifleCharge",1)
+		TNT1 A 0 A_Print("Charge Module Upgraded",2)
+		Goto FinishChecker
+
+	FinishStaticRifle:
+		TNT1 A 0 A_TakeInventory("UpgradeStaticRifle",1)
+		TNT1 A 0 A_SelectWeapon("D4StaticRifle")
+		Goto RealReady		
+		
+	//Reaper Upgrader	
+	UpgradeReaper_Explosive:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeReaperExplosive", 2, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeReaperExplosive",1)
+		TNT1 A 0 A_Print("Explosive Projectiles Adquired",2)
+		Goto FinishChecker
+		
+	UpgradeReaper_ChargedShot:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeReaperChargedFire", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeReaperChargedFire",1)
+		TNT1 A 0 A_Print("Charged Shot Adquired",2)
+		Goto FinishChecker
+
+	FinishReaper:
+		TNT1 A 0 A_TakeInventory("UpgradeReaper",1)
+		TNT1 A 0 A_SelectWeapon("D4Reaper")
+		Goto RealReady		
+		
+	// Unique Extra Weapons Upgrades
+	// -----------------------------
+		
+	//Revenant Missile Battery Upgrader	
+	UpgradeMissileBattery_JetThruster:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeMissileBatteryJetThruster", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeMissileBatteryJetThruster",1)
+		TNT1 A 0 A_Print("RMS Armor Sys. Jet Thrusters Obtained.",2)
+		Goto FinishChecker
+		
+	UpgradeMissileBattery_GuidedMissileSys:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeMissileBatteryGuidedMissile", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeMissileBatteryGuidedMissile",1)
+		TNT1 A 0 A_Print("RMS Armor Sys. Laser Guided Chip Obtained.",2)
+		Goto FinishChecker
+		
+	FinishMissileBattery:
+		TNT1 A 0 A_TakeInventory("UpgradeMissileBattery",1)
+		TNT1 A 0 A_SelectWeapon("RevenantMissileBattery")
+		Goto RealReady		
+		
+	//MK.2 Giver		
+	UpgradeMancubusArm:
+		TNT1 A 0 A_JumpIfInventory("HasUpgradeFlammeCannonMK2", 1, "AlreadyUpgraded")
+		TNT1 A 0 A_GiveInventory("HasUpgradeFlammeCannonMK2",1)
+		TNT1 A 0 A_Print("Enhancement incendiary firepower Obtained.",2)
+		Goto FinishChecker
+
+	FinishMancubusArm:
+		TNT1 A 0 A_TakeInventory("UpgradeMancubusArm",1)
+		TNT1 A 0 A_SelectWeapon("D4MancubusArm")
+		Goto RealReady		
+		
+	// End
+	// ---
+		
+	AlreadyUpgraded:
+		TNT1 A 1 A_Print("You already have this upgrade",2)
+		Goto RealReady
+		
+	FinishChecker:
+		TNT1 A 0 A_TakeInventory("UpgradeBoxToken",1)
+		TNT1 A 0 A_JumpIfInventory("UpgradePistol", 1, "FinishPistol")
+		TNT1 A 0 A_JumpIfInventory("UpgradeRepeater", 1, "FinishRepeater")
+		TNT1 A 0 A_JumpIfInventory("UpgradeReaper", 1, "FinishReaper")
+		TNT1 A 0 A_JumpIfInventory("UpgradeGrenadeLauncher", 1, "FinishGrenadeLauncher")
+		TNT1 A 0 A_JumpIfInventory("UpgradeLightningGun", 1, "FinishLightningGun")
+		TNT1 A 0 A_JumpIfInventory("UpgradeHellshot", 1, "FinishHellshot")
+		TNT1 A 0 A_JumpIfInventory("UpgradeVortexRifle", 1, "FinishVortexRifle")
+		TNT1 A 0 A_JumpIfInventory("UpgradeStaticRifle", 1, "FinishStaticRifle")
+		TNT1 A 0 A_JumpIfInventory("UpgradeMissileBattery", 1, "FinishMissileBattery")
+		TNT1 A 0 A_JumpIfInventory("UpgradeMancubusArm", 1, "FinishMancubusArm")
+		TNT1 A 0 A_JumpIfInventory("UpgradeShotgun", 1, "FinishShotgun")
+		TNT1 A 0 A_JumpIfInventory("UpgradeSuperShotgun", 1, "FinishSuperShotgun")
+		TNT1 A 0 A_JumpIfInventory("UpgradeHAR", 1, "FinishHAR")
+		TNT1 A 0 A_JumpIfInventory("UpgradeChaingun", 1, "FinishChaingun")
+		TNT1 A 0 A_JumpIfInventory("UpgradeRocketLauncher", 1, "FinishRocketLauncher")
+		TNT1 A 0 A_JumpIfInventory("UpgradePlasmaRifle", 1, "FinishPlasmaRifle")
+		TNT1 A 0 A_JumpIfInventory("UpgradeGaussCannon", 1, "FinishGaussCannon")
+		Goto Deselect
+		 }
+}
+// Upgrade System Tokens
+Actor UpgradeTokens : Inventory {inventory.maxamount 1 +UNDROPPABLE}
+
+// Weapon Handlers
+Actor UpgradePistol : UpgradeTokens {}
+Actor UpgradeRepeater : UpgradeTokens {}
+Actor UpgradeShotgun : UpgradeTokens {}
+Actor UpgradeSuperShotgun : UpgradeTokens {}
+Actor UpgradeReaper : UpgradeTokens {}
+Actor UpgradeHAR : UpgradeTokens {}
+Actor UpgradeChaingun : UpgradeTokens {}
+Actor UpgradeRocketLauncher : UpgradeTokens {}
+Actor UpgradeGrenadeLauncher : UpgradeTokens {}
+Actor UpgradeLightningGun : UpgradeTokens {}
+Actor UpgradePlasmaRifle : UpgradeTokens {}
+Actor UpgradeHellshot : UpgradeTokens {}
+Actor UpgradeVortexRifle : UpgradeTokens {}
+Actor UpgradeStaticRifle : UpgradeTokens {}
+Actor UpgradeGaussCannon : UpgradeTokens {}
+Actor UpgradeMissileBattery : UpgradeTokens {}
+Actor UpgradeMancubusArm : UpgradeTokens {}
+
+// Important Tokens
+Actor UpgraderToken : UpgradeTokens {}
+Actor StartUpgrader : UpgradeTokens {}
+Actor UpgraderActive : UpgradeTokens {}
+Actor IsUpgradeableWeapon : UpgradeTokens {}
+Actor UpgradeBoxToken : Inventory {inventory.maxamount 12} //Max Upgrade Points
+
+// Mod Tokens
+Actor ModHasTriShot : UpgradeTokens {}
+Actor ModHasExplosiveShot : UpgradeTokens {}
+Actor ModHasMicroMissile : UpgradeTokens {}
+Actor ModHasTacticalScope : UpgradeTokens {}
+Actor ModHasGatlingRotator : UpgradeTokens {}
+Actor ModHasMobileTurret : UpgradeTokens {}
+Actor ModHasDetonator : UpgradeTokens {}
+Actor ModHasLockOn : UpgradeTokens {}
+Actor ModHasStunBomb : UpgradeTokens {}
+Actor ModHasHeatWave : UpgradeTokens {}
+Actor ModHasPrecisionScope : UpgradeTokens {}
+Actor ModHasSiegeMode : UpgradeTokens {}
+
+// Upgrade Tokens
+Actor HasUpgradePistolProtoGenerator : UpgradeTokens {}
+Actor HasUpgradePistolFastCharge : UpgradeTokens {}
+Actor HasUpgradeRepeaterDamage : UpgradeTokens {}
+Actor HasUpgradeRepeaterScope : UpgradeTokens {}
+Actor HasUpgradeGrenadeLaucherDamage : UpgradeTokens {}
+Actor HasUpgradeGrenadeLaucherAltFire : UpgradeTokens {}
+Actor HasUpgradeHellshotDamage : UpgradeTokens {}
+Actor HasUpgradeHellshotAltFire : UpgradeTokens {}
+Actor HasUpgradeLightningGunAltFire : UpgradeTokens {}
+Actor HasUpgradeLightningGunDamage : UpgradeTokens {}
+Actor HasUpgradeFlammeCannonMK2 : UpgradeTokens {}
+Actor HasUpgradeMissileBatteryJetThruster : UpgradeTokens {}
+Actor HasUpgradeMissileBatteryGuidedMissile : UpgradeTokens {}
+Actor HasUpgradeVortexRifleDamage : UpgradeTokens {inventory.maxamount 2}
+Actor HasUpgradeVortexRifleScope : UpgradeTokens {}
+Actor HasUpgradeSuperShotgunFastReload : UpgradeTokens {}
+Actor HasUpgradeSuperShotgunDoubleTrouble : UpgradeTokens {}
+Actor HasUpgradeStaticRifleDamage : UpgradeTokens {}
+Actor HasUpgradeStaticRifleCharge : UpgradeTokens {}
+Actor HasUpgradeReaperExplosive : UpgradeTokens {}
+Actor HasUpgradeReaperChargedFire : UpgradeTokens {}
+
+// Swaping Tokens
+Actor ModTriShotActive : UpgradeTokens {}
+Actor ModExplosiveShotActive : UpgradeTokens {}
+Actor ModMicroMissileActive : UpgradeTokens {}
+Actor ModTacticalScopeActive : UpgradeTokens {}
+Actor ModGatlingRotatorActive : UpgradeTokens {}
+Actor ModMobileTurretActive : UpgradeTokens {}
+Actor ModDetonatorActive : UpgradeTokens {}
+Actor ModLockOnActive : UpgradeTokens {}
+Actor ModStunBombActive : UpgradeTokens {}
+Actor ModHeatWaveActive : UpgradeTokens {}
+Actor ModPrecisionScopeActive : UpgradeTokens {}
+Actor ModSiegeModeActive : UpgradeTokens {}

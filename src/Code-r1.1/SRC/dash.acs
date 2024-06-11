@@ -1,0 +1,106 @@
+// ACS
+#library "dash"
+#include "zcommon.acs"
+
+//Player-Dash taken from MagSigmaX's Project MSX
+
+function void dash_start(int angle, int dir){
+	int force = 45;
+	faderange (255, 255, 255, 0.3, 0, 0, 0, 0.0, 0.5);
+	ThrustThing(angle+dir, force, 0, 0);
+	GiveInventory("DashCheck",1);
+}
+
+script "Player-Dash" enter {
+
+	int angle=0, input=0, oldinput=0;
+	int heldTime=0, force = 40, sdel=25;
+	SetPlayerProperty(0, OFF, PROP_FROZEN);
+	
+    while (true) {
+        delay(1);
+        angle = GetActorAngle(0) >> 8;
+		input = GetPlayerInput(-1, INPUT_BUTTONS);
+		oldinput = GetPlayerInput(-1, INPUT_OLDBUTTONS);
+
+		if((CheckInventory("DisableSDash") == 1)||(CheckInventory("JetpackActivated") == 1)||(CheckInventory("IsActivatedMobileTurret") == 1)||(CheckInventory("SiegeAltMode") == 1)||(CheckInventory("GoFatality") == 1)||(CheckInventory("IsTankPlayer") == 1)||(CheckInventory("IsVehiclePlayer") == 1)||(CheckInventory("IsDemonPlayer") == 1))
+		{
+			//terminate;
+		}
+		else
+		{
+			if ((oldinput & BT_FORWARD && oldinput & BT_USER3 && checkinventory("DashCheck") == 0)) 
+			{								
+				dash_start(angle, 0); 
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+				ACS_NamedExecute("DashStart", 0);
+			}
+			else if((oldinput & BT_BACK && oldinput & BT_USER3 && checkinventory("DashCheck") == 0))
+			{
+				dash_start(angle, 128);
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+				ACS_NamedExecute("DashStart", 0);
+			}
+			else if((oldinput & BT_MOVELEFT && oldinput & BT_USER3 && checkinventory("DashCheck") == 0))
+			{
+				dash_start(angle, 64);
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+				ACS_NamedExecute("DashStart", 0);
+			}
+			else if((oldinput & BT_MOVERIGHT && oldinput & BT_USER3 && checkinventory("DashCheck") == 0))
+			{
+				dash_start(angle, 192);
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+				ACS_NamedExecute("DashStart", 0);
+			}
+			else if ((oldinput & BT_FORWARD && oldinput & BT_USER3 && checkinventory("DashCheck") == 1 && checkinventory("DashHold") == 0))
+			{								
+				dash_start(angle, 0); 
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+			}
+			else if((oldinput & BT_BACK && oldinput & BT_USER3 && checkinventory("DashCheck") == 1 && checkinventory("DashHold") == 0))
+			{
+				dash_start(angle, 128);
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+			}
+			else if((oldinput & BT_MOVELEFT && oldinput & BT_USER3 && checkinventory("DashCheck") == 1 && checkinventory("DashHold") == 0))
+			{
+				dash_start(angle, 64);
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+			}
+			else if((oldinput & BT_MOVERIGHT && oldinput & BT_USER3 && checkinventory("DashCheck") == 1 && checkinventory("DashHold") == 0))
+			{
+				dash_start(angle, 192);
+				ActivatorSound("Player/JumpSound",127);
+				delay(sdel);
+			}
+			else if(checkinventory("DashCheck") == 2)
+			{
+				delay(50);
+				ActivatorSound("Player/DashReady",75);
+				TakeInventory("DashCheck",2);
+				TakeInventory("DashHold",1);
+			}
+			else if(checkinventory("DashCheck") == 1 && checkinventory("DashHold") == 1)
+			{
+				delay(sdel);
+				ActivatorSound("Player/DashReady",75);
+				TakeInventory("DashCheck",1);
+				TakeInventory("DashHold",1);
+			}
+		}
+	} 
+}
+
+Script "DashStart" (void) NET CLIENTSIDE
+{
+	delay(60);
+	GiveInventory("DashHold",1);
+}

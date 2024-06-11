@@ -1,0 +1,221 @@
+#library "UpgradeText.acs"
+#include "zcommon.acs"
+
+Script "WeaponUpgrader" (VOID)// Weapon Upgrader Texts
+{
+	str mod1;
+	str mod2;
+	while(GetActorProperty(0, APROP_HEALTH) > 0 && CheckWeapon("D4WeaponUpgrader"))
+	//while(CheckWeapon("D4WeaponUpgrader"))
+	{
+		mod1 = "";
+		mod2 = "";
+		SetFont("BIGFONT");
+		HudMessage(s:"Press any weapon number to exit";	HUDMSG_PLAIN, 0, CR_GRAY, 0.5, 0.10, 0.2);
+		
+			if(CheckInventory("UpgradePistol") == 1)
+			{
+				if(CheckInventory("HasUpgradePistolProtoGenerator") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Proto Generator";
+					
+				if(CheckInventory("HasUpgradePistolFastCharge") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Fast Charge Modification";
+			}
+			else if(CheckInventory("UpgradeRepeater") == 1)
+			{
+				if(CheckInventory("HasUpgradeRepeaterDamage") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Increase Damage Upgrade";
+
+				if(CheckInventory("HasUpgradeRepeaterScope") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Advanced Targeting Scope (Alt-Fire)";
+			}
+			else if(CheckInventory("UpgradeShotgun") == 1)
+			{
+				if(CheckInventory("ModHasTriShot") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Burst Shot Module";
+					
+				if(CheckInventory("ModHasExplosiveShot") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Explosive Shot Module";
+			}
+			else if(CheckInventory("UpgradeReaper") == 1)
+			{
+				if(CheckInventory("HasUpgradeReaperExplosive") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Explosive Projectiles (Reload Button)";
+				
+				if(CheckInventory("HasUpgradeReaperChargedFire") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Charged Shot (Alt-Fire to Switch)";
+			}
+			else if(CheckInventory("UpgradeSuperShotgun") == 1)
+			{
+				if(CheckInventory("HasUpgradeSuperShotgunFastReload") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Exo-Arms Equipment (Fast Reload)";
+				
+				if(CheckInventory("HasUpgradeSuperShotgunDoubleTrouble") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Double Trouble (Dual-Wield)";
+			}
+			else if(CheckInventory("UpgradeHAR") == 1)
+			{
+				if(CheckInventory("ModHasTacticalScope") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Tactical Scope Module";
+					
+				if(CheckInventory("ModHasMicroMissile") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Micro Missiles Module";
+			}
+			else if(CheckInventory("UpgradeChaingun") == 1)
+			{
+				if(CheckInventory("ModHasGatlingRotator") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Gatling Rotator Module";
+					
+				if(CheckInventory("ModHasMobileTurret") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Mobile Turret Module";
+			}
+			else if(CheckInventory("UpgradeRocketLauncher") == 1)
+			{
+				if(CheckInventory("ModHasDetonator") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Remote Detonator Module";
+				
+				if(CheckInventory("ModHasLockOn") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Auto Lock Module";
+			}
+			else if(CheckInventory("UpgradeGrenadeLauncher") == 1)
+			{
+				if(CheckInventory("HasUpgradeGrenadeLaucherDamage") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Increase Damage Upgrade";
+				
+				if(CheckInventory("HasUpgradeGrenadeLaucherAltFire") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Poison Gas (Alt-Fire)";
+			}
+			else if(CheckInventory("UpgradeLightningGun") == 1)
+			{
+				if(CheckInventory("HasUpgradeLightningGunDamage") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Increase Damage Upgrade";
+				
+				if(CheckInventory("HasUpgradeLightningGunAltFire") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Voltaic Arc (Alt-Fire)";
+			}
+			else if(CheckInventory("UpgradePlasmaRifle") == 1)
+			{
+				if(CheckInventory("ModHasStunBomb") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Stun Bomb Module";
+				
+				if(CheckInventory("ModHasHeatWave") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Heat Blast Module";
+			}
+			else if(CheckInventory("UpgradeHellshot") == 1)
+			{
+				if(CheckInventory("HasUpgradeHellshotDamage") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Increase Damage Upgrade";
+				
+				if(CheckInventory("HasUpgradeHellshotAltFire") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Argent Flare (Alt-Fire)";
+			}
+			else if(CheckInventory("UpgradeVortexRifle") == 1)
+			{
+				if(CheckInventory("HasUpgradeVortexRifleDamage") == 2)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Partial Damage Upgrade";
+				
+				if(CheckInventory("HasUpgradeVortexRifleScope") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Enhanced Scope Upgrade";
+			}
+			else if(CheckInventory("UpgradeStaticRifle") == 1)
+			{
+				if(CheckInventory("HasUpgradeStaticRifleDamage") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Increase Damage Upgrade";
+				
+				if(CheckInventory("HasUpgradeStaticRifleCharge") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Charge Module Upgrade";
+			}
+			else if(CheckInventory("UpgradeGaussCannon") == 1)
+			{
+				if(CheckInventory("ModHasPrecisionScope") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: Precision Bolt Module";
+				
+				if(CheckInventory("ModHasSiegeMode") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: Siege Mode Module";
+			}
+			else if(CheckInventory("UpgradeMissileBattery") == 1)
+			{
+				if(CheckInventory("HasUpgradeMissileBatteryJetThruster") == 1)
+					mod1 = "Upgraded Optained";
+				else
+					mod1 = "Fire: RMS Armor Sys. Jet Thrusters (Reload Button)";
+				
+				if(CheckInventory("HasUpgradeMissileBatteryGuidedMissile") == 1)
+					mod2 = "Upgraded Optained";
+				else
+					mod2 = "Alt-Fire: RMS Armor Sys. Laser Guided Chip (Unload Button)";
+			}
+			else if(CheckInventory("UpgradeMancubusArm") == 1)
+			{
+				if(CheckInventory("HasUpgradeFlammeCannonMK2") == 1)
+					mod1 = "Upgraded Optained",	mod2 = "";
+				else
+					mod1 = "Fire or Alt-Fire:",	mod2 = "Enhanced incendiary firepower";
+			}
+		SetFont("BIGFONT");
+		HudMessage(s:mod1; HUDMSG_PLAIN, 0, CR_GRAY, 0.5, 0.80, 0.2);
+		SetFont("BIGFONT");
+		HudMessage(s:mod2; HUDMSG_PLAIN, 0, CR_GRAY, 0.5, 0.85, 0.2);
+		delay(6);
+	}
+}

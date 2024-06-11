@@ -1,0 +1,74 @@
+///////////////////// DOOM 2016 Arsenal \\\\\\\\\\\\\\\\\\\\\\\\
+//////////// A Sub-mod for Brutal DOOM version 21 \\\\\\\\\\\\\\
+
+Important: 
+
+This mod is designed for the official release of Brutal DOOM v21, Gold by 
+Sergeant_Mark_IV, so "Sub-mods" such as Project Brutality or Black Edition 
+will not work, however those based on BDv21 Gold may or may not work.
+
+Description:
+
+More than a simple mod, it is a thematic expansion of weapons of DOOM 2016, 
+each of these have been polished in its animations, it has a system of mods, 
+parkour elements, elusive function as in DOOM Eternal, Grenades Syphon and 
+Hologram, etc. This changes the gameplay of Brutal DOOM to follow the same 
+rules of DOOM 2016 as the armor absorbs all the damage but decreases very 
+quickly, staying in continuous mobility is the tactics of survival in the 
+game, and yes, it has Glory Kills (They can be alternated between BD Black 
+Edition or DOOM 2016 Arsenal).
+
+For starters, the monsters now have more dangerous and aggressive new 
+variants, so it makes the game more difficult, but it also makes it 
+interesting. There is no longer a single grenade like BD because now there 
+are the Frag Grenades, Syphon and Hologram, each with a special function 
+and good for the player's survival tactics.
+
+It is recommended to use the new keys of the mod, since they have the 
+special functions such as changing the type of grenade, the quick punch 
+that also serves to detonate the Glory Kills and the weapon improvement 
+selector.
+
+The mod works correctly in Deathmatch mode and Zandronum modes, the arsenal 
+of weapons has been correctly balanced in these mods, since it has been 
+optimized for these. But cooperative support that solves problems with 
+functions has also been implemented.
+
+New special animations that are present in the game, like the helmet that 
+Doomguy puts helmet on when starting a game or the animation that appears 
+every time the time of the demon rune morph ends when it returns us to 
+humans.
+
+New animations for the functions of kick, aerial kick, sliding kick, throw 
+grenade and insult, will look much better during the game, I especially 
+thank Tomtefar1988 as part of the code that controls these functions come 
+from its Tomtefar's Extension mod.
+
+New Functions such as the Side-Step (works by pressing the front, back, 
+right or left button twice) followed by the DOOM Eternal Trailer that will 
+help the players to push themselves laterally and help him to avoid the 
+damage, this will be another survival mechanic for the players that play 
+in a high difficulty in the game.
+
+Load order of the files:
+
+1) brutalv21.pk3 (base mod)
+2) D2016ArsenalCode-r1.1.pk3 (main addon)
+3) D2016ArsenalResources-r1.1.pk3 (resources are sprites, sounds, etc. used in the addon)
+4) D2016Arsenal-HXRTCHUD.pk3 (Optional, HUD addon compatible)
+5) D2016ArsenalPatch-X.pk3 (Compatibility patches for some wads)
+
+Note: Do not redistribute or take anything out of the content 
+without my permission, it really took me a week to do it.
+
+Credits:
+
+XV117 - ACS, Sprites, Sprite Edits, Monsters Code, Decorate Code
+Sergeant Mark IV - D2K16 Weapon Test 2 (Used as Base)
+Tomtefar1988 - The Base Weapon Code is based on your mod, so it is also credited, some sprites from Tomtefars Extension
+mryayayify, IDDQD_1337 - Sprites Contribution
+Dracologist - DOOM 4 Weapon Forge (Code Taked for Vortex Rifle Damage Upgrades)
+Neccronixis - Original Weapon Sprites
+Doomguy5th - New Sprites, Sounds, Effects and Code Recycled for this Mod
+D4T Team - New Sprites for Revenant Hands
+Xaser - Amazing Mod-Swaping Animations from Argent 0.5.3

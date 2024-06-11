@@ -1,0 +1,6 @@
+Actor TimerTokens : Inventory  {Inventory.MaxAmount 52	Inventory.InterhubAmount 0}
+Actor SGGrenadeTimer : TimerTokens {}
+Actor SGTriShotTimer : TimerTokens {}
+Actor GLGasTimer : TimerTokens {}
+Actor HSFlareTimer : TimerTokens {}
+Actor PlasmaStunBombTimer : TimerTokens {}

@@ -1,0 +1,277 @@
+// Chainsaw Pinata
+Actor ChainsawExecutionPinata : PinataBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		// First Check the Player Health
+		TNT1 A 0 A_JumpIfInTargetInventory("GKPlayer_GoodHealth",1,"LowHealthSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("GKPlayer_RegularHealth",1,"RegularHealthSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("GKPlayer_LowHealth",1,"HighHealthSpawn")
+		Goto CheckShells
+
+	LowHealthSpawn:
+		PLAY AA 0 A_SpawnItemEx("D4PinataHealth",0,0,0,frandom(-4,4),frandom(-4,4),frandom(1,5),random(1,360),SXF_NOCHECKPOSITION)
+		Goto CheckShells
+	RegularHealthSpawn:
+		PLAY AAA 0 A_SpawnItemEx("D4PinataHealth",0,0,0,frandom(-4,4),frandom(-4,4),frandom(1,5),random(1,360),SXF_NOCHECKPOSITION)
+		Goto CheckShells
+	HighHealthSpawn:
+		PLAY AAAA 0 A_SpawnItemEx("D4PinataHealth",0,0,0,frandom(-4,4),frandom(-4,4),frandom(1,5),random(1,360),SXF_NOCHECKPOSITION)
+		Goto CheckShells
+		
+	// 	8 shells * 2 drops = 16, 1 drop of 4 shells for Low Spawn
+	CheckShells:
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_HasShells",1,1)
+		Goto CheckBullets
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_GoodShells",1,"LowShellSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_RegularShells",1,"RegularShellSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_LowShells",1,"HighShellSpawn")
+		Goto CheckBullets
+
+	LowShellSpawn:
+		TNT1 A 0 A_SpawnItemEx("D4ShellsPinataMinimal",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckBullets
+
+	RegularShellSpawn:
+		TNT1 A 0 A_SpawnItemEx("D4ShellsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckBullets
+		
+	HighShellSpawn:
+		TNT1 AA 0 A_SpawnItemEx("D4ShellsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckBullets
+		
+	// 25 bullets * 3 drops = 75
+	CheckBullets:
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_HasBullets",1,1)
+		Goto CheckCells
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_GoodBullets",1,"LowBulletSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_RegularBullets",1,"RegularBulletSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_LowBullets",1,"HighBulletSpawn")
+		Goto CheckCells
+		
+	LowBulletSpawn:
+		TNT1 A 0 A_SpawnItemEx("D4BulletsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckCells
+		
+	RegularBulletSpawn:
+		TNT1 AA 0 A_SpawnItemEx("D4BulletsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckCells
+		
+	HighBulletSpawn:
+		TNT1 AAA 0 A_SpawnItemEx("D4BulletsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckCells
+		
+	// 25 cells * 3 drops = 75
+	CheckCells:
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_HasCells",1,1)
+		Goto CheckRockets
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_GoodCells",1,"LowCellSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_RegularCells",1,"RegularCellSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_LowCells",1,"HighCellSpawn")
+		Goto CheckRockets
+		
+	LowCellSpawn:
+		TNT1 A 0 A_SpawnItemEx("D4CellsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckRockets
+		
+	RegularCellSpawn:
+		TNT1 AA 0 A_SpawnItemEx("D4CellsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckRockets
+		
+	HighCellSpawn:
+		TNT1 AAA 0 A_SpawnItemEx("D4CellsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckRockets
+		
+	// 3 rocket * 3 drops = 9
+	CheckRockets:
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_HasRockets",1,1)
+		Goto CheckSlugs
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_GoodRockets",1,"LowRocketSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_RegularRockets",1,"RegularRocketSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_LowRockets",1,"HighRocketSpawn")
+		Goto CheckSlugs
+		
+	LowRocketSpawn:
+		TNT1 A 0 A_SpawnItemEx("D4RocketsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckSlugs
+		
+	RegularRocketSpawn:
+		TNT1 AA 0 A_SpawnItemEx("D4RocketsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckSlugs
+		
+	HighRocketSpawn:
+		TNT1 AAA 0 A_SpawnItemEx("D4RocketsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		Goto CheckSlugs
+		
+	// 4 slugs * 3 drops = 12
+	CheckSlugs:
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_HasSlugs",1,1)
+		Goto StopActor
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_GoodSlugs",1,"LowSlugSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_RegularSlugs",1,"RegularSlugSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("CKPlayer_LowSlugs",1,"HighSlugSpawn")
+		Goto StopActor
+		
+	LowSlugSpawn:
+		TNT1 A 0 A_SpawnItemEx("D4SlugsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,4),0,SXF_NOCHECKPOSITION)
+		Goto StopActor
+		
+	RegularSlugSpawn:
+		TNT1 AA 0 A_SpawnItemEx("D4SlugsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,4),0,SXF_NOCHECKPOSITION)
+		Goto StopActor
+		
+	HighSlugSpawn:
+		TNT1 AAA 0 A_SpawnItemEx("D4SlugsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,4),0,SXF_NOCHECKPOSITION)
+		Goto StopActor
+		
+	StopActor:
+		TNT1 A 1
+		Stop
+	}
+}
+
+Actor ChainsawExecutionBossPinata : ChainsawExecutionPinata
+{
+	States
+	{
+	Spawn:
+		TNT1 AAA 0 A_SpawnItemEx("D4PinataArmor",0,0,0,frandom(0.5,2),frandom(2,-2),frandom(0.5,2),0,SXF_NOCHECKPOSITION) //always
+		TNT1 A 0 A_SpawnItemEx("D4BFGAmmoPinata",0,0,0,frandom(0.5,2),frandom(2,-2),frandom(0.5,2),0,SXF_NOCHECKPOSITION,249) //about 1/35
+		Goto Super::Spawn
+	}
+}
+
+Actor ChainsawExecutionDM : ChainsawExecutionPinata
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 AAAA 0 A_SpawnItemEx("D4PinataHealth",0,0,0,frandom(-4,4),frandom(-4,4),frandom(1,5),random(1,360),SXF_NOCHECKPOSITION)
+		// 	8 shells * 2 drops = 16
+		TNT1 AA 0 A_SpawnItemEx("D4ShellsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		
+		// 25 bullets * 3 drops = 75
+		TNT1 AAA 0 A_SpawnItemEx("D4BulletsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		
+		// 25 cells * 3 drops = 75
+		TNT1 AAA 0 A_SpawnItemEx("D4CellsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		
+		// 3 rocket * 3 drops = 9
+		TNT1 AAA 0 A_SpawnItemEx("D4RocketsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,5),0,SXF_NOCHECKPOSITION)
+		
+		// 4 slugs * 3 drops = 12
+		TNT1 AAA 0 A_SpawnItemEx("D4SlugsPinata",0,0,0,frandom(1,4),frandom(4,-4),frandom(1,4),0,SXF_NOCHECKPOSITION)
+		TNT1 A 1
+		Stop
+	}
+}
+
+Actor D4BulletsPinata : D4Bullets
+{
+	Inventory.Amount 25
+	Scale 0.27
+	-COUNTITEM
+	+NOBLOCKMONST
+	+FORCEXYBILLBOARD
+	+INVENTORY.IGNORESKILL
+	Inventory.PickupMessage "Picked up some bullets."
+	States
+	{
+	Spawn:
+		PINA DDDDDDDD 35 Bright
+		"####" "#" 1 A_FadeOut
+		Wait
+	}
+}
+Actor D4ShellsPinata : D4Shells
+{
+	Inventory.Amount 8
+	Scale 0.27
+	-COUNTITEM
+	+NOBLOCKMONST
+	+FORCEXYBILLBOARD
+	+INVENTORY.IGNORESKILL
+	Inventory.PickupMessage "Picked up some shells."
+	States
+	{
+	Spawn:
+		PINA EEEEEEEE 35 Bright 
+		"####" "#" 1 A_FadeOut
+		Wait
+
+	}
+}
+Actor D4ShellsPinataMinimal : D4ShellsPinata
+{
+	Inventory.Amount 4
+}
+Actor D4CellsPinata : D4Cells
+{
+	Inventory.Amount 25
+	Scale 0.27
+	-COUNTITEM
+	+NOBLOCKMONST
+	+FORCEXYBILLBOARD
+	+INVENTORY.IGNORESKILL
+	Inventory.PickupMessage "Picked up some cells."
+	States
+	{
+	Spawn:
+		PINA FFFFFFFF 35 Bright
+		"####" "#" 1 A_FadeOut
+		Wait
+	}
+}
+Actor D4RocketsPinata : D4Rockets
+{
+	Inventory.Amount 3
+	Scale 0.27
+	-COUNTITEM
+	+NOBLOCKMONST
+	+FORCEXYBILLBOARD
+	+INVENTORY.IGNORESKILL
+	Inventory.PickupMessage "Picked up some rockets."
+	States
+	{
+	Spawn:
+		PINA GGGGGGGG 35 Bright 
+		"####" "#" 1 A_FadeOut
+		Wait
+	}
+}
+Actor D4SlugsPinata : D4Slugs
+{
+	Inventory.Amount 4
+	Scale 0.27
+	-COUNTITEM
+	+NOBLOCKMONST
+	+FORCEXYBILLBOARD
+	+INVENTORY.IGNORESKILL
+	Inventory.PickupMessage "Picked up some slugs."
+	States
+	{
+	Spawn:
+		PINA IIIIIIII 35 Bright
+		"####" "#" 1 A_FadeOut
+		Wait
+	}
+}
+Actor D4BFGAmmoPinata : D4BFGAmmo
+{
+	Inventory.Amount 1
+	Scale 0.27
+	-COUNTITEM
+	+NOBLOCKMONST
+	+FORCEXYBILLBOARD
+	+INVENTORY.IGNORESKILL
+	States
+	{
+	Spawn:
+		PINA HHHHHHHHHHHHHHH 35 Bright Light("D4BFGAmmoPinataLight")	//this one last longer than the others
+		"####" "#" 1 A_FadeOut
+		Wait
+	}
+}

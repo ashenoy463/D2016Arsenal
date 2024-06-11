@@ -1,0 +1,27 @@
+OptionMenu "BrutalDoomOptionsPlayer"
+{
+   Title "Player Options"
+   StaticText "All changes made here requires the level to be restarted or take effect on next level."
+   StaticText " "
+   Option "Player Gender", "gender", "genderOption"
+   StaticText "Only works on Zandronum"
+   StaticText " "
+   StaticText " "
+   Option "HUD Stats", "xvhud_enablestats", "HUDStats"
+   StaticText " "
+   Option "HUD Size", "screenblocks", "screenblocksize"
+   StaticText "Use the 'Custom Huds Option to work correctly'"
+   StaticText " "
+   StaticText " "
+   Option "Show enemy health", "bd_disablescanner", "YesorNoFalse"
+   StaticText " "
+   StaticText " "
+   StaticText " "
+   Command "Force HUD to Restart",			"XVHUDReset"
+}
+
+OptionValue "HUDStats"
+{
+	1, "Enabled"
+	0, "Disabled"
+}

@@ -1,0 +1,107 @@
+Actor EquipmentToken : Inventory {inventory.maxamount 1}
+// Inventory Tokens
+Actor HasFragGrenade : EquipmentToken {}
+Actor HasSyphon : EquipmentToken {}
+Actor HasHologram : EquipmentToken {}
+Actor HasShieldWall : EquipmentToken {}
+Actor HasKineticMine : EquipmentToken {}
+Actor HasPersonalTeleporter : EquipmentToken {}
+
+// Selected Tokens
+Actor FragGrenadeActive : EquipmentToken {}
+Actor SyphonActive : EquipmentToken {}
+Actor HologramActive : EquipmentToken {}
+Actor ShieldWallActive : EquipmentToken {}
+Actor KineticMineActive : EquipmentToken {}
+Actor PersonalTeleporterActive : EquipmentToken {}
+
+// Random Equipment for Backpacks
+Actor RandomEquipment : CustomInventory
+{
+	States
+	{	
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_Jump(6, "EquipPersonalTeleporter") // Chances to equip a Personal Teleporter
+		TNT1 A 0 A_Jump(8, "EquipKineticMine") // Chances to equip a Kinetic Mine
+		TNT1 A 0 A_Jump(10, "EquipShieldWall") // Chances to equip a Shield Wall
+		TNT1 A 0 A_Jump(12, "EquipHologram") // Chances to equip a Hologram
+		TNT1 A 0 A_Jump(18, "EquipSyphon") // Chances to equip a Syphon
+		Goto EquipGrenade
+
+	EquipGrenade:
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"StopActor")
+		TNT1 A 0 A_GiveInventory("HasFragGrenade",1)
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"StopActor")
+		Goto Switch
+	EquipSyphon:
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"StopActor")
+		TNT1 A 1 A_GiveInventory("HasSyphon",1)
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"StopActor")
+		Goto Switch
+	EquipHologram:
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"StopActor")
+		TNT1 A 1 A_GiveInventory("HasHologram",1)
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"StopActor")
+		Goto Switch
+	EquipShieldWall:
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"StopActor")
+		TNT1 A 1 A_GiveInventory("HasShieldWall",1)
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"StopActor")
+		Goto Switch
+	EquipKineticMine:
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"StopActor")
+		TNT1 A 1 A_GiveInventory("HasKineticMine",1)
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"StopActor")
+		Goto Switch
+	EquipPersonalTeleporter:
+		TNT1 A 0 A_JumpIfInventory("HasPersonalTeleporter",1,"StopActor")
+		TNT1 A 1 A_GiveInventory("HasPersonalTeleporter",1)
+		TNT1 A 0 A_JumpIfInventory("HasFragGrenade",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasHologram",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasSyphon",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasShieldWall",1,"StopActor")
+		TNT1 A 0 A_JumpIfInventory("HasKineticMine",1,"StopActor")
+		Goto Switch
+	Switch:
+		TNT1 A 0 A_GiveInventory("SwitchFirstEquipment",1)
+	StopActor:
+		TNT1 A 0
+		Stop
+	}
+}
+
+// For Deathmatch-Based Gamemode Start Players
+Actor RandomEquipmentStart : RandomEquipment
+{
+	States
+	{
+	Pickup:
+		TNT1 A 1
+		TNT1 A 0 A_Jump(8, "EquipPersonalTeleporter") // Chances to Start whit a Personal Teleporter
+		TNT1 A 0 A_Jump(16, "EquipShieldWall", "EquipKineticMine") // Chances to Start whit a Shield Wall or Kinetic Mine
+		TNT1 A 0 A_Jump(32, "EquipHologram") // Chances to Start whit a Hologram
+		TNT1 A 0 A_Jump(64, "EquipSyphon") // Chances to Start whit a Syphon
+		Goto EquipGrenade
+	}
+}

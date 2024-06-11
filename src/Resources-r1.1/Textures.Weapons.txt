@@ -1,0 +1,437 @@
+// Chaingun
+Sprite "CHGFE0", 384, 135
+{
+	Offset -5, -33
+	Patch "CHGFA0", 0, 0
+}
+
+Sprite "CHGFF0", 384, 135
+{
+	Offset -5, -33
+	Patch "CHGFC0", 0, 0
+}
+
+Sprite "C1GFE0", 384, 135
+{
+	Offset -5, -33
+	Patch "C1GFA0", 0, 0
+}
+
+Sprite "C1GFF0", 384, 135
+{
+	Offset -5, -33
+	Patch "C1GFC0", 0, 0
+}
+
+Sprite "C2GFE0", 489, 172
+{
+	Offset 30, -10
+	Patch "C2GFA0", 0, 0
+}
+
+Sprite "C2GFF0", 489, 172
+{
+	Offset 30, -10
+	Patch "C2GFC0", 0, 0
+}
+
+// HAR Sprites defs
+
+// Tactical Scope Zoom in-Out Animations 
+Sprite "M2GAA0", 232, 97
+{
+	XScale 0.900
+	YScale 0.900
+	Offset -135, -57
+	Patch "M2GGA0", 0, 0
+}
+
+Sprite "M2GAB0", 232, 97
+{
+	XScale 0.800
+	YScale 0.800
+	Offset -100, -45
+	Patch "M2GGA0", 0, 0
+}
+
+// Kick Sprites
+Sprite "MAGKA0", 232, 88
+{
+	Offset -169, -87
+	Patch "MAGGA0", 0, 0
+}
+
+Sprite "MAGKB0", 232, 88
+{
+	Offset -166, -95
+	Patch "MAGGA0", 0, 0
+}
+
+Sprite "MAGKC0", 232, 88
+{
+	Offset -163, -114
+	Patch "MAGSE0", 0, 0
+}
+
+Sprite "MAGKD0", 230, 91
+{
+	Offset -157, -127
+	Patch "MAGSD0", 0, 0
+}
+
+Sprite "MAGKE0", 229, 92
+{
+	Offset -148, -139
+	Patch "MAGSC0", 0, 0
+}
+
+Sprite "M2GKA0", 232, 97
+{
+	Offset -169, -78
+	Patch "M2GGA0", 0, 0
+}
+
+Sprite "M2GKB0", 232, 97
+{
+	Offset -166, -86
+	Patch "M2GGA0", 0, 0
+}
+
+Sprite "M2GKC0", 232, 101
+{
+	Offset -163, -101
+	Patch "M2GSE0", 0, 0
+}
+
+Sprite "M2GKD0", 230, 104
+{
+	Offset -157, -114
+	Patch "M2GSD0", 0, 0
+}
+
+Sprite "M2GKE0", 229, 108
+{
+	Offset -148, -124
+	Patch "M2GSC0", 0, 0
+}
+
+Sprite "M3GKA0", 232, 88
+{
+	Offset -169, -87
+	Patch "M3GGA0", 0, 0
+}
+
+Sprite "M3GKB0", 232, 88
+{
+	Offset -166, -95
+	Patch "M3GGA0", 0, 0
+}
+
+Sprite "M3GKC0", 232, 90
+{
+	Offset -163, -113
+	Patch "M3GSE0", 0, 0
+}
+
+Sprite "M3GKD0", 234, 91
+{
+	Offset -153, -127
+	Patch "M3GSD0", 0, 0
+}
+
+Sprite "M3GKE0", 235, 92
+{
+	Offset -142, -139
+	Patch "M3GSC0", 0, 0
+}
+
+// Dual Wield Sprites
+Sprite "M1GFE0", 211, 88
+{
+	Offset -197, -81
+	Patch "M1GGA0", 0, 0
+}
+
+Sprite "M1GSA0", 211, 88
+{
+	Offset -201, -94
+	Patch "M1GGA0", 0, 0
+}
+
+Sprite "M1GSB0", 211, 88
+{
+	Offset -205, -107
+	Patch "M1GGA0", 0, 0
+}
+
+Sprite "M1GSC0", 211, 88
+{
+	Offset -215, -124
+	Patch "M1GGA0", 0, 0
+}
+
+Sprite "M1GSD0", 211, 88
+{
+	Offset -222, -145
+	Patch "M1GGA0", 0, 0
+}
+
+Sprite "M12GA0", 211, 88
+{
+	Offset 86, -80
+	Patch "M1GGA0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12FA0", 294, 154
+{
+	Offset 87, -16
+	Patch "M1GFA0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12FB0", 294, 154
+{
+	Offset 88, -17
+	Patch "M1GFB0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12FC0", 294, 154
+{
+	Offset 89, -18
+	Patch "M1GFC0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12FD0", 294, 154
+{
+	Offset 88, -17
+	Patch "M1GFD0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12FE0", 211, 88
+{
+	Offset 87, -81
+	Patch "M1GGA0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12SA0", 211, 88
+{
+	Offset 92, -94
+	Patch "M1GGA0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12SB0", 211, 88
+{
+	Offset 96, -107
+	Patch "M1GGA0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12SC0", 211, 88
+{
+	Offset 102, -124
+	Patch "M1GGA0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M12SD0", 211, 88
+{
+	Offset 113, -145
+	Patch "M1GGA0", 0, 0
+	{
+		FlipX
+	}
+}
+
+Sprite "M1GKA0", 500, 94
+{
+	Offset 90, -84
+	Patch "M12KA0", 1, 0
+	{
+		FlipX
+	}
+	Patch "M12KA0", 290, 0
+}
+
+Sprite "M1GKB0", 502, 99
+{
+	Offset 91, -86
+	Patch "M12KB0", 1, 0
+	{
+		FlipX
+	}
+	Patch "M12KB0", 293, 0
+}
+
+Sprite "M1GKC0", 507, 105
+{
+	Offset 93, -90
+	Patch "M12KC0", 1, 0
+	{
+		FlipX
+	}
+	Patch "M12KC0", 299, 0
+}
+
+Sprite "M1GKD0", 517, 111
+{
+	Offset 98, -92
+	Patch "M12KD0", 1, 0
+	{
+		FlipX
+	}
+	Patch "M12KD0", 311, 0
+}
+
+Sprite "M1GKE0", 502, 117
+{
+	Offset 97, -94
+	Patch "M12KE0", 0, 0
+	{
+		FlipX
+	}
+	Patch "M12KE0", 312, 0
+}
+
+// Plasma Rifle
+Sprite "PLRFD0", 170, 77
+{
+	Offset -143, -91
+	Patch "PLRGA0", 0, 0
+}
+
+Sprite "PL1FD0", 178, 77
+{
+	Offset -143, -91
+	Patch "PL1GA0", 0, 0
+}
+
+Sprite "PL2FD0", 170, 89
+{
+	Offset -143, -79
+	Patch "PL2GA0", 0, 0
+}
+
+// Repeater
+Sprite "RPTGB0", 350, 200
+{
+	XScale 0.600
+	YScale 0.600
+	Patch "RPTGA0", -67, -62
+	{
+		Alpha 0.00
+	}
+}
+
+Sprite "RPTGC0", 350, 200
+{
+	XScale 0.800
+	YScale 0.800
+	Patch "RPTGA0", -39, -45
+	{
+		Alpha 0.00
+	}
+}
+
+Sprite "RPTAA0", 350, 200
+{
+	XScale 0.600
+	YScale 0.600
+	Patch "RPTFA0", -67, -62
+	{
+		Alpha 0.00
+	}
+}
+
+Sprite "RPTAB0", 371, 212
+{
+	XScale 0.600
+	YScale 0.600
+	Patch "RPTFB0", -79, -70
+	{
+		Alpha 0.00
+	}
+}
+
+Sprite "RPTAC0", 361, 206
+{
+	XScale 0.600
+	YScale 0.600
+	Patch "RPTFC0", -73, -66
+	{
+		Alpha 0.00
+	}
+}
+
+// Combat Shotgun
+Sprite "41SFC0", 173, 78
+{
+	Offset -174, -90
+	Patch "41SGA0", 0, 0
+}
+
+Sprite "42SFC0", 173, 82
+{
+	Offset -174, -86
+	Patch "42SGA0", 0, 0
+}
+
+Sprite "42SGB0", 173, 82
+{
+	Offset -175, -89
+	Patch "42SGA0", 0, 0
+}
+
+Sprite "D4SFC0", 173, 78
+{
+	Offset -174, -90
+	Patch "D4SGA0", 0, 0
+}
+
+// Static Rifle
+Sprite "STRAA0", 186, 91
+{
+	XScale 0.800
+	YScale 0.800
+	Offset -148, -62
+	Patch "STRFA0", 0, 0
+}
+
+Sprite "STRAB0", 186, 91
+{
+	XScale 0.800
+	YScale 0.800
+	Offset -148, -62
+	Patch "STRFB0", 0, 0
+}
+
+Sprite "STRAC0", 186, 91
+{
+	XScale 0.800
+	YScale 0.800
+	Offset -148, -62
+	Patch "STRFC0", 0, 0
+}

@@ -1,0 +1,360 @@
+//Items
+Items/ArmorBig ARMBGPCK
+Items/ArmorMedium ARMMDPCK
+Items/ArmorShard ARMSHPCK
+Items/AmmoSmall Ammo
+Items/AmmoBFG AMMOBFG
+Items/AmmoBig AmmoBig
+Items/AmmoGas AMMOGAS
+Items/HealthBig HEALBIG
+Items/HealthMedium HEALMED
+Items/HealthBonus HEALBON
+Items/KeyPickup KeyPick
+Items/SkullPickup SkulPick
+Items/MegaPickup MegaPick
+Items/PowerUp powerup
+Items/Automap automap
+Items/Grenades GRNT
+
+//Power Ups
+PowerUp/Berserk berserk
+PowerUp/Haste haste
+PowerUp/Regen regen
+PowerUp/Invul invul
+PowerUp/QuadDamage quad
+
+//Specials
+Weapon/Switch WpSwitch
+Special/Grenade/FragArm GRENARM
+Special/Hologram/Spawn HlSpawn
+Special/Syphon/Explosion SyphExp
+Special/ShieldWall/OFF	ShldOff
+Special/ShieldWall/ON	ShldOn
+Special/KineticMine/Arm	KminArm
+Special/KineticMine/Alarm	KminBeep
+$random Special/Syphon/Hit { D4HIT1 D4HIT2 D4HIT3 D4HIT4 D4HIT5 D4HIT6 }
+D4HIT1 D4HIT1
+D4HIT2 D4HIT2
+D4HIT3 D4HIT3
+D4HIT4 D4HIT4
+D4HIT5 D4HIT5
+D4HIT6 D4HIT6
+
+//Pistol
+$random Pistol/Fire { PISFIR1 PISFIR2 PISFIR3 }
+PISFIR1 PISFIR1
+PISFIR2 PISFIR2
+PISFIR3 PISFIR3
+Pistol/FireRed PISRED
+Pistol/Select PISSLCT
+$random Pistol/Charge/Fire {PISFIC1 PISFIC2}
+PISFIC1	PISFIC1
+PISFIC2	PISFIC2
+Pistol/Charge/FireStronger PISFCST
+Pistol/Charge PISCHR2
+Pistol/Charge/Loop PISCHLP
+
+$random Pistol/Red/Charge/Fire {P1SFIC1 P1SFIC2 P1SFIC3}
+P1SFIC1	P1SFIC1
+P1SFIC2	P1SFIC2
+P1SFIC3	P1SFIC3
+Pistol/Red/Charge/Loop P1SCHLP
+
+//Combat Shotgun
+$random CombatShotgun/Fire { D4SGF1 D4SGF2 D4SGF3 }
+D4SGF1 D4SGF1
+D4SGF2 D4SGF2
+D4SGF3 D4SGF3
+D4SGF4 D4SGF4
+CombatShotgun/Pump D4SGP1
+CombatShotgun/Grenade	D4SGREN
+CombatShotgun/SwitchTriShot D4SWTCH1
+CombatShotgun/SwitchGrenade D4SWTCH2
+CombatShotgun/Charge D4BEEP4
+$random CombatShotgun/Charge/Fire {D4SGC1 D4SGC2 D4SGC3 D4SGC4 D4SGC5}
+D4SGC1	D4SGC1
+D4SGC2	D4SGC2
+D4SGC3	D4SGC3
+D4SGC4	D4SGC4
+D4SGC5	D4SGC5
+
+//Heavy Assault Rifle
+HAR/CloseHatch MICROEND
+HAR/OpenHatch MICROOPN
+HAR/MicroReady MICREADY
+
+$random HAR/Fire { HARFIR1 HARFIR2 HARFIR3 HARFIR4 HARFIR5 }
+HARFIR1 HARFIR1
+HARFIR2 HARFIR2
+HARFIR3 HARFIR3
+HARFIR4 HARFIR4
+HARFIR5 HARFIR5
+
+$random HAR/AltFire { HARALT1 HARALT2}
+HARALT1 HARALT1
+HARALT2 HARALT2
+
+$random HAR/Missile {HAR/Missile1 HAR/Missile2 HAR/Missile3 HAR/Missile4 HAR/Missile5 }
+HAR/Missile1	harmisl1
+HAR/Missile2	harmisl2
+HAR/Missile3	harmisl3
+HAR/Missile4	harmisl4
+HAR/Missile5	harmisl5
+
+$random HAR/Micro/Explosion {MICEXPL1 MICEXPL2 MICEXPL3 MICEXPL4 MICEXPL5}
+MICEXPL1	MICEXPL1
+MICEXPL2	MICEXPL2
+MICEXPL3	MICEXPL3
+MICEXPL4	MICEXPL4
+MICEXPL5	MICEXPL5
+
+Har/Micro/Equip MISEQP
+Har/Scope/Equip SCPEQP
+
+// Repeater
+Repeater/Single REPFIR1
+Repeater/Fire REPFIR2
+Repeater/Zoom/In REPZIN
+Repeater/Zoom/Out REPZOUT
+
+//Chaingun
+CHNFIR1 CHNFIR1
+CHNFIR2 CHNFIR2
+CHNEND2 CHNEND2
+$random Chaingun/Fire {CHGFIR1 CHGFIR2 CHGFIR3}
+CHGFIR1 CHGFIR1
+CHGFIR2 CHGFIR2
+CHGFIR3 CHGFIR3
+Chaingun/Spin CHGSPIN
+Chaingun/Start CHGSTART
+Chaingun/Stop CHGSTOP
+Chaingun/TurretSwitch	CHGTURRT
+Chaingun/RotatorEquip CHGROTAT
+Chaingun/DeployTurret TURDEPLO
+Chaingun/UnDeployTurret TURUNDEP
+Chaingun/Turret/Start TURFIRS
+Chaingun/Turret/Loop TURFIRL
+Chaingun/Turret/End TURFIRE
+
+//Rocket Launcher
+$random RocketLauncher/Fire {RKLFIR1 RKLFIR2 RKLFIR3}
+RKLFIR1	RKLFIR1
+RKLFIR2	RKLFIR2
+RKLFIR3	RKLFIR3
+RocketLauncher/Toggle/Lock RKLTLCK
+RocketLauncher/Toggle/Detonator RKLTDET
+RocketLauncher/UnToggle RKLUNTG
+RocketLauncher/Lock RKLLOCK
+$random RocketLauncher/Burst {RKLLFIR1 RKLLFIR2 RKLLFIR3 RKLLFIR4}
+RKLLFIR1 RKLLFIR1
+RKLLFIR2 RKLLFIR2
+RKLLFIR3 RKLLFIR3
+RKLLFIR4 RKLLFIR4
+
+//Grenade Launcher
+$random GrenadeLauncher/Fire {GLFIR1 GLFIR2 GLFIR3}
+GLFIR1	GLFIR1
+GLFIR2	GLFIR2
+GLFIR3	GLFIR3
+
+$random GrenadeLauncher/GrenBounce {GLBON1 GLBON2 GLBON3 GLBON4 GLBON5}
+GLBON1	GLBON1
+GLBON2	GLBON2
+GLBON3	GLBON3
+GLBON4	GLBON4
+GLBON5	GLBON5
+
+$random GrenadeLauncher/SmokeExplosion {GLBON1 GLBON2 GLBON3 GLBON4 GLBON5}
+GLSMOK1	GLSMOK1
+GLSMOK2	GLSMOK2
+
+//Plasma Rifle
+PlasmaRifle/Fire	PlmgFire
+PlasmaRifle/FireLoop	PlmgLoop
+PlasmaRifle/Heat/Fire HeatFire
+PlasmaRifle/Heat/FireLoop HeatLoop
+$random PlasmaRifle/StopMain {PLMGSTP1 PLMGSTP2 PLMGSTP3 PLMGSTP4}
+PLMGSTP1	PLMGSTP1
+PLMGSTP2	PLMGSTP2
+PLMGSTP3	PLMGSTP3
+PLMGSTP4	PLMGSTP4
+PLMGSTP5	PLMGSTP5
+
+PlasmaRifle/Stun/Fire STUNFIRE
+PlasmaRifle/Stun/Burn	STUNBRN
+$random PlasmaRifle/Stun/Impact {STUNB1 STUNB2 STUNB3 STUNB4}
+STUNB1	STUNB1
+STUNB2	STUNB2
+STUNB3	STUNB3
+STUNB4	STUNB4
+PlasmaRifle/Stun/Toggle STUNTOG
+PlasmaRifle/Heat/Toggle HEATTOG
+$random PlasmaRifle/Heat/Explode {HEATB1 HEATB2 HEATB3}
+HEATB1	HEATB1
+HEATB2	HEATB2
+HEATB3	HEATB3
+$random PlasmaProjectile/Explode {PLASXP1 PLASXP2}
+PLASXP1	PLASXP1
+PLASXP2	PLASXP2
+
+//Lightning Gun
+LightningGun/Fire LGFire
+LightningGun/Loop LGLoop
+LightningGun/End LGEnd
+
+//Vortex Rifle
+Vortex/Fire VRTFIR
+Vortex/UnZoom VRTOFF
+Vortex/ZoomNLoop VRTSTA
+Vortex/Charged VRTCHG
+Vortex/Impact VRTIMP
+
+//Gauss Cannon
+$random Gauss/Fire {GAUSFIR1 GAUSFIR2 GAUSFIR3}
+GAUSFIR1 GAUSFIR1
+GAUSFIR2 GAUSFIR2
+GAUSFIR3 GAUSFIR3
+$random Gauss/SIEGE/Fire {GAUSIEG1 GAUSIEG2 GAUSIEG3}
+GAUSIEG1 GAUSIEG1
+GAUSIEG2 GAUSIEG2
+GAUSIEG3 GAUSIEG3
+Gauss/Impact GAUSIMP
+Gauss/Select GAUSELCT
+Gauss/Idle GAUSIDLE
+Gauss/Load1 GAUSLOD
+Gauss/Load2 GAUSLOD2
+Gauss/PrecisionMode GPREQP
+Gauss/Zoom/Fire GAUSFIR4
+Gauss/Zoom/Charge GAUSCHAR
+Gauss/Zoom/Decharge GAUDECHR
+Gauss/Zoom/Loop	GAUSCHLP
+Gauss/SiegeMode GSIEQP
+Gauss/Siege/STAP GAUSTAP
+Gauss/Siege/Alt1 GAUSIG1
+Gauss/Siege/Alt2 GAUSIG2
+Gauss/Siege/Loop GAUSIGL
+
+//BFG 9000
+BFG/Charge	D4BFGCH
+BFG/Explode	D4BFGEXP
+BFG/Fire	D4BFGFIR
+BFG/Select	D4BFGSLC
+
+//Super Shotgun
+D4SSGF D4SSGF
+$random SSG/Fire {D4SSGF1 D4SSGF2 D4SSGF3}
+D4SSGF1	D4SSGF1
+D4SSGF2	D4SSGF2
+D4SSGF3	D4SSGF3
+SSG/Open	D4SSGO
+SSG/Load	D4SSGL
+SSG/Close	D4SSGC
+$random SSG/Single {D4SSG1 D4SSG2}
+D4SSG1	D4SSG1
+D4SSG2	D4SSG2
+$random SSG/Mixed {D4SSG3 D4SSG4}
+D4SSG3	D4SSG3
+D4SSG4	D4SSG4
+
+//Hellshot
+$random Hellshot/Fire {HELLFIR1 HELLFIR2 HELLFIR3 HELLFIR4 HELLFIR5 HELLFIR6}
+HELLFIR1 HELLFIR1
+HELLFIR2 HELLFIR2
+HELLFIR3 HELLFIR3
+HELLFIR4 HELLFIR4
+HELLFIR5 HELLFIR5
+HELLFIR6 HELLFIR6
+Hellshot/AltFire HELLALT
+HellArrow/Explode	HELEXPL
+
+//Static Rifle
+$random StaticRifle/Fire { SRFire1 SRFire2 SRFire3 SRFire4 }
+SRFire1	SRFire1
+SRFire2	SRFire2
+SRFire3	SRFire3
+SRFire4	SRFire4
+StaticRifle/Hit	SRHit
+StaticRifle/Impact	SRCrash
+
+StaticRifle/FireContinuation	SRFireC
+StaticRifle/ChargeLoop	SRLoop
+StaticRifle/ChargeMax	SRMax
+
+//Chainsaw
+Chainsaw/AltFire 4CSWALTF
+Chainsaw/Down 4CSWDOWN
+Chainsaw/Fire 4CSWFIRE
+Chainsaw/Idle 4CSWREDY
+Chainsaw/Zip DSSAWZIP
+Chainsaw/FinishZip	CSAWSTRT
+Chainsaw/Cut CSAWCUT
+
+//Reaper
+$random Reaper/Fire { Reaper/Fire1 Reaper/Fire2 Reaper/Fire3 Reaper/Fire4 Reaper/Fire5 }
+Reaper/Fire1	ReapFir1
+Reaper/Fire2	ReapFir2
+Reaper/Fire3	ReapFir3
+Reaper/Fire4	ReapFir4
+Reaper/Fire5	ReapFir5
+$limit Reaper/Fire1 5
+$limit Reaper/Fire2 5
+$limit Reaper/Fire3 5
+$limit Reaper/Fire4 5
+$limit Reaper/Fire5 5
+Reaper/PickSoul	ReapSpck
+Reaper/ChargeShot	ReapAltS
+Reaper/ChargedBoneCrackLoop	ReapLoop
+Reaper/Disengage	ReapAltE
+Reaper/DischargeMechsound	ReapEnd
+Reaper/FireBig	ReapBig
+$volume Reaper/PickSoul 0.35
+
+//Updated Stuff
+SLAPBABY	SLAPBABY
+PIHOL PIHOL
+$limit PIHOL 0
+
+//Demon Rune Related
+D4RUNEMORPH RUNMRH
+REVTWHIZ REVTWHIZ
+REVTBOOM REVTBOOM
+REVTSTOP REVTSTOP
+jetpack/engine dsapheng
+$random jetpack/deploy { DSTEKFS1 DSTEKFS2 DSTEKFS3 DSTEKFS4 }
+DSTEKFS1 DSTEKFS1
+DSTEKFS2 DSTEKFS2
+DSTEKFS3 DSTEKFS3
+DSTEKFS4 DSTEKFS4
+
+// Parkour
+$random ledgeclimb {CLIMB_1 CLIMB_2 ClIMB_3}
+CLIMB_1 CLIMB_1
+CLIMB_2 CLIMB_2
+ClIMB_3 ClIMB_3
+
+$random Player/JumpSound { DJump1 DJump2}
+DJump1 DJump1
+DJump2 DJump2
+Player/DashReady	FXBEEP4
+
+// Glory Kill Bone Snap
+$random GloryKill/BoneSnap { GKBSnap1 GKBSnap2 GKBSnap3 GKBSnap4 }
+GKBSnap1 GKBSnap1
+GKBSnap2 GKBSnap2
+GKBSnap3 GKBSnap3
+GKBSnap4 GKBSnap4
+
+// Helmet Start
+$random HLMTSTART { HLMTSTA1 HLMTSTA2 HLMTSTA3 HLMTSTA4 }
+HLMTSTA1 HLMTSTA1
+HLMTSTA2 HLMTSTA2
+HLMTSTA3 HLMTSTA3
+HLMTSTA4 HLMTSTA4
+HLMTPUT HLMTPUT
+HLMTBEP HLMTBEP
+HLMTBPP HLMTBPP
+
+// Aracnorb - The hidden Monster
+aracnorb/sight		dsaracst
+aracnorb/death		dsaracdt
+aracnorb/attack		dsaracfr

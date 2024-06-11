@@ -1,0 +1,18 @@
+D4Cvars
+dbljump // Double Jump Script
+parkmore // Responsible of Ledge-Grabing feature
+dash // DOOM Eternal Styled Dash Ability
+d4arsenal // Common scripts needed
+bulleteffect // Restores BDv20's Bullet Screen Effects
+weapfunc
+Upgrader
+UpgradeText
+RLACS
+DemonRunes
+Timers
+D4Equipment
+Chainsaw
+FatalityMSGS
+GloryKill
+Multiplayer // Main multiplayer Support
+startscripts

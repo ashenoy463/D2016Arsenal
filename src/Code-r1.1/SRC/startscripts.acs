@@ -1,0 +1,14 @@
+#library "startscripts"
+#include "zcommon.acs"
+
+Script "D4StartScripts" Enter
+{
+	ACS_NamedExecuteAlways("D4CheckCvars",0);
+	ACS_NamedExecuteAlways("CheckPlayerClass",0);
+	ACS_NamedExecuteAlways("WeaponRemover",0);
+	ACS_NamedExecuteAlways("StaticRifleACS",0);
+	ACS_NamedExecuteAlways("PlayerHealthDetection",0);
+	ACS_NamedExecuteAlways("D4FlashLightFunc",0);
+	ACS_NamedExecuteAlways("PlayerCheckUnderwater",0);
+	ACS_NamedExecuteAlways("NewUseInput",0);
+}

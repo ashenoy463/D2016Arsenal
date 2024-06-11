@@ -1,0 +1,715 @@
+Actor D4Axe : D4WeaponBase replaces BrutalAxe
+{
+	Obituary "%o was choped down by %k's axe."
+    AttackSound "None"
+    Inventory.PickupSound "AXEDRAW"
+	Inventory.Pickupmessage "You found a Axe!"
+    +WEAPON.NOAUTOAIM
+    +WEAPON.NOAUTOFIRE
+    +FORCEXYBILLBOARD
+	damagetype Saw
+	+WEAPON.NOALERT
+	+WEAPON.AXEBLOOD
+	Weapon.SelectionOrder 3000
+	Scale 0.9
+	Tag "Axe"
+	Weapon.AmmoGive 1
+	Weapon.AmmoType "D4AxeCounter"
+	States
+	{
+	WReady:
+		TNT1 A 0 A_JumpIfInventory("Grabbing_A_Ledge",1,"LedgeClimb")
+		TNT1 A 0 A_JumpIfInventory("IsUpgradingWeapons",1,"UpgradeWeapons")
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Fistting",1,"DoPunch")
+		TNT1 A 0 A_Giveinventory("HasCutingWeapon",1)
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"TauntL")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		TNT1 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		RIFG A 0 A_JumpIfInventory("StartDualWield",1,"ThrowAxe")
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		AXEG A 1 A_WeaponReady		
+		Loop
+		
+	RedBloodReady:
+		AXEG A 0 A_TakeInventory("PowerGreenBloodOnVisor", 1)
+		AXEG A 0 A_TakeInventory("PowerBlueBloodOnVisor", 1)
+		AXRG A 1 A_WeaponReady		
+		Goto WReady
+		
+	BlueBloodReady:
+		AXEG A 0 A_TakeInventory("PowerGreenBloodOnVisor", 1)
+		AXEG A 0 A_TakeInventory("PowerBloodOnVisor", 1)
+		AXBG A 1 A_WeaponReady		
+		Goto WReady
+		
+	GreenBloodReady:
+		TNT1 A 0 A_TakeInventory("PowerBlueBloodOnVisor", 1)
+		TNT1 A 0 A_TakeInventory("PowerBloodOnVisor", 1)
+		AXGG A 1 A_WeaponReady
+		Goto WReady
+		
+	Deselect:
+		TNT1 A 0 A_Takeinventory("HasCutingWeapon",1)
+		TNT1 A 0 A_TakeInventory("TossGrenade", 1)
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"DeselectRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"DeselectBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"DeselectGreenBlood")
+        AXES A 0
+		Goto RealDeselect
+	DeselectRedBlood:
+        AXRS A 0
+		Goto RealDeselect
+	DeselectBlueBlood:
+        AXBS A 0
+		Goto RealDeselect
+	DeselectGreenBlood:
+        AXGS A 0
+		Goto RealDeselect		
+	RealDeselect:
+		"####" DCBA 1
+		"####" A 0
+		Goto DeselectSequence
+		
+	Select:
+		TNT1 A 0 A_GiveInventory("SwitchWeaponTaker", 1)
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_Giveinventory("HasCutingWeapon",1)
+		TNT1 A 0 A_JumpIfInventory("IsDemonPlayer", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("JustStartedGame",1,"SelectSpecial")
+	    TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "SelectSpecial")
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"StartSelectRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"StartSelectBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"StartSelectGreenBlood")
+		AXES A 0
+		Goto SelectSequence		
+		StartSelectRedBlood:
+			AXRS A 0
+			Goto SelectSequence
+		StartSelectBlueBlood:
+			AXBS A 0
+			Goto SelectSequence
+		StartSelectGreenBlood:
+			AXGS A 0
+			Goto SelectSequence
+		
+	Ready:
+        TNT1 A 0 A_GunFlash
+        TNT1 A 0 A_PlaySound("AXEDRAW")
+	SelectAnimation:
+		TNT1 A 1
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"SelectRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"SelectBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"SelectGreenBlood")
+		AXES A 0
+	RealSelect:
+        "####" ABCD 1
+        "####" A 0 A_TakeInventory("NoParkour", 1)
+		Goto WReady
+		SelectRedBlood:
+			AXRS A 0
+			Goto RealSelect
+		SelectBlueBlood:
+			AXBS A 0
+			Goto RealSelect
+		SelectGreenBlood:
+			AXGS A 0
+			Goto RealSelect
+	
+    Fire:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		AXEG A 0 A_TakeInventory("AxeHit", 1)
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodFire")
+		AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodFire")
+        AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodFire")
+        AXEG ABCDE 1
+	Hold:
+		AXEG A 0
+		AXEG A 0 A_TakeInventory("AxeHit", 1)
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"Hold.RedBlood")
+		AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"Hold.BlueBlood")
+		AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"Hold.GreenBlood")
+		AXEG E 1
+		AXEG A 0 A_Refire
+		AXEG D 1
+		AXEF AB 1
+	    AXEG A 0 A_PlaySound("weapons/gswing", 1)
+		AXEG A 0 A_JumpIfInventory("PowerStrength", 1, "StrongAttack")
+		AXEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		AXEG A 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		
+	EndSwing:	
+		AXEF C 1 A_SetPitch(pitch+2)
+		//TNT1 A 0 //A_JumpIfInventory("AxeHit", 1, "HasHit")
+		AXEF D 1 A_SetPitch(pitch+2)
+		//TNT1 A 0 //A_JumpIfInventory("AxeHit", 1, "HasHit")
+		AXEF E 1 A_SetPitch(pitch+2)
+		TNT1 AA 1 A_SetPitch(pitch+2)
+		TNT1 A 2
+		TNT1 AAAA 1 A_SetPitch(pitch-2)
+		TNT1 A 1
+		AXES A 1
+		AXES BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto WReady
+		
+	HasHit:
+		AXEF DE 1  A_SetPitch(pitch+3)
+		AXEF FTFE 1 A_SetPitch(pitch-3)
+		AXEF GH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold")
+		AXFF HHH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold")
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto WReady
+		
+	Combo:	
+		AXEF DCBAAA 1
+		AXEF BCD 1
+	    AXEG A 0 A_PlaySound("weapons/gswing", 1)
+		AXEG A 0 A_JumpIfInventory("PowerStrength", 1, "StrongAttack")
+		AXEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		AXEG A 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		Goto Endswing
+		
+	HasHitBlue:
+		AXBF DE 1 A_SetPitch(pitch+3)
+		AXBF FFE 1 A_SetPitch(pitch-3)
+		AXBF GH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold.BlueBlood")
+		AXBF HHH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold.BlueBlood")
+		TNT1 A 0 A_JumpIfInventory("FiredPrimary", 1, "Hold")
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+		Goto BlueBloodReady
+
+		
+	HasHitRed:
+		AXRF DE 1  A_SetPitch(pitch+3)
+		AXRF FFE 1 A_SetPitch(pitch-3)
+		AXRF GH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold.RedBlood")
+		AXRF HHH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold.RedBlood")
+        AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+		Goto RedBloodReady
+	
+		
+	HasHitGreen:
+		AXGF DE 1 A_SetPitch(pitch+3)
+		AXGF FFE 1 A_SetPitch(pitch-3)
+		AXGF GH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold.GreenBlood")
+		AXGF HHH 1 A_JumpIfInventory("FiredPrimary", 1, "Hold.GreenBlood")
+		TNT1 A 0 A_JumpIfInventory("FiredPrimary", 1, "Hold.GreenBlood")
+        AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+		AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto GreenBloodReady	
+			
+	StrongAttack:
+		AXEG A 0
+		AXEG A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		TNT1 AA 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		Goto EndSwing
+		
+	Spawn:
+		AXE1 A -1
+		Stop
+	
+    RedBloodFire:
+        AXRG ABCDE 1
+	Hold.RedBlood:
+		AXRG E 1
+		AXEG A 0 A_TakeInventory("AxeHit", 1)
+		AXEG A 0 A_Refire
+		AXRG D 1
+		AXRF AB 1
+	    AXEG A 0 A_PlaySound("weapons/gswing", 1)
+		AXEG A 0 A_JumpIfInventory("PowerStrength", 1, "RedBloodStrongAttack")
+		AXEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		AXEG A 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		
+	RedBloodEndSwing:	
+		AXRF CD 1 //A_JumpIfInventory("AxeHit", 1, "HasHitRed")
+		AXRF E 1 A_SetPitch(pitch+3)
+		TNT1 AA 1 A_SetPitch(pitch+2)
+		TNT1 A 2
+		TNT1 AAAA 1 A_SetPitch(pitch-2)
+		TNT1 A 1
+		AXRS A 1
+		AXRS BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+        AXEG A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto RedBloodReady
+	
+	RedBloodStrongAttack:
+		AXEG A 0
+		AXEG A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		TNT1 AA 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		Goto RedBloodEndSwing			
+	
+    BlueBloodFire:
+        AXBG ABCDE 1
+	Hold.BlueBlood:
+		AXBG E 1
+		AXEG A 0 A_TakeInventory("AxeHit", 1)
+		AXEG A 0 A_Refire
+		AXBG D 1
+		AXBF AB 1
+	    AXEG A 0 A_PlaySound("weapons/gswing", 1)
+		AXEG A 0 A_JumpIfInventory("PowerStrength", 1, "BlueBloodStrongAttack")
+		AXEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		AXEG A 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		
+	BlueBloodEndSwing:	
+		AXBF CD 1 //A_JumpIfInventory("AxeHit", 1, "HasHitBlue")
+		AXBF E 1 A_SetPitch(pitch+3)
+		TNT1 AA 1 A_SetPitch(pitch+2)
+		TNT1 A 2
+		TNT1 AAAA 1 A_SetPitch(pitch-2)
+		TNT1 A 1
+		AXBS A 1
+		AXBS BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		AXEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        AXEG A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto BlueBloodReady
+	
+	BlueBloodStrongAttack:
+		AXEG A 0
+		AXEG A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		TNT1 AA 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		Goto BlueBloodEndSwing	
+	
+    GreenBloodFire:
+        AXGG ABCDE 1
+	Hold.GreenBlood:
+		AXGG E 1
+		TNT1 A 0 A_Refire
+		AXGG D 1
+		AXGF ABC 1
+	    TNT1 A 0 A_PlaySound("weapons/gswing", 1)
+		TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "GreenBloodStrongAttack")
+		TNT1 A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		TNT1 A 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		
+	GreenBloodEndSwing:	
+		AXGF DE 1 A_SetPitch(pitch+2)
+		TNT1 AA 1 A_SetPitch(pitch+2)
+		TNT1 A 2
+		TNT1 AAAA 1 A_SetPitch(pitch-2)
+		TNT1 A 1
+		AXGS A 1
+		AXGS BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodReady")
+		Goto GreenBloodReady
+	
+	GreenBloodStrongAttack:
+		TNT1 A 0
+		TNT1 A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		TNT1 AA 0 A_FireCustomMissile("AxeAttack", 0, 0, 0, 0)
+		Goto GreenBloodEndSwing	
+		
+	//Alt Fire Mode
+	
+    AltFire:
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		ASEG A 0 A_TakeInventory("AxeHit", 1)
+		ASEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"AltRedBloodFire")
+		ASEG A 0 A_JumpIfInventory("powerBlueBloodOnVisor",1,"AltBlueBloodFire")
+        ASEG A 0 A_JumpIfInventory("powerGreenBloodOnVisor",1,"AltGreenBloodFire")
+        ASEG ABCDE 1
+	AltHold:
+		ASEG A 0
+		ASEG A 0 A_TakeInventory("AxeHit", 1)
+		ASEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"Hold.AltRedBlood")
+		ASEG A 0 A_JumpIfInventory("powerBlueBloodOnVisor",1,"Hold.AltBlueBlood")
+		ASEG A 0 A_JumpIfInventory("powerGreenBloodOnVisor",1,"Hold.AltGreenBlood")
+		ASEG E 1
+		ASEG A 0 A_Refire
+		ASEG D 1
+		ASEF AB 1
+	    ASEG A 0 A_PlaySound("weapons/gswing", 1)
+		ASEG A 0 A_JumpIfInventory("PowerStrength", 1, "AltStrongAttack")
+		ASEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		
+	AltEndSwing:	
+		ASEF C 1 A_SetAngle(angle+2)
+		ASEF D 1 A_SetAngle(angle+2)
+		ASEF E 1 A_SetAngle(angle+4)
+		TNT1 AA 1 A_SetAngle(angle+4)
+		TNT1 A 5
+		TNT1 AAAAAAAAA 1 A_SetAngle(angle-2)
+		TNT1 A 1
+		ASES A 1
+		ASES BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		ASEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        ASEG A 0 A_JumpIfInventory("powerBlueBloodOnVisor",1,"BlueBloodReady")
+        ASEG A 0 A_JumpIfInventory("powerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto WReady
+		
+			
+	AltStrongAttack:
+		ASEG A 0
+		ASEG A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		Goto AltEndSwing
+
+	
+    AltRedBloodFire:
+        AXRG ABCDE 1
+	Hold.AltRedBlood:
+		ASRG E 1
+		ASEG A 0 A_TakeInventory("AxeHit", 1)
+		ASEG A 0 A_Refire
+		AXRG D 1
+		ASRF AB 1
+	    ASEG A 0 A_PlaySound("weapons/gswing", 1)
+		ASEG A 0 A_JumpIfInventory("PowerStrength", 1, "AltRedBloodAltStrongAttack")
+		ASEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		
+	AltRedBloodAltEndSwing:	
+		ASRF CD 1 //A_JumpIfInventory("AxeHit", 1, "HasHitRed")
+		ASRF E 1 A_SetAngle(angle+4)
+		TNT1 AA 1 A_SetAngle(angle+4)
+		TNT1 A 5
+		TNT1 AAAAAAAAA 1 A_SetAngle(angle-2)
+		TNT1 A 1
+		ASRS A 1
+		ASRS BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+        ASEG A 0 A_JumpIfInventory("powerBlueBloodOnVisor",1,"BlueBloodReady")
+        ASEG A 0 A_JumpIfInventory("powerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto RedBloodReady
+	
+	AltRedBloodAltStrongAttack:
+		ASEG A 0
+		ASEG A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		Goto AltRedBloodAltEndSwing	
+		
+		
+    AltBlueBloodFire:
+        ASBG ABCDE 1
+	Hold.AltBlueBlood:
+		ASBG E 1
+		ASEG A 0 A_TakeInventory("AxeHit", 1)
+		ASEG A 0 A_Refire
+		AXBG D 1
+		ASBF AB 1
+	    ASEG A 0 A_PlaySound("weapons/gswing", 1)
+		ASEG A 0 A_JumpIfInventory("PowerStrength", 1, "AltBlueBloodAltStrongAttack")
+		ASEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		
+	AltBlueBloodAltEndSwing:	
+		ASBF CD 1 //A_JumpIfInventory("AxeHit", 1, "HasHitBlue")
+		ASBF E 1 A_SetAngle(angle+4)
+		TNT1 AA 1 A_SetAngle(angle+4)
+		TNT1 A 5
+		TNT1 AAAAAAAAA 1 A_SetAngle(angle-2)
+		TNT1 A 1
+		AXBS A 1
+		AXBS BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		ASEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        ASEG A 0 A_JumpIfInventory("powerGreenBloodOnVisor",1,"GreenBloodReady")
+		Goto BlueBloodReady
+	
+	AltBlueBloodAltStrongAttack:
+		ASEG A 0
+		ASEG A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		Goto AltBlueBloodAltEndSwing		
+		
+	
+    AltGreenBloodFire:
+        ASGG ABCDE 1
+	Hold.AltGreenBlood:
+		ASGG E 1
+		ASEG A 0 A_Refire
+		ASGG D 1
+		ASGF AB 1
+	    ASEG A 0 A_PlaySound("weapons/gswing", 1)
+		ASEG A 0 A_JumpIfInventory("PowerStrength", 1, "AltGreenBloodAltStrongAttack")
+		ASEG A 0 A_Saw("", "", 3, "AxePuffs", 0, 120, 0,16)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG A 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		
+	AltGreenBloodAltEndSwing:	
+		ASGF CD 1 //A_JumpIfInventory("AxeHit", 1, "HasHitGreen")
+		ASGF E 1 A_SetAngle(angle+4)
+		TNT1 AA 1 A_SetAngle(angle+4)
+		TNT1 A 5
+		TNT1 AAAAAAAAA 1 A_SetAngle(angle-2)
+		TNT1 A 1
+		ASGS A 1
+		ASGS BCD 1 A_WeaponReady(WRF_NOBOB)
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		ASEG A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodReady")
+        ASEG A 0 A_JumpIfInventory("powerBlueBloodOnVisor",1,"BlueBloodReady")
+		Goto GreenBloodReady
+	
+	AltGreenBloodAltStrongAttack:
+		ASEG A 0
+		ASEG A 0 A_Saw("", "", 10, "AxePuffs", 0, 120, 0,16)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 0, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", 20, 0, 0, 0)
+		ASEG AA 0 A_FireCustomMissile("AltAxeAttack", -20, 0, 0, 0)
+		Goto AltGreenBloodAltEndSwing
+		
+		// New Axe Throwing
+		
+	ThrowAxe:
+		TNT1 A 0 A_TakeInventory("StartDualWield", 1)
+        TNT1 A 0 A_GiveInventory("NoParkour", 1)
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"RedBloodThrowAxe")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"BlueBloodThrowAxe")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GreenBloodThrowAxe")
+		AXEG ABCDE 1
+		TNT1 A 0 A_TakeInventory("StartDualWield", 1)
+		AXEF AB 1
+		Goto AxeThrowing
+		
+	RedBloodThrowAxe:
+		AXRG ABCDE 1
+		TNT1 A 0 A_TakeInventory("StartDualWield", 1)
+		AXRF AB 1
+		Goto AxeThrowing
+		
+	BlueBloodThrowAxe:
+		AXBG ABCDE 1
+		TNT1 A 0 A_TakeInventory("StartDualWield", 1)
+		AXBF AB 1
+		Goto AxeThrowing
+		
+	GreenBloodThrowAxe:
+		AXGG ABCDE 1
+		TNT1 A 0 A_TakeInventory("StartDualWield", 1)
+		AXGF AB 1
+		Goto AxeThrowing
+		
+	AxeThrowing:
+	    AXEG A 0 A_PlaySound("weapons/gswing", 1)
+		AXEG A 0 A_JumpIfInventory("PowerStrength", 1, "StrongThrow")
+		AXEG A 0 A_FireCustomMissile("ThrowedAxe", 0, 0, 0, 0)
+		AXEZ ABCD 1
+        TNT1 A 0 A_TakeInventory("NoParkour", 1)
+		Goto AxeAmmoChecker
+		
+	StrongThrow:	
+		TNT1 A 0
+		AXEG A 0 A_PlaySound("weapons/gswing", 1)
+		AXEG A 0 A_FireCustomMissile("ThrowedAxeStrong", 0, 0, 0, 0)
+		AXEZ ABCD 1
+		Goto AxeAmmoChecker
+		
+	AxeAmmoChecker:
+		TNT1 A 0 A_JumpIfInventory("D4AxeCounter",2,"AxeAmmoRemover")
+		TNT1 A 0 A_TakeInventory("D4AxeCounter",1)
+		TNT1 A 0 A_TakeInventory("D4Axe")
+		Goto WReady
+		
+	AxeAmmoRemover:
+		TNT1 A 0 A_TakeInventory("D4AxeCounter",1)
+		Goto WReady
+
+// ------------------------------------------------------------------------------------
+//
+// Flash States, Here lies new animations under kicks, taunt and throw grenade
+//
+// ------------------------------------------------------------------------------------
+
+	KickFlash:
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"KickFlashRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"KickFlashBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"KicKFlashGreenBlood")
+		AXEK ABCD 1
+		AXEK E 8
+		AXEK DCBA 1
+		Goto Flash
+		
+	KickFlashRedBlood:
+		AXRK ABCD 1
+		AXRK E 8
+		AXRK DCBA 1
+		Goto Flash
+		
+	KickFlashBlueBlood:
+		AXBK ABCD 1
+		AXBK E 8
+		AXBK DCBA 1
+		Goto Flash
+		
+	KickFlashGreenBlood:
+		AXGK ABCD 1
+		AXGK E 8
+		AXGK DCBA 1
+		Goto Flash
+
+	AirKickFlash:
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"AirKickFlashRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"AirKickFlashBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"AirKickFlashGreenBlood")
+		AXEK ABCD 1
+		AXEK E 10
+		AXEK DCBA 1
+		Goto Flash
+		
+	AirKickFlashRedBlood:
+		AXRK ABCD 1
+		AXRK E 10
+		AXRK DCBA 1
+		Goto Flash
+		
+	AirKickFlashBlueBlood:
+		AXBK ABCD 1
+		AXBK E 10
+		AXBK DCBA 1
+		Goto Flash
+		
+	AirKickFlashGreenBlood:
+		AXGK ABCD 1
+		AXGK E 10
+		AXGK DCBA 1
+		Goto Flash
+		
+	SlideKickStartFlash:
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"SlideKickStartFlashRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"SlideKickStartFlashBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"SlideKickStartFlashGreenBlood")
+		AXES DCB 1
+		AXES A 16
+		Goto Flash
+		
+	SlideKickStartFlashRedBlood:
+		AXRS DCB 1
+		AXRS A 16
+		Goto SlideKickEndFlash
+		
+	SlideKickStartFlashBlueBlood:
+		AXBS DCB 1
+		AXBS A 16
+		Goto SlideKickEndFlash
+		
+	SlideKickStartFlashGreenBlood:
+		AXGS DCB 1
+		AXGS A 16
+		Goto SlideKickEndFlash
+	
+	SlideKickEndFlash:
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"SlideKickEndFlashRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"SlideKickEndFlashBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"SlideKickEndFlashGreenBlood")
+		AXGS A 6
+		AXES BCD 1
+		Goto Flash
+		
+	SlideKickEndFlashRedBlood:
+		AXRS A 6
+		AXRS BCD 1
+		Goto Flash
+		
+	SlideKickEndFlashBlueBlood:
+		AXBS A 6
+		AXBS BCD 2
+		Goto Flash
+		
+	SlideKickEndFlashGreenBlood:
+		AXGS A 6
+		AXGS BCD 2
+		Goto Flash
+
+	TauntFlash:
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"TauntFlashRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"TauntFlashBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"TauntFlashGreenBlood")
+		AXEK ABCD 1
+		AXEK E 35
+		AXEK DCBA 1
+		Goto Flash
+		
+	TauntFlashRedBlood:
+		AXRK ABCD 1
+		AXRK E 35
+		AXRK DCBA 1
+		Goto Flash
+		
+	TauntFlashBlueBlood:
+		AXBK ABCD 1
+		AXBK E 35
+		AXBK DCBA 1
+		Goto Flash
+		
+	TauntFlashGreenBlood:
+		AXGK ABCD 1
+		AXGK E 35
+		AXGK DCBA 1
+		Goto Flash
+		
+	PunchFlash:
+	GrenadeFlash:
+		TNT1 A 0 A_JumpIfInventory("PowerBloodOnVisor",1,"GrenadeFlashRedBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerBlueBloodOnVisor",1,"GrenadeFlashBlueBlood")
+        TNT1 A 0 A_JumpIfInventory("PowerGreenBloodOnVisor",1,"GrenadeFlashGreenBlood")
+		AXES DCBA 1
+		Goto Flash
+		
+	GrenadeFlashRedBlood:
+		AXRS DCBA 1
+		Goto Flash
+		
+	GrenadeFlashBlueBlood:
+		AXBS DCBA 1
+		Goto Flash
+	
+	GrenadeFlashGreenBlood:
+		AXGS DCBA 1
+		Goto Flash
+	}
+}
+
+ACTOR D4AxeCounter : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 3
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 6
+   Inventory.Icon "AXE"
+}
+
+ACTOR D4AxeOnWall: BrutalAxeOnWall replaces BrutalAxeOnWall
+{
+    States
+    {
+	Pickup:
+		TNT1 A 0 A_GiveInventory("D4Axe", 1)
+		Stop
+    }
+}

@@ -1,0 +1,68 @@
+#library "Multiplayer"
+#include "zcommon.acs"
+
+//*****************************************************************************
+//*****************************************************************************
+// This script is called by items to know what kind the game is.
+//
+//	Game types:
+//	 0 	Single player
+//	 1 	Cooperative
+//	 2 	Deathmatch
+//	 3 	Title map
+//	 4 	(Skull/dronum) Team game
+//*****************************************************************************
+//*****************************************************************************
+Script "MultiplayerCheck" (void)
+{
+	if(GameType() == 4)
+		SetResultValue(2); // team games have same weapons as DM
+	else
+		SetResultValue(GameType());
+}
+
+script "JumpToDMIfDeathmatch" (int also_jump_if_teamgame)
+{
+	if(GameType() == 2) SetActorState(0, "DM");
+	if(also_jump_if_teamgame && GameType() == 4) SetActorState(0, "DM");
+}
+
+Script "DeathmatchAmmoCapacity" Respawn
+{
+	if (GameType() != GAME_NET_DEATHMATCH) terminate;
+	SetAmmoCapacity("D4Bullets", 150);
+	SetAmmoCapacity("D4Shells" ,  30);
+	SetAmmoCapacity("D4Cells"  , 150);
+	SetAmmoCapacity("D4Rockets",  15);
+	SetAmmoCapacity("D4Slugs"  ,  15);
+}
+
+Script "D4GameModeHandler" (void)
+{
+	while( true )
+	{
+		// Checkers
+		If(GameType() == GAME_SINGLE_PLAYER )
+		{
+			// Terminates this script in Single Player
+			terminate;
+		}
+		Else If(GameType() == GAME_NET_COOPERATIVE)
+		{
+			GiveInventory("CoopHandler", 1);
+		}
+		Else If(GameType() == GAME_NET_DEATHMATCH)
+		{
+			GiveInventory("DeathMatchHandler", 1);
+		}
+		Else If(GameType() == GAME_TITLE_MAP)
+		{
+			terminate;
+		}
+		Else // Zandronum Special Gamemodes
+		{
+			GiveInventory("DeathMatchHandler", 1);
+		}
+	Delay(9);
+	}
+}
